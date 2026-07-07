@@ -35,7 +35,7 @@ export function TablaDatos({
     return (
       <div className="w-full space-y-4 p-8">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-12 w-full bg-slate-100 animate-pulse rounded-xl" />
+          <div key={i} className="h-12 w-full bg-gray-100 dark:bg-[#112240] animate-pulse rounded-xl" />
         ))}
       </div>
     );
@@ -51,35 +51,35 @@ export function TablaDatos({
   }
 
   return (
-    <div className="w-full overflow-hidden rounded-[2rem] border border-gray-100 bg-white shadow-sm">
+    <div className="w-full overflow-hidden rounded-[2rem] border border-gray-100 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm">
       <div className="overflow-x-auto custom-scrollbar">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-slate-50/80 border-b border-gray-100">
+            <tr className="bg-gray-50/80 dark:bg-[#050f20] border-b border-gray-100 dark:border-[#112240]">
               {columnas.map((col) => (
-                <th key={col.clave} className="px-8 py-5 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <th key={col.clave} className="px-8 py-5 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   {col.titulo}
                 </th>
               ))}
               {(puedeEditar && (alEditar || alEliminar)) && (
-                <th className="px-8 py-5 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">
+                <th className="px-8 py-5 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">
                   Acciones
                 </th>
               )}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
+          <tbody className="divide-y divide-gray-50 dark:divide-[#112240]/50">
             {datos.map((item, index) => (
               <tr
                 key={item.id || index}
                 className={cn(
-                  "group transition-all duration-200 hover:bg-slate-50/50",
+                  "group transition-all duration-200 hover:bg-gray-50/50 dark:hover:bg-white/5",
                   alHacerClick ? "cursor-pointer" : ""
                 )}
                 onClick={() => alHacerClick?.(item)}
               >
                 {columnas.map((col) => (
-                  <td key={col.clave} className="px-8 py-5 text-sm text-slate-700">
+                  <td key={col.clave} className="px-8 py-5 text-sm text-gray-700 dark:text-gray-300">
                     {col.render ? col.render(item) : item[col.clave]}
                   </td>
                 ))}
@@ -89,7 +89,7 @@ export function TablaDatos({
                       {alEditar && (
                         <button
                           onClick={() => alEditar(item)}
-                          className="p-2 text-slate-400 hover:text-unt-primary hover:bg-white rounded-xl transition-all shadow-sm hover:shadow border border-transparent hover:border-gray-100"
+                          className="p-2 text-gray-400 hover:text-[#003366] dark:hover:text-[#D4AF37] hover:bg-white dark:hover:bg-[#112240] rounded-xl transition-all shadow-sm hover:shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
                           title="Editar"
                         >
                           <Edit2 className="w-4 h-4" />
@@ -98,7 +98,7 @@ export function TablaDatos({
                       {alEliminar && (
                         <button
                           onClick={() => alEliminar(item)}
-                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-white rounded-xl transition-all shadow-sm hover:shadow border border-transparent hover:border-gray-100"
+                          className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-white dark:hover:bg-[#112240] rounded-xl transition-all shadow-sm hover:shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
                           title="Eliminar"
                         >
                           <Trash2 className="w-4 h-4" />

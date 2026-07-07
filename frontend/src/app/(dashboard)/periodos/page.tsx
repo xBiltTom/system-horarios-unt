@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/Card';
 import { Boton } from '@/components/ui/Boton';
 import { Modal } from '@/components/ui/Modal';
 import { CampoTexto } from '@/components/ui/CampoTexto';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
 import { cn } from '@/lib/utilidades';
 
@@ -122,10 +122,10 @@ export default function PeriodosPage() {
       titulo: 'Período Académico',
       render: (item: any) => (
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-slate-100 rounded-lg">
-            <Calendar className="w-4 h-4 text-unt-primary" />
+          <div className="p-2 bg-gray-100 dark:bg-white/5 rounded-lg border border-transparent dark:border-[#112240]">
+            <Calendar className="w-4 h-4 text-[#003366] dark:text-[#D4AF37]" />
           </div>
-          <span className="font-bold text-slate-900">{item.nombre}</span>
+          <span className="font-bold text-gray-900 dark:text-white tracking-wide">{item.nombre}</span>
         </div>
       )
     },
@@ -134,19 +134,19 @@ export default function PeriodosPage() {
       titulo: 'Tipo',
       render: (item: any) => {
         let etiqueta = item.tipo;
-        let color = 'bg-slate-100 text-slate-700';
+        let color = 'bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-gray-300';
         if (item.tipo === 'I') {
           etiqueta = 'I (Impares)';
-          color = 'bg-blue-100 text-blue-700';
+          color = 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400';
         } else if (item.tipo === 'II') {
           etiqueta = 'II (Pares)';
-          color = 'bg-purple-100 text-purple-700';
+          color = 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400';
         } else if (item.tipo === 'III') {
           etiqueta = 'III (Extraordinario)';
-          color = 'bg-orange-100 text-orange-700';
+          color = 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400';
         }
         return (
-          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${color}`}>
+          <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold ${color}`}>
             {etiqueta}
           </span>
         );
@@ -156,10 +156,10 @@ export default function PeriodosPage() {
       clave: 'fecha_inicio', 
       titulo: 'Inicio / Fin',
       render: (item: any) => (
-        <div className="flex items-center gap-2 text-slate-600 text-sm">
-          <Clock className="w-4 h-4 text-slate-400" />
+        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-xs font-medium">
+          <Clock className="w-4 h-4 text-gray-400 dark:text-gray-500" />
           <span>{new Date(item.fecha_inicio).toLocaleDateString('es-PE')}</span>
-          <span className="text-slate-300">→</span>
+          <span className="text-gray-300 dark:text-gray-600">→</span>
           <span>{new Date(item.fecha_fin).toLocaleDateString('es-PE')}</span>
         </div>
       )
@@ -168,13 +168,13 @@ export default function PeriodosPage() {
       clave: 'estado',
       titulo: 'Estado Proceso',
       render: (item: any) => {
-        let color = 'bg-slate-50 text-slate-600 border-slate-100';
-        if (item.estado === 'ACTIVO') color = 'bg-emerald-50 text-emerald-700 border-emerald-100';
-        if (item.estado === 'BORRADOR') color = 'bg-amber-50 text-amber-700 border-amber-100';
-        if (item.estado === 'CERRADO') color = 'bg-rose-50 text-rose-700 border-rose-100';
+        let color = 'bg-gray-50 text-gray-600 border-gray-100 dark:bg-gray-900/50 dark:text-gray-400 dark:border-gray-800';
+        if (item.estado === 'ACTIVO') color = 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400 dark:border-emerald-900/50';
+        if (item.estado === 'BORRADOR') color = 'bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-900/50';
+        if (item.estado === 'CERRADO') color = 'bg-rose-50 text-rose-700 border-rose-100 dark:bg-rose-900/30 dark:text-rose-400 dark:border-rose-900/50';
         
         return (
-          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold border ${color}`}>
+          <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold border ${color}`}>
             <span className={cn(
               "w-1.5 h-1.5 rounded-full mr-2",
               item.estado === 'ACTIVO' ? 'bg-emerald-500' : 
@@ -187,12 +187,12 @@ export default function PeriodosPage() {
     },
     {
       clave: 'activo',
-      titulo: 'Estado',
+      titulo: 'Vigencia',
       render: (item: any) => (
-        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border ${
-          item.activo ? 'bg-green-50 text-green-700 border-green-100' : 'bg-slate-50 text-slate-600 border-slate-200'
+        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold border ${
+          item.activo ? 'bg-green-50 text-green-700 border-green-100 dark:bg-green-900/30 dark:text-green-400 dark:border-green-900/50' : 'bg-gray-50 text-gray-600 border-gray-200 dark:bg-gray-900/50 dark:text-gray-400 dark:border-gray-800'
         }`}>
-          {item.activo ? 'Activo' : 'Inactivo'}
+          {item.activo ? 'Vigente' : 'Inactivo'}
         </span>
       ),
     },
@@ -202,28 +202,28 @@ export default function PeriodosPage() {
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Períodos Académicos</h1>
-          <p className="text-slate-500 mt-1">Configuración de ciclos y vigencia de la programación.</p>
+          <h1 className="text-3xl font-serif font-bold text-[#003366] dark:text-white tracking-tight">Períodos Académicos</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm font-medium">Configuración de ciclos y vigencia de la programación.</p>
         </div>
-        <div className="flex w-full sm:w-auto gap-3">
+        <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
           <div className="relative flex-1 sm:w-72">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
               placeholder="Buscar período..."
               value={buscar}
               onChange={(e) => setBuscar(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-unt-primary/5 focus:border-unt-primary transition-all bg-white shadow-sm"
+              className="w-full pl-11 pr-4 py-2.5 border border-gray-200 dark:border-[#112240] rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-[#D4AF37]/20 focus:border-[#D4AF37] transition-all bg-white dark:bg-[#050f20] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-600 shadow-sm"
             />
           </div>
-          <Boton onClick={abrirModalCrear} className="rounded-2xl px-6 shadow-lg shadow-unt-primary/20">
+          <Boton onClick={abrirModalCrear} className="rounded-2xl px-6 bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] shadow-lg shadow-[#003366]/20 dark:shadow-[#D4AF37]/20 transition-all">
             <Plus className="w-4 h-4 mr-2" />
             Nuevo Período
           </Boton>
         </div>
       </div>
 
-      <Card className="border-none shadow-xl shadow-slate-200/50 rounded-[2.5rem] overflow-hidden">
+      <Card className="border-none shadow-xl shadow-gray-200/50 dark:shadow-[#000000]/20 rounded-[2.5rem] overflow-hidden bg-transparent">
         <CardContent className="p-0">
           <TablaDatos
             columnas={columnas}
@@ -253,16 +253,19 @@ export default function PeriodosPage() {
             required
           />
 
-          <Selector 
-            label="Tipo de Período" 
-            value={formulario.tipo} 
-            onChange={(e) => setFormulario({ ...formulario, tipo: e.target.value as 'I' | 'II' | 'III' })}
-            opciones={[
-              { valor: 'I', etiqueta: 'Periodo I (Ciclos Impares: 1,3,5,7,9)' },
-              { valor: 'II', etiqueta: 'Periodo II (Ciclos Pares: 2,4,6,8,10)' },
-              { valor: 'III', etiqueta: 'Periodo III (Extraordinario - Sin Ciclos)' }
-            ]}
-          />
+          <div className="space-y-1">
+            <label className="text-[10px] uppercase tracking-widest font-bold text-gray-500 dark:text-gray-400">Tipo de Período</label>
+            <SelectorInstitucional
+              value={formulario.tipo} 
+              onChange={(val: any) => setFormulario({ ...formulario, tipo: val as 'I' | 'II' | 'III' })}
+              opciones={[
+                { value: 'I', label: 'Periodo I (Ciclos Impares: 1,3,5,7,9)' },
+                { value: 'II', label: 'Periodo II (Ciclos Pares: 2,4,6,8,10)' },
+                { value: 'III', label: 'Periodo III (Extraordinario - Sin Ciclos)' }
+              ]}
+              className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#050f20]"
+            />
+          </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <CampoTexto
@@ -281,16 +284,19 @@ export default function PeriodosPage() {
             />
           </div>
 
-          <Selector 
-            label="Estado Inicial" 
-            value={formulario.estado} 
-            onChange={(e) => setFormulario({ ...formulario, estado: e.target.value })}
-            opciones={[
-              { valor: 'BORRADOR', etiqueta: 'Borrador (Solo Admin)' },
-              { valor: 'ACTIVO', etiqueta: 'Activo (Vigente)' },
-              { valor: 'CERRADO', etiqueta: 'Cerrado (Histórico)' }
-            ]}
-          />
+          <div className="space-y-1">
+            <label className="text-[10px] uppercase tracking-widest font-bold text-gray-500 dark:text-gray-400">Estado Inicial</label>
+            <SelectorInstitucional 
+              value={formulario.estado} 
+              onChange={(val: any) => setFormulario({ ...formulario, estado: val })}
+              opciones={[
+                { value: 'BORRADOR', label: 'Borrador (Solo Admin)' },
+                { value: 'ACTIVO', label: 'Activo (Vigente)' },
+                { value: 'CERRADO', label: 'Cerrado (Histórico)' }
+              ]}
+              className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#050f20]"
+            />
+          </div>
 
           <div className="flex items-center gap-3">
             <input
@@ -298,18 +304,18 @@ export default function PeriodosPage() {
               id="periodo-activo"
               checked={formulario.activo}
               onChange={(e) => setFormulario({ ...formulario, activo: e.target.checked })}
-              className="w-5 h-5 text-unt-primary focus:ring-unt-primary border-slate-300 rounded"
+              className="w-5 h-5 text-[#003366] dark:text-[#D4AF37] focus:ring-[#003366] dark:focus:ring-[#D4AF37] border-gray-300 dark:border-[#112240] rounded dark:bg-[#050f20] transition-colors"
             />
-            <label htmlFor="periodo-activo" className="text-sm font-medium text-slate-700">
-              Establecer como período activo (desactivará otros períodos)
+            <label htmlFor="periodo-activo" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Establecer como período vigente (desactivará otros períodos)
             </label>
           </div>
 
-          <div className="flex justify-end gap-3 pt-6 border-t border-slate-100">
-            <Boton type="button" variant="outline" onClick={() => setModalAbierto(false)} className="rounded-xl px-6">
+          <div className="flex justify-end gap-3 pt-6 border-t border-gray-100 dark:border-[#112240]">
+            <Boton type="button" variant="outline" onClick={() => setModalAbierto(false)} className="rounded-xl px-6 bg-white dark:bg-[#050f20] border-gray-200 dark:border-[#112240] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#112240]">
               Cancelar
             </Boton>
-            <Boton type="submit" cargando={crearMutation.isPending || actualizarMutation.isPending} className="rounded-xl px-8 shadow-md shadow-unt-primary/10">
+            <Boton type="submit" cargando={crearMutation.isPending || actualizarMutation.isPending} className="rounded-xl px-8 bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] shadow-md shadow-[#003366]/10 dark:shadow-[#D4AF37]/10">
               {periodoEditando ? 'Guardar Cambios' : 'Registrar Período'}
             </Boton>
           </div>

@@ -63,25 +63,25 @@ export function Modal({
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300"
+        className="absolute inset-0 bg-slate-900/60 dark:bg-[#020C1B]/80 backdrop-blur-sm transition-opacity duration-300"
         onClick={handleClose}
       />
       
       {/* Modal Content */}
       <div 
         className={cn(
-          "relative bg-white rounded-[2.5rem] shadow-2xl w-full max-w-lg transition-all duration-300",
+          "relative bg-white dark:bg-[#0A192F] border border-transparent dark:border-[#112240] rounded-[2.5rem] shadow-2xl w-full max-w-lg transition-all duration-300",
           className
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100 bg-slate-50/50 rounded-t-[2.5rem]">
-          <h3 className="text-xl font-bold text-gray-900 tracking-tight">
+        <div className="flex items-center justify-between px-8 py-6 border-b border-gray-100 dark:border-[#112240] bg-gray-50/50 dark:bg-[#050f20] rounded-t-[2.5rem]">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
             {displayTitle}
           </h3>
           <button 
             onClick={handleClose} 
-            className="group p-2 text-gray-400 hover:text-gray-600 hover:bg-white rounded-2xl transition-all shadow-sm hover:shadow-md border border-transparent hover:border-gray-100"
+            className="group p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-white dark:hover:bg-[#112240] rounded-2xl transition-all shadow-sm hover:shadow-md border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
           >
             <X className="w-5 h-5 transition-transform group-hover:rotate-90" />
           </button>
