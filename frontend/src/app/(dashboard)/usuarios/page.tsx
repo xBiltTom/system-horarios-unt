@@ -8,9 +8,10 @@ import { TablaDatos } from '@/components/ui/TablaDatos';
 import { Boton } from '@/components/ui/Boton';
 import { Modal } from '@/components/ui/Modal';
 import { CampoTexto } from '@/components/ui/CampoTexto';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
 import { useAuthStore } from '@/stores/auth.store';
+import { cn } from '@/lib/utilidades';
 import { Search, UserPlus, Mail, Shield, UserCircle, Key } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/Card';
 
@@ -133,10 +134,10 @@ export default function UsuariosPage() {
       titulo: 'Usuario / Correo',
       render: (item: any) => (
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-slate-100 rounded-lg">
-            <Mail className="w-4 h-4 text-slate-500" />
+          <div className="p-2 bg-gray-100 dark:bg-white/5 rounded-lg border border-transparent dark:border-[#112240]">
+            <Mail className="w-4 h-4 text-[#003366] dark:text-[#D4AF37]" />
           </div>
-          <span className="font-medium text-slate-900">{item.email}</span>
+          <span className="font-bold text-gray-900 dark:text-white tracking-wide">{item.email}</span>
         </div>
       )
     },
@@ -145,8 +146,8 @@ export default function UsuariosPage() {
       titulo: 'Rol de Acceso',
       render: (item: any) => (
         <div className="flex items-center gap-2">
-          <Shield className="w-3.5 h-3.5 text-unt-primary/60" />
-          <span className="px-3 py-1 bg-unt-primary/5 text-unt-primary rounded-full text-xs font-bold uppercase">
+          <Shield className="w-3.5 h-3.5 text-[#003366]/60 dark:text-[#D4AF37]/80" />
+          <span className="px-3 py-1 bg-[#003366]/5 dark:bg-[#D4AF37]/10 text-[#003366] dark:text-[#D4AF37] rounded-full text-[10px] font-bold uppercase tracking-widest border border-transparent dark:border-[#D4AF37]/20">
             {item.rol}
           </span>
         </div>
@@ -157,8 +158,8 @@ export default function UsuariosPage() {
       titulo: 'Personal Vinculado',
       render: (item: any) => (
         <div className="flex items-center gap-2">
-          <UserCircle className="w-4 h-4 text-slate-400" />
-          <span className="text-slate-600">
+          <UserCircle className="w-4 h-4 text-gray-400 dark:text-gray-500" />
+          <span className="text-gray-600 dark:text-gray-300 font-medium text-sm">
             {item.docente ? `${item.docente.nombres} ${item.docente.apellidos}` : 'Sin vinculación'}
           </span>
         </div>
@@ -168,10 +169,10 @@ export default function UsuariosPage() {
       clave: 'activo',
       titulo: 'Estado',
       render: (item: any) => (
-        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
-          item.activo ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'
+        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold border ${
+          item.activo ? 'bg-green-50 text-green-700 border-green-100 dark:bg-green-900/30 dark:text-green-400 dark:border-green-900/50' : 'bg-red-50 text-red-700 border-red-100 dark:bg-red-900/30 dark:text-red-400 dark:border-red-900/50'
         }`}>
-          <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${item.activo ? 'bg-green-500' : 'bg-red-500'}`} />
+          <span className={cn("w-1.5 h-1.5 rounded-full mr-1.5", item.activo ? "bg-green-500" : "bg-red-500")} />
           {item.activo ? 'Activo' : 'Inactivo'}
         </span>
       ),
@@ -181,11 +182,11 @@ export default function UsuariosPage() {
   if (!esAdmin) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-4">
-        <div className="p-4 bg-red-50 rounded-full">
-          <Shield className="w-12 h-12 text-red-500" />
+        <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-full">
+          <Shield className="w-12 h-12 text-red-500 dark:text-red-400" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-800">Acceso Denegado</h2>
-        <p className="text-slate-500">Solo administradores del sistema pueden gestionar cuentas de usuario.</p>
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Acceso Denegado</h2>
+        <p className="text-gray-500 dark:text-gray-400">Solo administradores del sistema pueden gestionar cuentas de usuario.</p>
       </div>
     );
   }
@@ -199,42 +200,40 @@ export default function UsuariosPage() {
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Cuentas de Usuario</h1>
-          <p className="text-slate-500 mt-1">Gestión de accesos, roles y seguridad del sistema.</p>
+          <h1 className="text-3xl font-serif font-bold text-[#003366] dark:text-white tracking-tight">Cuentas de Usuario</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm font-medium">Gestión de accesos, roles y seguridad del sistema.</p>
         </div>
-        <div className="flex w-full sm:w-auto gap-3">
+        <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
           <div className="relative flex-1 sm:w-72">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
               placeholder="Buscar usuario..."
               value={buscar}
               onChange={(e) => setBuscar(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-unt-primary/5 focus:border-unt-primary transition-all bg-white shadow-sm"
+              className="w-full pl-11 pr-4 py-2.5 border border-gray-200 dark:border-[#112240] rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-[#D4AF37]/20 focus:border-[#D4AF37] transition-all bg-white dark:bg-[#050f20] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-600 shadow-sm"
             />
           </div>
-          <Boton onClick={abrirModalCrear} className="rounded-2xl px-6 shadow-lg shadow-unt-primary/20">
+          <Boton onClick={abrirModalCrear} className="rounded-2xl px-6 bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] shadow-lg shadow-[#003366]/20 dark:shadow-[#D4AF37]/20 transition-all">
             <UserPlus className="w-4 h-4 mr-2" />
             Nuevo Usuario
           </Boton>
         </div>
       </div>
 
-      <Card className="border-none shadow-xl shadow-slate-200/50 rounded-[2.5rem] overflow-hidden">
-        <CardContent className="p-0">
-          <TablaDatos
-            columnas={columnas}
-            datos={usuariosFiltrados}
-            loading={loadingUsuarios}
-            alEditar={abrirModalEditar}
-            alEliminar={(usuario) => {
-              if (confirm(`¿Está seguro de desactivar la cuenta "${usuario.email}"?`)) {
-                eliminarMutation.mutate(usuario.id);
-              }
-            }}
-          />
-        </CardContent>
-      </Card>
+      <div className="pt-4">
+        <TablaDatos
+          columnas={columnas}
+          datos={usuariosFiltrados}
+          loading={loadingUsuarios}
+          alEditar={abrirModalEditar}
+          alEliminar={(usuario) => {
+            if (confirm(`¿Está seguro de desactivar la cuenta "${usuario.email}"?`)) {
+              eliminarMutation.mutate(usuario.id);
+            }
+          }}
+        />
+      </div>
 
       <Modal 
         isOpen={modalAbierto} 
@@ -253,18 +252,20 @@ export default function UsuariosPage() {
             />
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <Selector
-                label="Rol de Usuario"
-                opciones={[
-                  { valor: 'ADMINISTRADOR', etiqueta: 'Administrador' },
-                  { valor: 'DIRECTOR', etiqueta: 'Director de Escuela' },
-                  { valor: 'SECRETARIA', etiqueta: 'Secretaría' },
-                  { valor: 'DOCENTE', etiqueta: 'Docente' },
-                ]}
-                value={formulario.rol}
-                onChange={(e) => setFormulario({ ...formulario, rol: e.target.value })}
-                required
-              />
+              <div className="space-y-1">
+                <label className="text-[10px] uppercase tracking-widest font-bold text-gray-500 dark:text-gray-400">Rol de Usuario</label>
+                <SelectorInstitucional
+                  opciones={[
+                    { value: 'ADMINISTRADOR', label: 'Administrador' },
+                    { value: 'DIRECTOR', label: 'Director de Escuela' },
+                    { value: 'SECRETARIA', label: 'Secretaría' },
+                    { value: 'DOCENTE', label: 'Docente' },
+                  ]}
+                  value={formulario.rol}
+                  onChange={(val: any) => setFormulario({ ...formulario, rol: val })}
+                  className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#050f20]"
+                />
+              </div>
 
               <CampoTexto
                 label={usuarioEditando ? 'Cambiar Contraseña' : 'Contraseña'}
@@ -276,25 +277,28 @@ export default function UsuariosPage() {
               />
             </div>
 
-            <Selector
-              label="Vincular con Docente (Opcional)"
-              value={formulario.id_docente || ''}
-              onChange={(e) => setFormulario({ ...formulario, id_docente: e.target.value ? parseInt(e.target.value) : undefined })}
-            >
-              <option value="">Ninguno / Usuario Administrativo</option>
-              {docentes.map((d: any) => (
-                <option key={d.id} value={d.id}>
-                  {d.apellidos}, {d.nombres}
-                </option>
-              ))}
-            </Selector>
+            <div className="space-y-1">
+              <label className="text-[10px] uppercase tracking-widest font-bold text-gray-500 dark:text-gray-400">Vincular con Docente (Opcional)</label>
+              <SelectorInstitucional
+                value={formulario.id_docente?.toString() || ''}
+                onChange={(val: any) => setFormulario({ ...formulario, id_docente: val ? parseInt(val) : undefined })}
+                opciones={[
+                  { value: '', label: 'Ninguno / Usuario Administrativo' },
+                  ...docentes.map((d: any) => ({
+                    value: d.id.toString(),
+                    label: `${d.apellidos}, ${d.nombres}`
+                  }))
+                ]}
+                className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#050f20]"
+              />
+            </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-6 border-t border-slate-100">
-            <Boton type="button" variant="outline" onClick={() => setModalAbierto(false)} className="rounded-xl px-6">
+          <div className="flex justify-end gap-3 pt-6 border-t border-gray-100 dark:border-[#112240]">
+            <Boton type="button" variant="outline" onClick={() => setModalAbierto(false)} className="rounded-xl px-6 bg-white dark:bg-[#050f20] border-gray-200 dark:border-[#112240] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#112240]">
               Cancelar
             </Boton>
-            <Boton type="submit" cargando={crearMutation.isPending || actualizarMutation.isPending} className="rounded-xl px-8 shadow-md shadow-unt-primary/10">
+            <Boton type="submit" cargando={crearMutation.isPending || actualizarMutation.isPending} className="rounded-xl px-8 bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] shadow-md shadow-[#003366]/10 dark:shadow-[#D4AF37]/10">
               {usuarioEditando ? 'Actualizar Cuenta' : 'Crear Usuario'}
             </Boton>
           </div>
