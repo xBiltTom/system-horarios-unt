@@ -9,6 +9,7 @@ import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { Settings2, Clock, Coffee, Save, ShieldAlert } from 'lucide-react';
 
 const schema = z.object({
   FRANJA_INICIO: z.string().regex(/^\d{2}:\d{2}$/, 'Formato HH:MM'),
@@ -77,22 +78,66 @@ export default function RestriccionesPage() {
   if (isLoading) return <SpinnerCarga />;
 
   return (
-    <div className="max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Restricciones Institucionales</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <CampoTexto label="Franja horaria inicio (HH:MM)" {...register('FRANJA_INICIO')} error={errors.FRANJA_INICIO?.message} />
-        <CampoTexto label="Franja horaria fin (HH:MM)" {...register('FRANJA_FIN')} error={errors.FRANJA_FIN?.message} />
-        <CampoTexto label="Horas máximas diarias por docente" type="number" {...register('HORAS_MAX_DIARIAS')} error={errors.HORAS_MAX_DIARIAS?.message} />
-        <CampoTexto label="Bloqueo almuerzo inicio" {...register('BLOQUEO_ALMUERZO_INICIO')} error={errors.BLOQUEO_ALMUERZO_INICIO?.message} />
-        <CampoTexto label="Bloqueo almuerzo fin" {...register('BLOQUEO_ALMUERZO_FIN')} error={errors.BLOQUEO_ALMUERZO_FIN?.message} />
-        <CampoTexto label="Franja de ventanas de atencion (minutos)" {...register('TIEMPO_ATENCION_VENTANA')} error={errors.TIEMPO_ATENCION_VENTANA?.message} />
+    <div className="space-y-8 animate-in fade-in duration-500 max-w-5xl mx-auto pb-12">
+      <div>
+        <h1 className="text-3xl font-serif font-bold tracking-tight text-[#003366] dark:text-white flex items-center gap-3">
+          <Settings2 className="w-8 h-8 text-[#003366] dark:text-[#D4AF37]" />
+          Reglas de Negocio
+        </h1>
+        <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm font-medium">
+          Configuración global de horarios de operación del campus, políticas de almuerzo y límites de dictado docente.
+        </p>
+      </div>
 
-        {mutation.isSuccess && <NotificacionToast mensaje="Restricciones actualizadas" tipo="exito" />}
-        {mutation.isError && <NotificacionToast mensaje="Error al guardar" tipo="error" />}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Card 1: Horarios de Operación */}
+          <div className="bg-white dark:bg-[#0A192F] rounded-[2rem] border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm">
+            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-white/5">
+              <Clock className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" />
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Horario del Campus</h2>
+            </div>
+            <div className="space-y-5">
+              <CampoTexto label="Apertura (HH:MM)" placeholder="07:00" {...register('FRANJA_INICIO')} error={errors.FRANJA_INICIO?.message} />
+              <CampoTexto label="Cierre (HH:MM)" placeholder="22:00" {...register('FRANJA_FIN')} error={errors.FRANJA_FIN?.message} />
+            </div>
+          </div>
 
-        <Boton type="submit" disabled={mutation.isPending}>
-          {mutation.isPending ? 'Guardando...' : 'Guardar Cambios'}
-        </Boton>
+          {/* Card 2: Descanso y Almuerzo */}
+          <div className="bg-white dark:bg-[#0A192F] rounded-[2rem] border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm">
+            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-white/5">
+              <Coffee className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" />
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Bloque de Almuerzo</h2>
+            </div>
+            <div className="space-y-5">
+              <CampoTexto label="Inicio de Almuerzo (HH:MM)" placeholder="13:00" {...register('BLOQUEO_ALMUERZO_INICIO')} error={errors.BLOQUEO_ALMUERZO_INICIO?.message} />
+              <CampoTexto label="Fin de Almuerzo (HH:MM)" placeholder="14:00" {...register('BLOQUEO_ALMUERZO_FIN')} error={errors.BLOQUEO_ALMUERZO_FIN?.message} />
+            </div>
+          </div>
+
+          {/* Card 3: Límites Docentes */}
+          <div className="lg:col-span-2 bg-white dark:bg-[#0A192F] rounded-[2rem] border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm">
+            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-white/5">
+              <ShieldAlert className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" />
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">Parámetros de Carga Docente</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <CampoTexto label="Máx. Horas Dictado Diario" type="number" placeholder="Ej: 8" {...register('HORAS_MAX_DIARIAS')} error={errors.HORAS_MAX_DIARIAS?.message} />
+              <CampoTexto label="Resolución de Atenciones (Mins)" type="number" placeholder="Ej: 30" {...register('TIEMPO_ATENCION_VENTANA')} error={errors.TIEMPO_ATENCION_VENTANA?.message} />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end pt-4">
+          <Boton type="submit" cargando={mutation.isPending} className="rounded-2xl px-10 py-3 bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] shadow-lg shadow-[#003366]/20 dark:shadow-[#D4AF37]/20 transition-all font-bold text-lg">
+            {!mutation.isPending && <Save className="w-5 h-5 mr-2 inline" />}
+            {mutation.isPending ? 'Guardando...' : 'Guardar Configuración'}
+          </Boton>
+        </div>
+
+        {mutation.isSuccess && <NotificacionToast mensaje="Restricciones actualizadas correctamente." tipo="exito" onClose={() => mutation.reset()} />}
+        {mutation.isError && <NotificacionToast mensaje="Error al guardar la configuración." tipo="error" onClose={() => mutation.reset()} />}
       </form>
     </div>
   );
