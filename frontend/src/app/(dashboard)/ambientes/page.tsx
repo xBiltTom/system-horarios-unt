@@ -7,10 +7,10 @@ import { TablaDatos } from '@/components/ui/TablaDatos';
 import { Boton } from '@/components/ui/Boton';
 import { Modal } from '@/components/ui/Modal';
 import { CampoTexto } from '@/components/ui/CampoTexto';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
 import { useAuthStore } from '@/stores/auth.store';
-import { Card, CardContent } from '@/components/ui/Card';
+import { cn } from '@/lib/utilidades';
 
 export default function AmbientesPage() {
   const queryClient = useQueryClient();
@@ -121,9 +121,11 @@ export default function AmbientesPage() {
       clave: 'codigo', 
       titulo: 'Ambiente',
       render: (item: any) => (
-        <div className="flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-slate-400" />
-          <span className="font-bold text-slate-900">{item.codigo}</span>
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-gray-100 dark:bg-white/5 rounded-lg border border-transparent dark:border-[#112240]">
+            <MapPin className="w-4 h-4 text-[#003366] dark:text-[#D4AF37]" />
+          </div>
+          <span className="font-bold text-gray-900 dark:text-white tracking-wide">{item.codigo}</span>
         </div>
       )
     },
@@ -133,8 +135,10 @@ export default function AmbientesPage() {
       render: (item: any) => {
         const isLab = item.tipo === 'LABORATORIO';
         return (
-          <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
-            isLab ? 'bg-purple-50 text-purple-700 border border-purple-100' : 'bg-blue-50 text-blue-700 border border-blue-100'
+          <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-transparent ${
+            isLab 
+              ? 'bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-900/50' 
+              : 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-900/50'
           }`}>
             {item.tipo}
           </span>
@@ -145,7 +149,7 @@ export default function AmbientesPage() {
       clave: 'capacidad', 
       titulo: 'Aforo',
       render: (item: any) => (
-        <div className="flex items-center gap-2 text-slate-600">
+        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
           <Users className="w-4 h-4" />
           <span>{item.capacidad} personas</span>
         </div>
@@ -155,17 +159,17 @@ export default function AmbientesPage() {
       clave: 'piso', 
       titulo: 'Ubicación',
       render: (item: any) => (
-        <span className="text-slate-600 font-medium">Piso {item.piso || 'N/A'}</span>
+        <span className="text-gray-600 dark:text-gray-300 font-medium">Piso {item.piso || 'N/A'}</span>
       )
     },
     {
       clave: 'activo',
       titulo: 'Estado',
       render: (item: any) => (
-        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
-          item.activo ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'
+        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold border ${
+          item.activo ? 'bg-green-50 text-green-700 border-green-100 dark:bg-green-900/30 dark:text-green-400 dark:border-green-900/50' : 'bg-red-50 text-red-700 border-red-100 dark:bg-red-900/30 dark:text-red-400 dark:border-red-900/50'
         }`}>
-          <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${item.activo ? 'bg-green-500' : 'bg-red-500'}`} />
+          <span className={cn("w-1.5 h-1.5 rounded-full mr-1.5", item.activo ? "bg-green-500" : "bg-red-500")} />
           {item.activo ? 'Activo' : 'Inactivo'}
         </span>
       ),
@@ -175,11 +179,11 @@ export default function AmbientesPage() {
   if (!esAdmin) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-        <div className="p-4 bg-red-50 rounded-full">
-          <Info className="w-12 h-12 text-red-500" />
+        <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-full">
+          <Info className="w-12 h-12 text-red-500 dark:text-red-400" />
         </div>
-        <h2 className="text-2xl font-bold text-slate-900">Acceso Restringido</h2>
-        <p className="text-slate-500 max-w-md text-center">Solo los administradores autorizados pueden gestionar la infraestructura física.</p>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Acceso Restringido</h2>
+        <p className="text-gray-500 dark:text-gray-400 max-w-md text-center">Solo los administradores autorizados pueden gestionar la infraestructura física.</p>
       </div>
     );
   }
@@ -194,42 +198,40 @@ export default function AmbientesPage() {
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Infraestructura Académica</h1>
-          <p className="text-slate-500 mt-1">Gestión de aulas, laboratorios y espacios de aprendizaje.</p>
+          <h1 className="text-3xl font-serif font-bold text-[#003366] dark:text-white tracking-tight">Infraestructura Académica</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm font-medium">Gestión de aulas, laboratorios y espacios de aprendizaje.</p>
         </div>
-        <div className="flex w-full sm:w-auto gap-3">
+        <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
           <div className="relative flex-1 sm:w-72">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
               placeholder="Buscar ambiente..."
               value={buscar}
               onChange={(e) => setBuscar(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-unt-primary/5 focus:border-unt-primary transition-all bg-white shadow-sm"
+              className="w-full pl-11 pr-4 py-2.5 border border-gray-200 dark:border-[#112240] rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-[#D4AF37]/20 focus:border-[#D4AF37] transition-all bg-white dark:bg-[#050f20] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-600 shadow-sm"
             />
           </div>
-          <Boton onClick={abrirModalCrear} className="rounded-2xl px-6 shadow-lg shadow-unt-primary/20">
+          <Boton onClick={abrirModalCrear} className="rounded-2xl px-6 bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] shadow-lg shadow-[#003366]/20 dark:shadow-[#D4AF37]/20 transition-all">
             <Plus className="w-4 h-4 mr-2" />
             Nuevo Ambiente
           </Boton>
         </div>
       </div>
 
-      <Card className="border-none shadow-xl shadow-slate-200/50 rounded-[2.5rem] overflow-hidden">
-        <CardContent className="p-0">
-          <TablaDatos
-            columnas={columnas}
-            datos={ambientesFiltrados}
-            loading={isLoading}
-            alEditar={abrirModalEditar}
-            alEliminar={(ambiente) => {
-              if (confirm(`¿Está seguro de desactivar el ambiente "${ambiente.codigo}"?`)) {
-                eliminarMutation.mutate(ambiente.id);
-              }
-            }}
-          />
-        </CardContent>
-      </Card>
+      <div className="pt-4">
+        <TablaDatos
+          columnas={columnas}
+          datos={ambientesFiltrados}
+          loading={isLoading}
+          alEditar={abrirModalEditar}
+          alEliminar={(ambiente) => {
+            if (confirm(`¿Está seguro de desactivar el ambiente "${ambiente.codigo}"?`)) {
+              eliminarMutation.mutate(ambiente.id);
+            }
+          }}
+        />
+      </div>
 
       <Modal 
         isOpen={modalAbierto} 
@@ -245,15 +247,18 @@ export default function AmbientesPage() {
               onChange={(e) => setFormulario({ ...formulario, codigo: e.target.value })}
               required
             />
-            <Selector 
-              label="Tipo de Espacio" 
-              value={formulario.tipo} 
-              onChange={(e) => setFormulario({ ...formulario, tipo: e.target.value })}
-              opciones={[
-                { valor: 'AULA', etiqueta: 'Aula de Clase' },
-                { valor: 'LABORATORIO', etiqueta: 'Laboratorio Especializado' }
-              ]}
-            />
+            <div className="space-y-1">
+              <label className="text-[10px] uppercase tracking-widest font-bold text-gray-500 dark:text-gray-400">Tipo de Espacio</label>
+              <SelectorInstitucional 
+                value={formulario.tipo} 
+                onChange={(val: any) => setFormulario({ ...formulario, tipo: val })}
+                opciones={[
+                  { value: 'AULA', label: 'Aula de Clase' },
+                  { value: 'LABORATORIO', label: 'Laboratorio Especializado' }
+                ]}
+                className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#050f20]"
+              />
+            </div>
             <CampoTexto 
               label="Capacidad (Aforo)" 
               type="number"
@@ -275,11 +280,11 @@ export default function AmbientesPage() {
             onChange={(e) => setFormulario({ ...formulario, equipamiento: e.target.value })}
           />
 
-          <div className="flex justify-end gap-3 pt-6 border-t border-slate-100">
-            <Boton type="button" variant="outline" onClick={() => setModalAbierto(false)} className="rounded-xl px-6">
+          <div className="flex justify-end gap-3 pt-6 border-t border-gray-100 dark:border-[#112240]">
+            <Boton type="button" variant="outline" onClick={() => setModalAbierto(false)} className="rounded-xl px-6 bg-white dark:bg-[#050f20] border-gray-200 dark:border-[#112240] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#112240]">
               Cancelar
             </Boton>
-            <Boton type="submit" cargando={crearMutation.isPending || actualizarMutation.isPending} className="rounded-xl px-8 shadow-md shadow-unt-primary/10">
+            <Boton type="submit" cargando={crearMutation.isPending || actualizarMutation.isPending} className="rounded-xl px-8 bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] shadow-md shadow-[#003366]/10 dark:shadow-[#D4AF37]/10">
               {ambienteEditando ? 'Guardar Cambios' : 'Registrar Ambiente'}
             </Boton>
           </div>
