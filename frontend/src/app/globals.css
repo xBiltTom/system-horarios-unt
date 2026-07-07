@@ -2,7 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+}
+
 /* Estilos base personalizados si se requieren */
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+}
+
+:root {
+  --sb-thumb: #94a3b8;
+  --sb-track: transparent;
+  --sb-thumb-hover: #003366;
+}
+
+html.dark {
+  --sb-thumb: #1e3a5f;
+  --sb-track: #050f20;
+  --sb-thumb-hover: #D4AF37;
+}
 
 /* =========================================
    SCROLLBAR INSTITUCIONAL (Global)
@@ -11,43 +41,30 @@
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent;
-}
-
-html.dark * {
-  scrollbar-color: #112240 transparent;
+  scrollbar-color: var(--sb-thumb) var(--sb-track);
 }
 
 /* Chrome, Edge, Safari */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--sb-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1; /* slate-300 */
+  background: var(--sb-thumb);
   border-radius: 10px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #003366; /* UNT Blue */
+  background: var(--sb-thumb-hover);
   border: 0;
   border-radius: 10px;
-}
-
-/* Modo Oscuro */
-html.dark ::-webkit-scrollbar-thumb {
-  background: #112240;
-}
-
-html.dark ::-webkit-scrollbar-thumb:hover {
-  background: #D4AF37; /* UNT Gold */
 }
 
 /* Clase de utilidad por si se requiere aislar */
