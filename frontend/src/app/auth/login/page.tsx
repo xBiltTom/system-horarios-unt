@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/auth.store';
+import { useThemeStore } from '@/stores/theme.store';
 import { ShieldCheck, Lock, Mail, ChevronRight, Eye, EyeOff, Moon, Sun } from 'lucide-react';
 import Link from 'next/link';
 
@@ -12,8 +13,8 @@ export default function LoginPage() {
   const [mostrarPassword, setMostrarPassword] = useState(false);
   const [cargando, setCargando] = useState(false);
   
-  // Estado para el modo oscuro
-  const [modoOscuro, setModoOscuro] = useState(false);
+  // Estado global para el modo oscuro
+  const { modoOscuro, toggleTema } = useThemeStore();
   
   const router = useRouter();
   const { iniciarSesion, estaAutenticado, token, cargarSesion } = useAuthStore();
@@ -100,7 +101,7 @@ export default function LoginPage() {
         
         {/* Botón de Modo Oscuro/Claro */}
         <button 
-          onClick={() => setModoOscuro(!modoOscuro)}
+          onClick={toggleTema}
           className={`absolute top-6 right-6 md:top-10 md:right-10 p-3 rounded-full transition-all duration-300 ${
             modoOscuro 
               ? 'bg-[#112240] text-[#D4AF37] hover:bg-[#1a365d] hover:scale-110' 
