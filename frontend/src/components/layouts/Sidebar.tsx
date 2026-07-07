@@ -41,21 +41,21 @@ export function Sidebar() {
   };
 
   const enlacesAdmin = [
-    { href: '/dashboard/admin', etiqueta: 'Panel Admin', Icono: LayoutDashboard },
+    { href: '/dashboard/admin', etiqueta: 'Centro de Control', Icono: LayoutDashboard },
     { href: '/dashboard/periodos', etiqueta: 'Períodos Académicos', Icono: Calendar },
-    { href: '/dashboard/usuarios', etiqueta: 'Cuentas de Usuario', Icono: Users },
+    { href: '/dashboard/usuarios', etiqueta: 'Usuarios y Roles', Icono: Users },
     { href: '/dashboard/ambientes', etiqueta: 'Infraestructura', Icono: School },
-    { href: '/dashboard/cursos', etiqueta: 'Catálogo Cursos', Icono: BookOpen },
-    { href: '/dashboard/curricula', etiqueta: 'Currículas', Icono: FileText },
-    { href: '/dashboard/configuracion/restricciones', etiqueta: 'Reglas del Sistema', Icono: Settings },
+    { href: '/dashboard/cursos', etiqueta: 'Catálogo de Asignaturas', Icono: BookOpen },
+    { href: '/dashboard/curricula', etiqueta: 'Planes de Estudio', Icono: FileText },
+    { href: '/dashboard/configuracion/restricciones', etiqueta: 'Configuración Global', Icono: Settings },
   ];
 
   const enlacesDirector = [
-    { href: '/dashboard/admin', etiqueta: 'Dashboard Dirección', Icono: LayoutDashboard },
+    { href: '/dashboard/admin', etiqueta: 'Panel de Dirección', Icono: LayoutDashboard },
     { href: '/dashboard/director/docentes', etiqueta: 'Escalafón Docente', Icono: Users },
     { href: '/dashboard/director/oferta-academica', etiqueta: 'Oferta Académica', Icono: GraduationCap },
     { href: '/dashboard/director/oferta-ciclos', etiqueta: 'Malla por Ciclos', Icono: LayoutGrid },
-    { href: '/dashboard/director/carga-horaria', etiqueta: 'Asignación Carga', Icono: Clock },
+    { href: '/dashboard/director/carga-horaria', etiqueta: 'Carga Académica', Icono: Clock },
   ];
 
   const enlacesSecretaria = [
@@ -64,18 +64,18 @@ export function Sidebar() {
     { href: '/dashboard/secretaria/docentes', etiqueta: 'Plana Docente', Icono: Users },
     { href: '/dashboard/secretaria/cursos-asignados', etiqueta: 'Asignaturas', Icono: BookOpen },
     { href: '/dashboard/secretaria/grupos', etiqueta: 'Grupos Académicos', Icono: Eye },
-    { href: '/dashboard/secretaria/ventanas', etiqueta: 'Ventanas Atención', Icono: Clock },
-    { href: '/dashboard/secretaria/registro-horarios', etiqueta: 'Auditoría Manual', Icono: CheckSquare },
-    { href: '/dashboard/secretaria/reportes', etiqueta: 'Emisión Reportes', Icono: FileDown },
-    { href: '/dashboard/horarios/vista-aula', etiqueta: 'Malla Aulas', Icono: MapPin },
-    { href: '/dashboard/horarios/vista-ciclo', etiqueta: 'Malla Ciclos', Icono: Calendar },
+    { href: '/dashboard/secretaria/ventanas', etiqueta: 'Disponibilidad Docente', Icono: Clock },
+    { href: '/dashboard/secretaria/registro-horarios', etiqueta: 'Programación Manual', Icono: CheckSquare },
+    { href: '/dashboard/secretaria/reportes', etiqueta: 'Emisión de Reportes', Icono: FileDown },
+    { href: '/dashboard/horarios/vista-aula', etiqueta: 'Horarios por Aula', Icono: MapPin },
+    { href: '/dashboard/horarios/vista-ciclo', etiqueta: 'Horarios por Ciclo', Icono: Calendar },
   ];
 
   const enlacesDocente = [
     { href: '/dashboard/docente', etiqueta: 'Mi Expediente', Icono: LayoutDashboard },
-    { href: '/dashboard/docente/carga-no-lectiva', etiqueta: 'Declaración Horas', Icono: FileText },
-    { href: '/dashboard/horarios/seleccion', etiqueta: 'Registro Horario', Icono: CheckSquare },
-    { href: '/dashboard/horarios/vista-docente', etiqueta: 'Carga Oficial', Icono: Eye },
+    { href: '/dashboard/docente/carga-no-lectiva', etiqueta: 'Actividades No Lectivas', Icono: FileText },
+    { href: '/dashboard/horarios/seleccion', etiqueta: 'Elección de Horarios', Icono: CheckSquare },
+    { href: '/dashboard/horarios/vista-docente', etiqueta: 'Mi Horario Oficial', Icono: Eye },
   ];
 
   let enlaces = enlacesDocente;
