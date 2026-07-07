@@ -98,13 +98,6 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Rol Identifier */}
-      <div className="px-6 py-4 bg-white dark:bg-[#050f20] border-b border-gray-200 dark:border-[#112240] flex justify-between items-center">
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-500">Sesión Activa:</span>
-        <span className="text-[10px] font-bold uppercase tracking-widest text-[#003366] dark:text-[#D4AF37]">
-          {usuario?.rol || 'USUARIO'}
-        </span>
-      </div>
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto py-6 custom-scrollbar">
