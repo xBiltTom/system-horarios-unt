@@ -84,7 +84,7 @@ export function Sidebar() {
   else if (esSecretaria) enlaces = enlacesSecretaria;
 
   return (
-    <aside className="fixed left-0 top-0 z-20 flex h-screen w-64 flex-col bg-slate-50 dark:bg-[#0A192F] text-[#0A192F] dark:text-white shadow-2xl transition-all duration-300 border-r border-gray-200 dark:border-[#112240]">
+    <aside className="fixed left-0 top-0 z-20 flex h-screen w-64 flex-col bg-[#F0F4F8] dark:bg-[#0A192F] text-[#003366] dark:text-white shadow-2xl transition-all duration-300 border-r border-gray-200 dark:border-[#112240]">
       {/* Brand Header */}
       <div className="flex flex-col items-center justify-center py-10 border-b border-gray-200 dark:border-[#112240]">
         <img 
@@ -93,15 +93,15 @@ export function Sidebar() {
           className="h-16 w-auto opacity-100 mb-6 bg-white p-1.5 rounded-lg shadow-sm" 
         />
         <div className="text-center">
-          <h2 className="text-lg font-serif tracking-widest text-[#0A192F] dark:text-white uppercase">UNT | Sistemas</h2>
-          <div className="w-10 h-px bg-[#0A192F]/20 dark:bg-[#D4AF37] mx-auto mt-3"></div>
+          <h2 className="text-lg font-serif tracking-widest text-[#003366] dark:text-white uppercase">UNT | Sistemas</h2>
+          <div className="w-10 h-px bg-[#D4AF37] mx-auto mt-3"></div>
         </div>
       </div>
 
       {/* Rol Identifier */}
       <div className="px-6 py-4 bg-white dark:bg-[#050f20] border-b border-gray-200 dark:border-[#112240] flex justify-between items-center">
-        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-500">Sesión Activa:</span>
-        <span className="text-[10px] font-bold uppercase tracking-widest text-[#0A192F] dark:text-[#D4AF37]">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-500">Sesión Activa:</span>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-[#003366] dark:text-[#D4AF37]">
           {usuario?.rol || 'USUARIO'}
         </span>
       </div>
@@ -120,14 +120,14 @@ export function Sidebar() {
                   className={cn(
                     'group flex items-center gap-4 px-6 py-3.5 text-xs font-semibold uppercase tracking-widest transition-all duration-300 border-l-2',
                     activo
-                      ? 'border-[#0A192F] bg-gradient-to-r from-[#0A192F]/5 to-transparent text-[#0A192F] dark:border-[#D4AF37] dark:from-[#D4AF37]/10 dark:text-white'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-transparent dark:hover:border-gray-700'
+                      ? 'border-[#D4AF37] bg-gradient-to-r from-[#D4AF37]/15 to-transparent text-[#003366] dark:border-[#D4AF37] dark:from-[#D4AF37]/10 dark:text-white'
+                      : 'border-transparent text-gray-500 hover:text-[#003366] hover:bg-white dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-transparent dark:hover:border-gray-700'
                   )}
                 >
                   <Icon
                     className={cn(
                       'h-4 w-4 transition-colors duration-300',
-                      activo ? 'text-[#0A192F] dark:text-[#D4AF37]' : 'text-gray-400 group-hover:text-[#0A192F] dark:text-gray-600 dark:group-hover:text-gray-400'
+                      activo ? 'text-[#003366] dark:text-[#D4AF37]' : 'text-gray-400 group-hover:text-[#003366] dark:text-gray-600 dark:group-hover:text-gray-400'
                     )}
                     strokeWidth={activo ? 2.5 : 2}
                   />
@@ -143,9 +143,9 @@ export function Sidebar() {
       <div className="border-t border-gray-200 dark:border-[#112240] p-6 flex flex-col items-center gap-4">
         <button 
           onClick={toggleTema}
-          className="flex items-center gap-3 px-4 py-2 rounded-full border border-gray-200 dark:border-[#112240] bg-white dark:bg-[#050f20] hover:bg-gray-100 dark:hover:bg-[#112240] transition-colors w-full justify-center"
+          className="flex items-center gap-3 px-4 py-2 rounded-full border border-gray-200 dark:border-[#112240] bg-white dark:bg-[#050f20] hover:bg-gray-50 dark:hover:bg-[#112240] transition-colors w-full justify-center"
         >
-          {modoOscuro ? <Sun className="w-4 h-4 text-[#D4AF37]" /> : <Moon className="w-4 h-4 text-[#0A192F]" />}
+          {modoOscuro ? <Sun className="w-4 h-4 text-[#D4AF37]" /> : <Moon className="w-4 h-4 text-[#003366]" />}
           <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
             {modoOscuro ? 'Modo Claro' : 'Modo Oscuro'}
           </span>
