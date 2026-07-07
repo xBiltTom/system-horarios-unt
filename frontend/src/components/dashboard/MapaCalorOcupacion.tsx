@@ -1,5 +1,4 @@
 'use client';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 
 interface MapaCalorProps {
   dias: string[];
@@ -8,52 +7,47 @@ interface MapaCalorProps {
 }
 
 const getColor = (valor: number) => {
-  if (valor === 0) return 'bg-[#F3F4F6] text-gray-400'; // Grises claro para 0
-  if (valor <= 2) return 'bg-[#FEF08A] text-gray-800'; // Amarillo
-  if (valor <= 4) return 'bg-[#FDBA74] text-gray-900'; // Naranja
-  return 'bg-[#FCA5A5] text-red-900 font-medium'; // Rojo
+  if (valor === 0) return 'bg-gray-100 text-gray-400 dark:bg-white/5 dark:text-gray-600';
+  if (valor <= 2) return 'bg-[#D4AF37]/30 text-[#003366] dark:text-[#D4AF37] font-medium';
+  if (valor <= 4) return 'bg-[#D4AF37] text-white font-bold shadow-sm';
+  return 'bg-[#003366] dark:bg-[#4A90E2] text-white font-bold shadow-md'; 
 };
 
 export function MapaCalorOcupacion({ dias, horas, conteo }: MapaCalorProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Mapa de Calor de Ocupación</CardTitle>
-      </CardHeader>
-      <CardContent className="overflow-x-auto">
-        <table className="w-full text-sm border-collapse">
-          <thead>
-            <tr>
-              <th className="p-2 border-b border-gray-100 text-left text-gray-500 font-medium">Hora</th>
-              {dias.map((dia) => (
-                <th key={dia} className="p-2 border-b border-gray-100 text-center text-gray-500 font-medium uppercase text-xs tracking-wider">
-                  {dia.slice(0,3)}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {horas.map((hora) => (
-              <tr key={hora} className="hover:bg-gray-50/50 transition-colors">
-                <td className="p-2 border-b border-gray-50 text-gray-600 font-medium text-xs whitespace-nowrap">
-                  {hora}
-                </td>
-                {dias.map((dia) => {
-                  const key = `${dia}-${hora}`;
-                  const valor = conteo[key] || 0;
-                  return (
-                    <td key={key} className="p-1 border-b border-gray-50 text-center">
-                      <div className={`mx-auto w-full max-w-[40px] rounded text-xs py-1 transition-colors ${getColor(valor)}`}>
-                        {valor}
-                      </div>
-                    </td>
-                  );
-                })}
-              </tr>
+    <div className="overflow-x-auto w-full">
+      <table className="w-full text-sm border-collapse">
+        <thead>
+          <tr>
+            <th className="p-3 border-b border-gray-100 dark:border-[#112240] text-left text-[10px] uppercase tracking-widest text-gray-400 font-bold">Hora</th>
+            {dias.map((dia) => (
+              <th key={dia} className="p-3 border-b border-gray-100 dark:border-[#112240] text-center text-[10px] font-bold uppercase tracking-widest text-[#003366] dark:text-gray-300">
+                {dia.slice(0,3)}
+              </th>
             ))}
-          </tbody>
-        </table>
-      </CardContent>
-    </Card>
+          </tr>
+        </thead>
+        <tbody>
+          {horas.map((hora) => (
+            <tr key={hora} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+              <td className="p-3 border-b border-gray-50 dark:border-[#112240]/50 text-[11px] font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                {hora}
+              </td>
+              {dias.map((dia) => {
+                const key = `${dia}-${hora}`;
+                const valor = conteo[key] || 0;
+                return (
+                  <td key={key} className="p-1 border-b border-gray-50 dark:border-[#112240]/50 text-center">
+                    <div className={`mx-auto w-full min-w-[36px] max-w-[48px] rounded-md text-[11px] py-1.5 transition-all ${getColor(valor)}`}>
+                      {valor}
+                    </div>
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
