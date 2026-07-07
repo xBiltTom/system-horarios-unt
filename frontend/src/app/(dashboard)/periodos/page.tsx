@@ -223,21 +223,19 @@ export default function PeriodosPage() {
         </div>
       </div>
 
-      <Card className="border-none shadow-xl shadow-gray-200/50 dark:shadow-[#000000]/20 rounded-[2.5rem] overflow-hidden bg-transparent">
-        <CardContent className="p-0">
-          <TablaDatos
-            columnas={columnas}
-            datos={datosFiltrados}
-            loading={isLoading}
-            alEditar={abrirModalEditar}
-            alEliminar={(periodo) => {
-              if (confirm(`¿Está seguro de desactivar el período "${periodo.nombre}"?`)) {
-                eliminarMutation.mutate(periodo.id);
-              }
-            }}
-          />
-        </CardContent>
-      </Card>
+      <div className="pt-4">
+        <TablaDatos
+          columnas={columnas}
+          datos={datosFiltrados}
+          loading={isLoading}
+          alEditar={abrirModalEditar}
+          alEliminar={(periodo) => {
+            if (confirm(`¿Está seguro de desactivar el período "${periodo.nombre}"?`)) {
+              eliminarMutation.mutate(periodo.id);
+            }
+          }}
+        />
+      </div>
 
       <Modal 
         isOpen={modalAbierto} 
@@ -285,7 +283,7 @@ export default function PeriodosPage() {
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] uppercase tracking-widest font-bold text-gray-500 dark:text-gray-400">Estado Inicial</label>
+            <label className="text-[10px] uppercase tracking-widest font-bold text-gray-500 dark:text-gray-400">Estado de Planificación</label>
             <SelectorInstitucional 
               value={formulario.estado} 
               onChange={(val: any) => setFormulario({ ...formulario, estado: val })}

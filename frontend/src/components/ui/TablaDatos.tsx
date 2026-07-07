@@ -51,11 +51,11 @@ export function TablaDatos({
   }
 
   return (
-    <div className="w-full overflow-hidden rounded-[2rem] border border-gray-100 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm">
+    <div className="w-full overflow-hidden rounded-[2rem] border border-gray-200/60 dark:border-white/5 bg-white dark:bg-[#0A192F] shadow-sm dark:shadow-none">
       <div className="overflow-x-auto custom-scrollbar">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gray-50/80 dark:bg-[#050f20] border-b border-gray-100 dark:border-[#112240]">
+            <tr className="bg-gray-50/80 dark:bg-white/5 border-b border-gray-100 dark:border-white/5">
               {columnas.map((col) => (
                 <th key={col.clave} className="px-8 py-5 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   {col.titulo}
@@ -68,7 +68,7 @@ export function TablaDatos({
               )}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50 dark:divide-[#112240]/50">
+          <tbody className="divide-y divide-gray-50 dark:divide-white/5">
             {datos.map((item, index) => (
               <tr
                 key={item.id || index}
