@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-sans)', 'sans-serif'],
+        serif: ['var(--font-serif)', 'serif'],
+      },
       colors: {
         unt: {
           primary: '#003366',
