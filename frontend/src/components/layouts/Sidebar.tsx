@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/stores/auth.store';
+import { useSidebarStore } from '@/stores/sidebar.store';
 import { cn } from '@/lib/utilidades';
 import {
   LayoutDashboard,
@@ -24,6 +25,7 @@ import {
 export function Sidebar() {
   const pathname = usePathname();
   const { usuario } = useAuthStore();
+  const { isOpen, close } = useSidebarStore();
   
   const esAdmin = usuario?.rol === 'ADMINISTRADOR';
   const esDirector = usuario?.rol === 'DIRECTOR';
@@ -80,8 +82,20 @@ export function Sidebar() {
   else if (esSecretaria) enlaces = enlacesSecretaria;
 
   return (
-    <aside className="fixed left-0 top-0 z-20 flex h-screen w-64 flex-col bg-[#F0F4F8] dark:bg-[#0A192F] text-[#003366] dark:text-white shadow-2xl transition-all duration-300 border-r border-gray-200 dark:border-[#112240]">
-      {/* Brand Header */}
+    <>
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden transition-opacity" 
+          onClick={close} 
+        />
+      )}
+
+      <aside className={cn(
+        "fixed left-0 top-0 z-50 flex h-screen w-64 flex-col bg-[#F0F4F8] dark:bg-[#0A192F] text-[#003366] dark:text-white shadow-2xl transition-transform duration-300 border-r border-gray-200 dark:border-[#112240]",
+        isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+      )}>
+        {/* Brand Header */}
       <div className="flex flex-col items-center justify-center py-10 border-b border-gray-200 dark:border-[#112240]">
         <img 
           src="/logo-unt1.png" 
@@ -135,6 +149,7 @@ export function Sidebar() {
           <p className="text-[9px] uppercase tracking-widest text-gray-500 dark:text-gray-700 mt-1">Plataforma Académica</p>
         </div>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }
