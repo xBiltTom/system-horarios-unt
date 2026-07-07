@@ -30,16 +30,16 @@ export default function DashboardDocentePage() {
   const [toast, setToast] = useState<{ mensaje: string; tipo: 'exito' | 'error' } | null>(null);
 
   useEffect(() => {
-    router.prefetch('/dashboard/horarios/seleccion');
-    router.prefetch('/dashboard/horarios/vista-docente');
-    router.prefetch('/dashboard/notificaciones/preferencias');
-    router.prefetch('/dashboard/docente/carga-no-lectiva');
+    router.prefetch('/horarios/seleccion');
+    router.prefetch('/horarios/vista-docente');
+    router.prefetch('/notificaciones/preferencias');
+    router.prefetch('/docente/carga-no-lectiva');
   }, [router]);
 
   // Si el usuario no es docente, redirigir al dashboard administrativo
   useEffect(() => {
     if (usuario && usuario.rol !== 'DOCENTE') {
-      router.replace('/dashboard/admin');
+      router.replace('/admin');
     }
   }, [usuario, router]);
 
@@ -130,7 +130,7 @@ export default function DashboardDocentePage() {
             </div>
           </div>
           <Boton
-            onClick={() => router.push('/dashboard/horarios/seleccion')}
+            onClick={() => router.push('/horarios/seleccion')}
             className="bg-white text-emerald-700 hover:bg-emerald-50 font-bold px-6 py-2 border-none shadow-sm flex-shrink-0 w-full md:w-auto"
           >
             Elegir mi Horario
@@ -368,27 +368,27 @@ export default function DashboardDocentePage() {
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
               <Boton
-                onClick={() => router.push('/dashboard/docente/carga-no-lectiva')}
+                onClick={() => router.push('/docente/carga-no-lectiva')}
                 className="w-full justify-start text-left bg-amber-50 border border-amber-100 text-amber-700 hover:bg-amber-100 font-semibold"
               >
                 <FileText className="h-4 w-4 text-amber-500" />
                 Registrar Carga No Lectiva
               </Boton>
               <Boton
-                onClick={() => router.push('/dashboard/horarios/seleccion')}
+                onClick={() => router.push('/horarios/seleccion')}
                 className="w-full justify-start text-left bg-indigo-50 border border-indigo-100 text-indigo-700 hover:bg-indigo-100 font-semibold"
               >
                 ✏️ Elegir mi Horario (Matriz)
               </Boton>
               <Boton
-                onClick={() => router.push('/dashboard/horarios/vista-docente')}
+                onClick={() => router.push('/horarios/vista-docente')}
                 variante="borde"
                 className="w-full justify-start text-left font-semibold text-slate-700"
               >
                 👁️ Ver mi Horario Completo
               </Boton>
               <Boton
-                onClick={() => router.push('/dashboard/notificaciones/preferencias')}
+                onClick={() => router.push('/notificaciones/preferencias')}
                 variante="borde"
                 className="w-full justify-start text-left font-semibold text-slate-700"
               >

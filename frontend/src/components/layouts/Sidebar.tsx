@@ -32,48 +32,48 @@ export function Sidebar() {
   const esSecretaria = usuario?.rol === 'SECRETARIA';
 
   const rutaActiva = (href: string) => {
-    if (href === '/dashboard' || href === '/dashboard/admin') {
+    if (href === '/' || href === '/admin') {
       return pathname === href;
     }
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
   const enlacesAdmin = [
-    { href: '/dashboard/admin', etiqueta: 'Centro de Control', Icono: LayoutDashboard },
-    { href: '/dashboard/periodos', etiqueta: 'Períodos Académicos', Icono: Calendar },
-    { href: '/dashboard/usuarios', etiqueta: 'Usuarios y Roles', Icono: Users },
-    { href: '/dashboard/ambientes', etiqueta: 'Infraestructura', Icono: School },
-    { href: '/dashboard/cursos', etiqueta: 'Catálogo de Asignaturas', Icono: BookOpen },
-    { href: '/dashboard/curricula', etiqueta: 'Planes de Estudio', Icono: FileText },
-    { href: '/dashboard/configuracion/restricciones', etiqueta: 'Configuración Global', Icono: Settings },
+    { href: '/admin', etiqueta: 'Centro de Control', Icono: LayoutDashboard },
+    { href: '/periodos', etiqueta: 'Períodos Académicos', Icono: Calendar },
+    { href: '/usuarios', etiqueta: 'Usuarios y Roles', Icono: Users },
+    { href: '/ambientes', etiqueta: 'Infraestructura', Icono: School },
+    { href: '/cursos', etiqueta: 'Catálogo de Asignaturas', Icono: BookOpen },
+    { href: '/curricula', etiqueta: 'Planes de Estudio', Icono: FileText },
+    { href: '/configuracion/restricciones', etiqueta: 'Configuración Global', Icono: Settings },
   ];
 
   const enlacesDirector = [
-    { href: '/dashboard/admin', etiqueta: 'Panel de Dirección', Icono: LayoutDashboard },
-    { href: '/dashboard/director/docentes', etiqueta: 'Escalafón Docente', Icono: Users },
-    { href: '/dashboard/director/oferta-academica', etiqueta: 'Oferta Académica', Icono: GraduationCap },
-    { href: '/dashboard/director/oferta-ciclos', etiqueta: 'Malla por Ciclos', Icono: LayoutGrid },
-    { href: '/dashboard/director/carga-horaria', etiqueta: 'Carga Académica', Icono: Clock },
+    { href: '/admin', etiqueta: 'Panel de Dirección', Icono: LayoutDashboard },
+    { href: '/director/docentes', etiqueta: 'Escalafón Docente', Icono: Users },
+    { href: '/director/oferta-academica', etiqueta: 'Oferta Académica', Icono: GraduationCap },
+    { href: '/director/oferta-ciclos', etiqueta: 'Malla por Ciclos', Icono: LayoutGrid },
+    { href: '/director/carga-horaria', etiqueta: 'Carga Académica', Icono: Clock },
   ];
 
   const enlacesSecretaria = [
-    { href: '/dashboard/secretaria', etiqueta: 'Panel Principal', Icono: LayoutDashboard },
-    { href: '/dashboard/secretaria/ambientes', etiqueta: 'Aulas y Laboratorios', Icono: School },
-    { href: '/dashboard/secretaria/docentes', etiqueta: 'Plana Docente', Icono: Users },
-    { href: '/dashboard/secretaria/cursos-asignados', etiqueta: 'Asignaturas', Icono: BookOpen },
-    { href: '/dashboard/secretaria/grupos', etiqueta: 'Grupos Académicos', Icono: Eye },
-    { href: '/dashboard/secretaria/ventanas', etiqueta: 'Disponibilidad Docente', Icono: Clock },
-    { href: '/dashboard/secretaria/registro-horarios', etiqueta: 'Programación Manual', Icono: CheckSquare },
-    { href: '/dashboard/secretaria/reportes', etiqueta: 'Emisión de Reportes', Icono: FileDown },
-    { href: '/dashboard/horarios/vista-aula', etiqueta: 'Horarios por Aula', Icono: MapPin },
-    { href: '/dashboard/horarios/vista-ciclo', etiqueta: 'Horarios por Ciclo', Icono: Calendar },
+    { href: '/secretaria', etiqueta: 'Panel Principal', Icono: LayoutDashboard },
+    { href: '/secretaria/ambientes', etiqueta: 'Aulas y Laboratorios', Icono: School },
+    { href: '/secretaria/docentes', etiqueta: 'Plana Docente', Icono: Users },
+    { href: '/secretaria/cursos-asignados', etiqueta: 'Asignaturas', Icono: BookOpen },
+    { href: '/secretaria/grupos', etiqueta: 'Grupos Académicos', Icono: Eye },
+    { href: '/secretaria/ventanas', etiqueta: 'Disponibilidad Docente', Icono: Clock },
+    { href: '/secretaria/registro-horarios', etiqueta: 'Programación Manual', Icono: CheckSquare },
+    { href: '/secretaria/reportes', etiqueta: 'Emisión de Reportes', Icono: FileDown },
+    { href: '/horarios/vista-aula', etiqueta: 'Horarios por Aula', Icono: MapPin },
+    { href: '/horarios/vista-ciclo', etiqueta: 'Horarios por Ciclo', Icono: Calendar },
   ];
 
   const enlacesDocente = [
-    { href: '/dashboard/docente', etiqueta: 'Mi Expediente', Icono: LayoutDashboard },
-    { href: '/dashboard/docente/carga-no-lectiva', etiqueta: 'Actividades No Lectivas', Icono: FileText },
-    { href: '/dashboard/horarios/seleccion', etiqueta: 'Elección de Horarios', Icono: CheckSquare },
-    { href: '/dashboard/horarios/vista-docente', etiqueta: 'Mi Horario Oficial', Icono: Eye },
+    { href: '/docente', etiqueta: 'Mi Expediente', Icono: LayoutDashboard },
+    { href: '/docente/carga-no-lectiva', etiqueta: 'Actividades No Lectivas', Icono: FileText },
+    { href: '/horarios/seleccion', etiqueta: 'Elección de Horarios', Icono: CheckSquare },
+    { href: '/horarios/vista-docente', etiqueta: 'Mi Horario Oficial', Icono: Eye },
   ];
 
   let enlaces = enlacesDocente;

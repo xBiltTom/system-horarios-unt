@@ -34,22 +34,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     const rutasAdmin = ['/admin', '/ambientes', '/configuracion', '/cursos', '/docentes', '/periodos', '/reportes', '/director'];
     const esRutaAdmin = rutasAdmin.some((ruta) => pathname.startsWith(`/dashboard${ruta}`));
-    const esRutaSecretaria = pathname.startsWith('/dashboard/secretaria');
+    const esRutaSecretaria = pathname.startsWith('/secretaria');
 
-    if (pathname === '/dashboard') {
-      if (usuario.rol === 'DOCENTE') router.replace('/dashboard/docente');
-      else if (usuario.rol === 'SECRETARIA') router.replace('/dashboard/secretaria');
-      else router.replace('/dashboard/admin');
+    if (pathname === '/') {
+      if (usuario.rol === 'DOCENTE') router.replace('/docente');
+      else if (usuario.rol === 'SECRETARIA') router.replace('/secretaria');
+      else router.replace('/admin');
       return;
     }
 
-    if (usuario.rol === 'DOCENTE' && (esRutaAdmin || esRutaSecretaria || pathname === '/dashboard/admin')) {
-      router.replace('/dashboard/docente');
+    if (usuario.rol === 'DOCENTE' && (esRutaAdmin || esRutaSecretaria || pathname === '/admin')) {
+      router.replace('/docente');
       return;
     }
 
-    if (usuario.rol === 'SECRETARIA' && (pathname.startsWith('/dashboard/admin') || pathname.startsWith('/dashboard/director'))) {
-      router.replace('/dashboard/secretaria');
+    if (usuario.rol === 'SECRETARIA' && (pathname.startsWith('/admin') || pathname.startsWith('/director'))) {
+      router.replace('/secretaria');
       return;
     }
   }, [mounted, estaAutenticado, usuario, pathname, router]);

@@ -16,8 +16,6 @@ import { Selector } from '@/components/ui/Selector';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useAuthStore } from '@/stores/auth.store';
 import { apiClient } from '@/lib/api-client';
-import { AlertTriangle, MapPin } from 'lucide-react';
-import Link from 'next/link';
 
 export default function DashboardPage() {
   const { usuario } = useAuthStore();
@@ -28,16 +26,6 @@ export default function DashboardPage() {
     enabled: usuario?.rol === 'DIRECTOR'
   });
 
-  // const alertaAmbientes = useMemo(() => {
-  //   if (!solicitudesPendientes) return null;
-  //   return solicitudesPendientes.length > 5 ? {
-  //     nivel: 'critico',
-  //     mensaje: `¡Alerta! Hay ${solicitudesPendientes.length} horarios sin ambiente asignado. Se requiere buscar nuevos ambientes urgentemente.`,
-  //   } : solicitudesPendientes.length > 0 ? {
-  //     nivel: 'advertencia',
-  //     mensaje: `Hay ${solicitudesPendientes.length} solicitudes de aula pendientes de revisión.`,
-  //   } : null;
-  // }, [solicitudesPendientes]);
   const alertaAmbientes = null;
 
   const { data: periodoActivo, isLoading: periodoLoading } = useQuery({
@@ -75,7 +63,7 @@ export default function DashboardPage() {
     ? 'Panel de Dirección de Escuela' 
     : usuario?.rol === 'SECRETARIA' 
     ? 'Panel de Secretaría Académica' 
-    : 'Panel Administrativo General';
+    : 'Centro de Mando Administrativo';
 
   const descripcionPanel = usuario?.rol === 'DIRECTOR'
     ? 'Supervisión de carga horaria, oferta académica y validación de límites legales por docente.'
@@ -85,55 +73,48 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.10)]">
-        <div className="relative overflow-hidden bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-6 py-8 text-white sm:px-8">
-          <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-          <div className="absolute left-1/3 bottom-0 h-56 w-56 rounded-full bg-unt-accent/10 blur-3xl pointer-events-none" />
+      {/* Hero Banner */}
+      <div className="overflow-hidden rounded-3xl border border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm">
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#003366] to-[#0A192F] dark:from-[#050f20] dark:to-[#020C1B] px-6 py-10 text-white sm:px-10">
+          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl pointer-events-none" />
+          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl pointer-events-none" />
 
-          <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl space-y-4">
-              <div className="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/80">
+          <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-3xl space-y-5">
+              <div className="inline-flex items-center rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#D4AF37]">
                 {usuario?.rol || 'SISTEMA'}
               </div>
               <div className="space-y-2">
-                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{tituloPanel}</h1>
-                <p className="text-sm leading-6 text-white/80 sm:text-base">
+                <h1 className="text-3xl font-serif tracking-wide sm:text-4xl text-white">{tituloPanel}</h1>
+                <p className="text-sm leading-relaxed text-gray-300 sm:text-base font-light max-w-2xl">
                   {descripcionPanel}
                 </p>
               </div>
-              <div className="flex flex-wrap gap-3 text-sm">
-                <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-2 backdrop-blur-sm">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-white/60">Usuario</p>
-                  <p className="mt-1 font-medium text-white">{usuario?.rol === 'DIRECTOR' ? 'Director de Escuela' : usuario?.nombre || usuario?.email || 'Administrador'}</p>
+              
+              <div className="flex flex-wrap gap-4 pt-2">
+                <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-3 backdrop-blur-sm">
+                  <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Usuario Activo</p>
+                  <p className="mt-1 text-sm font-semibold text-white tracking-wide">{usuario?.nombre || usuario?.email || 'Administrador'}</p>
                 </div>
-                <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-2 backdrop-blur-sm">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-white/60">Rol</p>
-                  <p className="mt-1 font-medium text-white">{usuario?.rol || 'ADMINISTRADOR'}</p>
-                </div>
-                <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-2 backdrop-blur-sm">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-white/60">Período activo</p>
-                  <p className="mt-1 font-medium text-white">{periodoActivo?.nombre || 'No definido'}</p>
+                <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-3 backdrop-blur-sm">
+                  <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Período Actual</p>
+                  <p className="mt-1 text-sm font-semibold text-[#D4AF37] tracking-wide">{periodoActivo?.nombre || 'No definido'}</p>
                 </div>
               </div>
             </div>
 
-            <div className="w-full max-w-sm rounded-3xl border border-white/15 bg-white/10 p-5 shadow-lg backdrop-blur-md">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">Período académico</p>
-              <div className="mt-3">
-                <Selector
-                  value={idPeriodo}
-                  onChange={(e: any) => setIdPeriodoSeleccionado(Number(e.target.value))}
-                  className="mt-0 border-white/20 bg-white/95 text-slate-900 shadow-none focus:border-white focus:ring-white/30"
-                >
-                  <option value={0}>-- Seleccionar período --</option>
-                  {periodos?.map((p: any) => (
-                    <option key={p.id} value={p.id}>{p.nombre}</option>
-                  ))}
-                </Selector>
-              </div>
-              <p className="mt-3 text-xs leading-5 text-white/70">
-                Cambia el período para revisar el estado general de la institución.
-              </p>
+            <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#020C1B]/50 p-6 shadow-xl backdrop-blur-md">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Filtrar por Período</p>
+              <Selector
+                value={idPeriodo}
+                onChange={(e: any) => setIdPeriodoSeleccionado(Number(e.target.value))}
+                className="w-full border-white/20 bg-white/10 text-white placeholder-gray-400 focus:border-[#D4AF37] focus:ring-[#D4AF37]/30"
+              >
+                <option value={0} className="text-gray-900">-- Seleccionar período --</option>
+                {periodos?.map((p: any) => (
+                  <option key={p.id} value={p.id} className="text-gray-900">{p.nombre}</option>
+                ))}
+              </Selector>
             </div>
           </div>
         </div>
@@ -141,88 +122,96 @@ export default function DashboardPage() {
 
       <PanelKPIs kpis={kpis} />
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-6">
-          <Card className="border-slate-200 shadow-sm">
-            <CardHeader>
-              <CardTitle>Resumen institucional</CardTitle>
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        {/* Main Content (2 cols) */}
+        <div className="lg:col-span-2 space-y-8">
+          <Card className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl overflow-hidden">
+            <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5">
+              <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Resumen Institucional</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Total horarios</div>
-                  <div className="mt-3 text-3xl font-semibold tracking-tight text-slate-900">{resumen?.totalHorarios ?? 0}</div>
-                  <p className="mt-2 text-sm text-slate-500">Asignados y en borrador.</p>
+                <div className="rounded-xl border border-gray-100 dark:border-[#112240] bg-[#F0F4F8] dark:bg-[#050f20] p-5 transition-colors">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">Total Horarios</div>
+                  <div className="mt-2 text-3xl font-serif text-[#003366] dark:text-[#D4AF37]">{resumen?.totalHorarios ?? 0}</div>
+                  <p className="mt-1 text-xs text-gray-500 font-medium">Asignados y en borrador</p>
                 </div>
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <div className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Avance general</div>
-                  <div className="mt-3 text-2xl font-semibold tracking-tight text-slate-900">{resumen?.horariosAsignados ?? 0} / {resumen?.totalHorarios ?? 0}</div>
-                  <p className="mt-2 text-sm text-slate-500">Horarios confirmados o publicados.</p>
+                <div className="rounded-xl border border-gray-100 dark:border-[#112240] bg-[#F0F4F8] dark:bg-[#050f20] p-5 transition-colors">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">Avance General</div>
+                  <div className="mt-2 text-2xl font-serif text-[#003366] dark:text-[#D4AF37]">{resumen?.horariosAsignados ?? 0} / {resumen?.totalHorarios ?? 0}</div>
+                  <p className="mt-1 text-xs text-gray-500 font-medium">Horarios confirmados</p>
                 </div>
               </div>
-              <div className="mt-4">{avanceCategoria && <GraficoAvanceCategoria datos={avanceCategoria} />}</div>
+              <div className="mt-6">{avanceCategoria && <GraficoAvanceCategoria datos={avanceCategoria} />}</div>
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-            <Card className="border-slate-200 shadow-sm">
-              <CardHeader>
-                <CardTitle>Ocupación de ambientes</CardTitle>
+          <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
+            <Card className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl">
+              <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5">
+                <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Ocupación de Aulas</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-6">
                 {ocupacionTop.length > 0 && <GraficoOcupacionAmbientes datos={ocupacionTop} />}
               </CardContent>
             </Card>
-            <Card className="border-slate-200 shadow-sm">
-              <CardHeader>
-                <CardTitle>Mapa de uso</CardTitle>
+            <Card className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl">
+              <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5">
+                <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Mapa de Uso</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-6">
                 {mapaCalor && <MapaCalorOcupacion dias={mapaCalor.dias} horas={mapaCalor.horas} conteo={mapaCalor.conteo} />}
               </CardContent>
             </Card>
           </div>
         </div>
 
-        <aside className="space-y-6">
-          <Card className="border-slate-200 shadow-sm">
-            <CardHeader>
-              <CardTitle>Carga docente</CardTitle>
+        {/* Sidebar (1 col) */}
+        <aside className="space-y-8">
+          <Card className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl">
+            <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5">
+              <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Escalafón Docente</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="max-h-[320px] space-y-3 overflow-y-auto pr-1 custom-scrollbar">
+            <CardContent className="pt-6">
+              <div className="max-h-[320px] space-y-3 overflow-y-auto pr-2 custom-scrollbar">
                 {(cargaDocente || []).slice(0, 8).map((item: any) => (
-                  <div key={item.id} className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+                  <div key={item.id} className="rounded-xl border border-gray-100 dark:border-[#112240] bg-white dark:bg-[#050f20] px-4 py-3 shadow-sm hover:border-[#D4AF37]/50 transition-colors">
                     <div className="flex items-center justify-between gap-3">
-                      <p className="font-medium text-slate-900">{item.nombres} {item.apellidos}</p>
-                      <span className="text-xs font-semibold text-slate-500">{item.porcentajeCumplimiento}%</span>
+                      <p className="font-semibold text-sm text-[#003366] dark:text-white truncate">{item.nombres} {item.apellidos}</p>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#D4AF37] bg-[#D4AF37]/10 px-2 py-0.5 rounded-full">{item.porcentajeCumplimiento}%</span>
                     </div>
-                    <p className="mt-1 text-xs text-slate-500">{item.modalidad} | {item.categoria}</p>
-                    <p className="mt-2 text-sm text-slate-700">{item.horasAsignadas}h asignadas / {item.horasRequeridas}h requeridas</p>
+                    <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">{item.modalidad} • {item.categoria}</p>
+                    <p className="mt-2 text-xs font-medium text-gray-600 dark:text-gray-400">{item.horasAsignadas}h asignadas / {item.horasRequeridas}h requeridas</p>
                   </div>
                 ))}
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-slate-200 shadow-sm">
-            <CardHeader>
-              <CardTitle>Actividad</CardTitle>
+          <Card className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl">
+            <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5">
+              <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Actividad Reciente</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <ActividadTiempoReal eventos={eventos} />
             </CardContent>
           </Card>
 
-          <Card className="border-slate-200 shadow-sm">
-            <CardHeader>
-              <CardTitle>Accesos rápidos</CardTitle>
+          <Card className="border-gray-200 dark:border-[#112240] bg-[#F0F4F8] dark:bg-[#050f20] shadow-sm rounded-2xl">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#003366] dark:text-white">Accesos Rápidos</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col gap-2">
-                <Boton onClick={() => window.location.href = '/dashboard/docentes'}>Administrar docentes</Boton>
-                <Boton onClick={() => window.location.href = '/dashboard/horarios'}>Gestor de horarios</Boton>
-                <Boton onClick={() => window.location.href = '/dashboard/reportes'}>Generar reportes</Boton>
+              <div className="flex flex-col gap-3">
+                <Boton onClick={() => window.location.href = '/docentes'} className="w-full justify-center bg-white dark:bg-[#112240] text-[#003366] dark:text-white border border-gray-200 dark:border-[#1a365d] hover:bg-gray-50 dark:hover:bg-[#0A192F] transition-all">
+                  Administrar Docentes
+                </Boton>
+                <Boton onClick={() => window.location.href = '/horarios'} className="w-full justify-center bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] transition-all">
+                  Gestor de Horarios
+                </Boton>
+                <Boton onClick={() => window.location.href = '/reportes'} className="w-full justify-center bg-white dark:bg-[#112240] text-[#003366] dark:text-white border border-gray-200 dark:border-[#1a365d] hover:bg-gray-50 dark:hover:bg-[#0A192F] transition-all">
+                  Generar Reportes
+                </Boton>
               </div>
             </CardContent>
           </Card>

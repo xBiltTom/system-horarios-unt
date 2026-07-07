@@ -48,7 +48,7 @@ export function MenuUsuario() {
               Cambiar Contraseña
             </Link>
             <Link
-              href="/dashboard/notificaciones/preferencias"
+              href="/notificaciones/preferencias"
               className="flex items-center gap-3 px-3 py-2.5 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-[#F0F4F8] dark:hover:bg-[#112240] hover:text-[#003366] dark:hover:text-white rounded-lg transition-colors"
               onClick={() => setAbierto(false)}
             >

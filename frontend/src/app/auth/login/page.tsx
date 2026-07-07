@@ -22,13 +22,13 @@ export default function LoginPage() {
   const redirigirSegunRol = () => {
     const rol = useAuthStore.getState().usuario?.rol;
     if (rol === 'DOCENTE') {
-      router.push('/dashboard/docente');
+      router.push('/docente');
     } else if (rol === 'SECRETARIA') {
-      router.push('/dashboard/secretaria');
+      router.push('/secretaria');
     } else if (rol === 'DIRECTOR' || rol === 'ADMINISTRADOR') {
-      router.push('/dashboard/admin');
+      router.push('/admin');
     } else {
-      router.push('/dashboard');
+      router.push('/');
     }
   };
 

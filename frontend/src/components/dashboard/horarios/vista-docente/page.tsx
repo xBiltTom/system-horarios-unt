@@ -88,7 +88,7 @@ export default function VistaHorarioDocentePage() {
         
         <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={() => router.push('/dashboard/docente')} className="rounded-full p-3 text-white hover:bg-white/20 transition-colors">
+            <button onClick={() => router.push('/docente')} className="rounded-full p-3 text-white hover:bg-white/20 transition-colors">
               <ArrowLeft className="h-6 w-6" />
             </button>
             <div className="flex flex-col gap-2">

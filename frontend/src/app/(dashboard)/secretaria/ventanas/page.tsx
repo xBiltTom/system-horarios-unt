@@ -305,7 +305,7 @@ export default function VentanasSecretariaPage() {
                 className="border-white/20 bg-white/90 text-slate-900"
               />
             </div>
-            <Boton onClick={() => router.push('/dashboard/secretaria/ventanas/crear')} className="whitespace-nowrap">
+            <Boton onClick={() => router.push('/secretaria/ventanas/crear')} className="whitespace-nowrap">
               + Crear ventana
             </Boton>
           </div>
@@ -463,7 +463,7 @@ export default function VentanasSecretariaPage() {
             <div className="mx-auto w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl mb-4">📅</div>
             <p className="text-slate-600 font-semibold">No hay ventanas configuradas</p>
             <p className="text-sm text-slate-400 mt-1 mb-6">Crea una nueva ventana para asignar turnos automáticamente.</p>
-            <Boton onClick={() => router.push('/dashboard/secretaria/ventanas/crear')}>
+            <Boton onClick={() => router.push('/secretaria/ventanas/crear')}>
               Crear primera ventana
             </Boton>
           </div>

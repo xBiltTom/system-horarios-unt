@@ -13,7 +13,7 @@ export function SelectorTipoReporte() {
   ];
 
   useEffect(() => {
-    tipos.forEach((tipo) => router.prefetch(`/dashboard/reportes/${tipo.tipo}`));
+    tipos.forEach((tipo) => router.prefetch(`/reportes/${tipo.tipo}`));
   }, [router]);
 
   return (
@@ -22,7 +22,7 @@ export function SelectorTipoReporte() {
         <div
           key={t.tipo}
           className="bg-white rounded-lg shadow p-6 cursor-pointer hover:shadow-md transition-shadow"
-          onClick={() => router.push(`/dashboard/reportes/${t.tipo}`)}
+          onClick={() => router.push(`/reportes/${t.tipo}`)}
         >
           <p className="text-3xl mb-2">{t.icono}</p>
           <h3 className="text-lg font-semibold">{t.etiqueta}</h3>

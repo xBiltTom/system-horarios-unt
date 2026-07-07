@@ -31,7 +31,7 @@ export default function CambiarPasswordPage() {
     try {
       await cambiarPassword(actual, nueva);
       setMensaje('Contraseña actualizada exitosamente');
-      router.replace('/dashboard');
+      router.replace('/');
     } catch (err: any) {
       setError(err.response?.data?.error || 'Error al cambiar la contraseña');
     }

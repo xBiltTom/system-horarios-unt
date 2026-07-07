@@ -248,7 +248,7 @@ export default function SecretariaDashboard() {
         <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6 animate-in slide-in-from-left-4 duration-700 delay-200">
           
           {/* Card: Registro Manual */}
-          <Link href="/dashboard/secretaria/registro-horarios" className="group">
+          <Link href="/secretaria/registro-horarios" className="group">
             <div className="h-full bg-white rounded-[3rem] p-8 shadow-xl border border-slate-100 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
               <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-50/50 rounded-full group-hover:scale-150 transition-transform duration-700" />
               <div className="relative z-10 space-y-6">
@@ -267,7 +267,7 @@ export default function SecretariaDashboard() {
           </Link>
 
           {/* Card: Ambientes */}
-          <Link href="/dashboard/secretaria/ambientes" className="group">
+          <Link href="/secretaria/ambientes" className="group">
             <div className="h-full bg-white rounded-[3rem] p-8 shadow-xl border border-slate-100 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
               <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-50/50 rounded-full group-hover:scale-150 transition-transform duration-700" />
               <div className="relative z-10 space-y-6">

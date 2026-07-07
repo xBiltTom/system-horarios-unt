@@ -92,7 +92,7 @@ export default function CrearVentanaSecretariaPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ventanas-secretaria', idPeriodo] });
       queryClient.invalidateQueries({ queryKey: ['ventana-activa-crear', idPeriodo] });
-      router.replace('/dashboard/secretaria/ventanas');
+      router.replace('/secretaria/ventanas');
     },
     onError: (error: any) => {
       setToast({ mensaje: error.response?.data?.error || 'Error al generar horario', tipo: 'error' });

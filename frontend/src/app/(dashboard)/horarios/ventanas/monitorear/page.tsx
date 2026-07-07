@@ -43,7 +43,7 @@ export default function MonitorVentanasPage() {
       <TablaDatos
         columnas={columnas}
         datos={ventanas?.data || []}
-        alHacerClick={(v) => router.push(`/dashboard/horarios/ventanas/${v.id}`)}
+        alHacerClick={(v) => router.push(`/horarios/ventanas/${v.id}`)}
       />
     </div>
   );
