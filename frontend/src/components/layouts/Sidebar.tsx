@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/stores/auth.store';
-import { useThemeStore } from '@/stores/theme.store';
 import { cn } from '@/lib/utilidades';
 import {
   LayoutDashboard,
@@ -20,14 +19,11 @@ import {
   GraduationCap,
   LayoutGrid,
   FileText,
-  Moon,
-  Sun,
 } from 'lucide-react';
 
 export function Sidebar() {
   const pathname = usePathname();
   const { usuario } = useAuthStore();
-  const { modoOscuro, toggleTema } = useThemeStore();
   
   const esAdmin = usuario?.rol === 'ADMINISTRADOR';
   const esDirector = usuario?.rol === 'DIRECTOR';
@@ -132,20 +128,11 @@ export function Sidebar() {
         </ul>
       </nav>
 
-      {/* Footer / Theme Toggle */}
-      <div className="border-t border-gray-200 dark:border-[#112240] p-6 flex flex-col items-center gap-4">
-        <button 
-          onClick={toggleTema}
-          className="flex items-center gap-3 px-4 py-2 rounded-full border border-gray-200 dark:border-[#112240] bg-white dark:bg-[#050f20] hover:bg-gray-50 dark:hover:bg-[#112240] transition-colors w-full justify-center"
-        >
-          {modoOscuro ? <Sun className="w-4 h-4 text-[#D4AF37]" /> : <Moon className="w-4 h-4 text-[#003366]" />}
-          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
-            {modoOscuro ? 'Modo Claro' : 'Modo Oscuro'}
-          </span>
-        </button>
-        <div className="text-center mt-2">
+      {/* Footer */}
+      <div className="border-t border-gray-200 dark:border-[#112240] p-6 flex flex-col items-center justify-center">
+        <div className="text-center">
           <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-600">Oficina de Registro</p>
-          <p className="text-[9px] uppercase tracking-widest text-gray-500 dark:text-gray-700 mt-1">Plataforma 2026</p>
+          <p className="text-[9px] uppercase tracking-widest text-gray-500 dark:text-gray-700 mt-1">Plataforma Académica</p>
         </div>
       </div>
     </aside>

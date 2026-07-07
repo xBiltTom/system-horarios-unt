@@ -2,11 +2,11 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuthStore } from '@/stores/auth.store';
-import { Settings, Lock } from 'lucide-react';
+import { Settings, Lock, LogOut } from 'lucide-react';
 
 export function MenuUsuario() {
   const [abierto, setAbierto] = useState(false);
-  const { usuario } = useAuthStore();
+  const { usuario, cerrarSesion } = useAuthStore();
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Close menu when clicking outside
@@ -55,6 +55,14 @@ export function MenuUsuario() {
               <Settings className="w-4 h-4" />
               Notificaciones
             </Link>
+            <div className="h-px bg-gray-100 dark:bg-[#112240] my-1"></div>
+            <button
+              onClick={() => { setAbierto(false); cerrarSesion(); }}
+              className="w-full flex items-center gap-3 px-3 py-2.5 text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors text-left"
+            >
+              <LogOut className="w-4 h-4" />
+              Cerrar Sesión
+            </button>
           </div>
         </div>
       )}
