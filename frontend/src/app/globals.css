@@ -3,3 +3,54 @@
 @tailwind utilities;
 
 /* Estilos base personalizados si se requieren */
+
+/* =========================================
+   SCROLLBAR INSTITUCIONAL (Global)
+   ========================================= */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+html.dark * {
+  scrollbar-color: #112240 transparent;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1; /* slate-300 */
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #003366; /* UNT Blue */
+  border: 0;
+  border-radius: 10px;
+}
+
+/* Modo Oscuro */
+html.dark ::-webkit-scrollbar-thumb {
+  background: #112240;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37; /* UNT Gold */
+}
+
+/* Clase de utilidad por si se requiere aislar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
