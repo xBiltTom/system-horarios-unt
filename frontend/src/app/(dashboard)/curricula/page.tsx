@@ -14,7 +14,8 @@ import { Modal } from '@/components/ui/Modal';
 import { CampoTexto } from '@/components/ui/CampoTexto';
 import { Boton } from '@/components/ui/Boton';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
+import { cn } from '@/lib/utilidades';
 
 const curriculaSchema = z.object({
   codigo: z.string().min(1, 'El código es obligatorio'),
@@ -118,9 +119,11 @@ export default function CurriculaPage() {
       clave: 'codigo',
       titulo: 'Código',
       render: (item: any) => (
-        <div className="flex items-center gap-2">
-          <Hash className="w-4 h-4 text-slate-400" />
-          <span className="font-mono font-bold text-slate-900">{item.codigo}</span>
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-gray-100 dark:bg-white/5 rounded-lg border border-transparent dark:border-[#112240]">
+            <Hash className="w-4 h-4 text-[#003366] dark:text-[#D4AF37]" />
+          </div>
+          <span className="font-mono font-bold text-gray-900 dark:text-white tracking-wide">{item.codigo}</span>
         </div>
       ),
     },
@@ -129,8 +132,8 @@ export default function CurriculaPage() {
       titulo: 'Nombre',
       render: (item: any) => (
         <div className="flex items-center gap-2">
-          <FileText className="w-4 h-4 text-unt-primary/60" />
-          <span className="font-medium text-slate-800">{item.nombre}</span>
+          <FileText className="w-4 h-4 text-[#003366]/60 dark:text-[#D4AF37]/80" />
+          <span className="font-bold text-gray-800 dark:text-gray-100">{item.nombre}</span>
         </div>
       ),
     },
@@ -139,12 +142,12 @@ export default function CurriculaPage() {
       titulo: 'Vigente',
       render: (item: any) => (
         item.vigente ? (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-100">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-green-50 text-green-700 border border-green-100 dark:bg-green-900/30 dark:text-green-400 dark:border-green-900/50">
             <CheckCircle className="w-3.5 h-3.5" />
             Vigente
           </span>
         ) : (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-50 text-slate-400 border border-slate-100">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-gray-50 text-gray-500 border border-gray-200 dark:bg-white/5 dark:text-gray-400 dark:border-[#112240]">
             <XCircle className="w-3.5 h-3.5" />
             Anterior
           </span>
@@ -156,13 +159,13 @@ export default function CurriculaPage() {
       titulo: 'Estado',
       render: (item: any) => (
         <span
-          className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
+          className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold border ${
             item.activo
-              ? 'bg-green-50 text-green-700 border border-green-100'
-              : 'bg-red-50 text-red-700 border border-red-100'
+              ? 'bg-green-50 text-green-700 border-green-100 dark:bg-green-900/30 dark:text-green-400 dark:border-green-900/50'
+              : 'bg-red-50 text-red-700 border-red-100 dark:bg-red-900/30 dark:text-red-400 dark:border-red-900/50'
           }`}
         >
-          <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${item.activo ? 'bg-green-500' : 'bg-red-500'}`} />
+          <span className={cn("w-1.5 h-1.5 rounded-full mr-1.5", item.activo ? "bg-green-500" : "bg-red-500")} />
           {item.activo ? 'Activo' : 'Inactivo'}
         </span>
       ),
@@ -173,23 +176,23 @@ export default function CurriculaPage() {
     <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Currículas</h1>
-          <p className="text-slate-500 mt-1">Gestiona las currículas (mallas curriculares) de la escuela.</p>
+          <h1 className="text-3xl font-serif font-bold tracking-tight text-[#003366] dark:text-white">Currículas</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm font-medium">Gestiona las currículas (mallas curriculares) de la escuela.</p>
         </div>
 
-        <div className="flex w-full gap-3 sm:w-auto">
+        <div className="flex w-full gap-3 sm:w-auto items-end">
           <div className="relative flex-1 sm:w-80">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
               placeholder="Buscar por código o nombre..."
               value={buscar}
               onChange={(e) => setBuscar(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 bg-white text-sm shadow-sm transition-all focus:border-unt-primary focus:ring-4 focus:ring-unt-primary/5 focus:outline-none"
+              className="w-full pl-11 pr-4 py-2.5 border border-gray-200 dark:border-[#112240] rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-[#D4AF37]/20 focus:border-[#D4AF37] transition-all bg-white dark:bg-[#050f20] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-600 shadow-sm"
             />
           </div>
           {esAdmin && (
-            <Boton onClick={abrirCrear} className="rounded-2xl px-6 shadow-lg shadow-unt-primary/20">
+            <Boton onClick={abrirCrear} className="rounded-2xl px-6 bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] shadow-lg shadow-[#003366]/20 dark:shadow-[#D4AF37]/20 transition-all">
               <Plus className="w-4 h-4 mr-2" />
               Nueva currícula
             </Boton>
@@ -197,21 +200,19 @@ export default function CurriculaPage() {
         </div>
       </div>
 
-      <Card className="border-none shadow-xl shadow-slate-200/50 rounded-[2.5rem] overflow-hidden">
-        <CardContent className="p-0">
-          <TablaDatos
-            columnas={columnas}
-            datos={lista}
-            loading={isLoading}
-            alEditar={esAdmin ? abrirEditar : undefined}
-            alEliminar={esAdmin ? (item) => {
-              if (window.confirm(`¿Estás seguro de desactivar la currícula "${item.nombre}"?`)) {
-                eliminarMutation.mutate(item.id);
-              }
-            } : undefined}
-          />
-        </CardContent>
-      </Card>
+      <div className="pt-4">
+        <TablaDatos
+          columnas={columnas}
+          datos={lista}
+          loading={isLoading}
+          alEditar={esAdmin ? abrirEditar : undefined}
+          alEliminar={esAdmin ? (item) => {
+            if (window.confirm(`¿Estás seguro de desactivar la currícula "${item.nombre}"?`)) {
+              eliminarMutation.mutate(item.id);
+            }
+          } : undefined}
+        />
+      </div>
 
       <Modal
         isOpen={mostrarModal}
@@ -232,26 +233,30 @@ export default function CurriculaPage() {
               {...register('nombre')}
               error={errors.nombre?.message}
             />
-            <Selector
-              label="Vigente"
-              error={errors.vigente?.message}
-              opciones={[
-                { valor: 'false', etiqueta: 'No Vigente' },
-                { valor: 'true', etiqueta: 'Vigente' }
-              ]}
-              value={vigenteValue ? 'true' : 'false'}
-              onChange={(e) => {
-                const val = e.target.value === 'true';
-                setValue('vigente', val, { shouldDirty: true, shouldTouch: true });
-              }}
-            />
+            <div className="space-y-1">
+              <label className="text-[10px] uppercase tracking-widest font-bold text-gray-500 dark:text-gray-400">Estado de Vigencia</label>
+              <SelectorInstitucional
+                value={vigenteValue ? 'true' : 'false'}
+                onChange={(val: any) => {
+                  setValue('vigente', val === 'true', { shouldDirty: true, shouldTouch: true });
+                }}
+                opciones={[
+                  { value: 'false', label: 'Anterior (No Vigente)' },
+                  { value: 'true', label: 'Vigente (Actual)' }
+                ]}
+                className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#050f20]"
+              />
+              {errors.vigente && (
+                <p className="text-sm text-red-500 mt-1 ml-1">{errors.vigente.message}</p>
+              )}
+            </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-6 border-t border-slate-100">
-            <Boton type="button" variant="outline" onClick={cerrarModal} className="rounded-xl px-6">
+          <div className="flex justify-end gap-3 pt-6 border-t border-gray-100 dark:border-[#112240]">
+            <Boton type="button" variant="outline" onClick={cerrarModal} className="rounded-xl px-6 bg-white dark:bg-[#050f20] border-gray-200 dark:border-[#112240] text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#112240]">
               Cancelar
             </Boton>
-            <Boton type="submit" cargando={guardarMutation.isPending} className="rounded-xl px-8 shadow-md shadow-unt-primary/10">
+            <Boton type="submit" cargando={guardarMutation.isPending} className="rounded-xl px-8 bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] shadow-md shadow-[#003366]/10 dark:shadow-[#D4AF37]/10">
               {editando ? 'Actualizar Currícula' : 'Crear Currícula'}
             </Boton>
           </div>
