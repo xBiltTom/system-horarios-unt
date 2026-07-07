@@ -57,7 +57,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   // While auth state is loading or before mounting, show a spinner that matches on server and client
   if (!mounted || estaCargando) {
     return (
-      <div className="flex h-screen items-center justify-center bg-gray-50">
+      <div className="flex h-screen items-center justify-center bg-[#F0F4F8] dark:bg-[#020C1B]">
         <SpinnerCarga />
       </div>
     );
@@ -67,7 +67,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   if (!token) return null;
 
   return (
-    <div className="flex min-h-screen bg-gray-50/50">
+    <div className="flex min-h-screen bg-[#F4F7F9] dark:bg-[#020C1B] transition-colors duration-300">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0 ml-64">
         <BarraSuperior />
