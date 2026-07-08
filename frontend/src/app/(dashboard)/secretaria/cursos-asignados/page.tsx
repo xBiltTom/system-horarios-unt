@@ -4,9 +4,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { periodosService } from '@/services/periodos.service';
 import { cargaHorariaService } from '@/services/carga-horaria.service';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
-import { BookOpen, Search, Layers, GraduationCap, Users, Clock, LayoutGrid, List, Info, ChevronRight } from 'lucide-react';
+import { BookOpen, Search, Layers, GraduationCap, Users, Clock, Info, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utilidades';
 
 export default function CursosAsignadosSecretariaPage() {
@@ -14,7 +14,6 @@ export default function CursosAsignadosSecretariaPage() {
   const [filtroCiclo, setFiltroCiclo] = useState<string>('TODOS');
   const [filtroComponente, setFiltroComponente] = useState<string>('TODOS');
   const [busqueda, setBuscar] = useState('');
-  const [vista, setVista] = useState<'grid' | 'tabla'>('grid');
 
   const { data: periodos, isLoading: periodosLoading } = useQuery({
     queryKey: ['periodos-secretaria-cursos'],
@@ -64,84 +63,80 @@ export default function CursosAsignadosSecretariaPage() {
 
   return (
     <div className="space-y-8 max-w-[1600px] mx-auto pb-20">
-      {/* Header Estilo Classroom */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#064e3b] via-[#065f46] to-[#047857] px-10 py-12 text-white shadow-2xl">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/5 blur-3xl pointer-events-none" />
+      {/* Header Institucional UNT */}
+      <div className="relative rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240] z-20">
+        <div className="absolute inset-0 overflow-hidden rounded-[3rem] pointer-events-none">
+          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
+          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+        </div>
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest text-white/90">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
               <BookOpen className="w-3.5 h-3.5" />
-              Catálogo Académico
+              Plan de Estudios
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Cursos Asignados</h1>
-            <p className="text-lg text-white/70 max-w-2xl">
-              Gestiona la oferta académica y los componentes curriculares para el periodo actual.
+            <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-white drop-shadow-sm">
+              Oferta <span className="text-[#D4AF37]">Académica</span>
+            </h1>
+            <p className="text-lg text-white/70 max-w-2xl font-medium leading-relaxed">
+              Gestiona los cursos, créditos y componentes curriculares habilitados para el ciclo lectivo.
             </p>
           </div>
           
-          <div className="w-full lg:w-80 bg-white/10 backdrop-blur-xl p-6 rounded-[2.5rem] border border-white/20 shadow-inner">
-            <p className="text-[10px] font-black text-white/50 uppercase tracking-widest mb-3 ml-1">Periodo Vigente</p>
-            <Selector
-              label=""
+          <div className="w-full lg:w-96 bg-[#020C1B]/50 backdrop-blur-xl p-6 rounded-[2rem] border border-white/10 shadow-2xl dark">
+            <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3 ml-1">Periodo Lectivo</p>
+            <SelectorInstitucional
               opciones={[
-                { valor: '', etiqueta: 'Seleccionar periodo' },
-                ...(periodos || []).map((p: any) => ({ valor: String(p.id), etiqueta: p.nombre })),
+                { value: '', label: 'Seleccionar periodo...' },
+                ...(periodos || []).map((p: any) => ({ value: String(p.id), label: p.nombre })),
               ]}
               value={idPeriodo?.toString() || ''}
-              onChange={(e) => setIdPeriodo(e.target.value ? parseInt(e.target.value, 10) : null)}
-              className="bg-white/20 border-white/10 text-white font-bold rounded-2xl h-[52px]"
+              onChange={(val) => setIdPeriodo(val ? parseInt(val as string, 10) : null)}
+              className="w-full"
             />
           </div>
         </div>
       </div>
 
       {/* Barra de Filtros */}
-      <div className="bg-white rounded-[2.5rem] shadow-xl border border-slate-200/60 p-8 flex flex-col gap-6">
+      <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col gap-6">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
           <div className="relative flex-1 w-full group h-[52px]">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-emerald-500 transition-colors" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-[#003366] dark:group-focus-within:text-[#D4AF37] transition-colors" />
             <input
               type="text"
               placeholder="Buscar por nombre o código de curso..."
               value={busqueda}
               onChange={(e) => setBuscar(e.target.value)}
-              className="w-full h-full pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:bg-white focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all font-medium text-slate-600 shadow-sm"
+              className="w-full h-full pl-12 pr-4 bg-gray-50 dark:bg-[#020C1B] border border-gray-200 dark:border-[#112240] rounded-2xl outline-none focus:bg-white dark:focus:bg-[#0A192F] focus:ring-4 focus:ring-[#003366]/10 dark:focus:ring-[#D4AF37]/10 focus:border-[#003366] dark:focus:border-[#D4AF37] transition-all font-medium text-gray-700 dark:text-white shadow-sm"
             />
-          </div>
-
-          <div className="flex items-center gap-3 bg-slate-100 p-1.5 rounded-2xl h-[52px]">
-            <button onClick={() => setVista('grid')} className={cn("p-3 rounded-xl transition-all", vista === 'grid' ? "bg-white text-emerald-600 shadow-md" : "text-slate-400 hover:text-slate-600")}>
-              <LayoutGrid className="w-5 h-5" />
-            </button>
-            <button onClick={() => setVista('tabla')} className={cn("p-3 rounded-xl transition-all", vista === 'tabla' ? "bg-white text-emerald-600 shadow-md" : "text-slate-400 hover:text-slate-600")}>
-              <List className="w-5 h-5" />
-            </button>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="space-y-2">
-            <Selector
-              label="Ciclo Académico"
+            <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">Ciclo Académico</label>
+            <SelectorInstitucional
               opciones={[
-                { valor: 'TODOS', etiqueta: 'Todos los ciclos' },
-                ...ciclosUnicos.map(ciclo => ({ valor: String(ciclo), etiqueta: `Ciclo ${ciclo}` }))
+                { value: 'TODOS', label: 'Todos los ciclos' },
+                ...ciclosUnicos.map(ciclo => ({ value: String(ciclo), label: `Ciclo ${ciclo}` }))
               ]}
               value={filtroCiclo}
-              onChange={(e) => setFiltroCiclo(e.target.value)}
+              onChange={(val) => setFiltroCiclo(val as string)}
+              className="w-full"
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Componente</label>
-            <div className="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-200 h-[52px]">
+            <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">Componente</label>
+            <div className="flex items-center gap-2 bg-gray-50 dark:bg-[#020C1B] p-1.5 rounded-2xl border border-gray-200 dark:border-[#112240] h-[52px]">
               {['TODOS', 'TEORIA', 'PRACTICA', 'LABORATORIO'].map((tipo) => (
                 <button
                   key={tipo}
                   onClick={() => setFiltroComponente(tipo)}
                   className={cn(
-                    "flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
-                    filtroComponente === tipo ? "bg-white text-emerald-600 shadow-sm border border-slate-100" : "text-slate-400 hover:text-slate-600"
+                    "flex-1 h-full rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border outline-none focus:outline-none",
+                    filtroComponente === tipo ? "bg-white dark:bg-[#0A192F] text-[#003366] dark:text-[#D4AF37] shadow-sm border-gray-100 dark:border-[#112240]" : "border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                   )}
                 >
                   {tipo === 'TODOS' ? 'Todos' : tipo === 'TEORIA' ? 'Teo' : tipo === 'PRACTICA' ? 'Pra' : 'Lab'}
@@ -151,9 +146,9 @@ export default function CursosAsignadosSecretariaPage() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Estado</label>
-            <div className="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-200 h-[52px]">
-              <div className="flex-1 py-2.5 px-4 bg-white rounded-xl text-[10px] font-black uppercase tracking-widest text-emerald-500 shadow-sm border border-slate-100 flex items-center justify-center gap-2">
+            <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">Estado</label>
+            <div className="flex items-center gap-2 bg-gray-50 dark:bg-[#020C1B] p-1.5 rounded-2xl border border-gray-200 dark:border-[#112240] h-[52px]">
+              <div className="flex-1 h-full px-4 bg-white dark:bg-[#0A192F] rounded-xl text-[10px] font-black uppercase tracking-widest text-[#003366] dark:text-[#D4AF37] shadow-sm border border-gray-100 dark:border-[#112240] flex items-center justify-center gap-2 outline-none">
                 <Layers className="w-3.5 h-3.5" />
                 Plan Curricular
               </div>
@@ -165,93 +160,51 @@ export default function CursosAsignadosSecretariaPage() {
       {/* Contenido */}
       {ofertasLoading ? (
         <SpinnerCarga />
-      ) : vista === 'grid' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          {cursosFiltrados.map((o: any) => (
-            <div key={o.id} className="group bg-white rounded-[2.5rem] p-8 shadow-xl border border-slate-100 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 relative overflow-hidden flex flex-col">
-              <div className="absolute top-0 right-0 w-32 h-32 -mr-16 -mt-16 rounded-full bg-emerald-500 opacity-5 transition-transform group-hover:scale-150 duration-700" />
-              
-              <div className="relative z-10 space-y-6 flex-1 flex flex-col">
-                <div className="flex items-start justify-between">
-                  <div className="p-4 bg-emerald-50 text-emerald-600 rounded-2xl shadow-sm">
-                    <Layers className="w-7 h-7" />
-                  </div>
-                  <span className="px-4 py-1.5 rounded-full bg-slate-50 border border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-500">
-                    {o.curso?.codigo}
-                  </span>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-black text-slate-800 tracking-tight leading-tight line-clamp-2 h-14">{o.curso?.nombre}</h3>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 text-[9px] font-black uppercase">Ciclo {o.ciclo?.numero || o.ciclo?.id}</span>
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">• {o.curso?.creditos} Créditos</span>
-                  </div>
-                </div>
-
-                <div className="space-y-3 pt-2 flex-1">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Componentes</p>
-                  <div className="grid grid-cols-1 gap-2">
-                    {(o.componentes || []).map((comp: any) => (
-                      <div key={comp.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100 group/item hover:bg-white hover:border-emerald-200 transition-all">
-                        <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 rounded-full bg-emerald-400" />
-                          <span className="text-xs font-bold text-slate-600">{comp.tipo}</span>
-                        </div>
-                        <span className="text-[10px] font-black text-slate-400">{comp.horas_semanales}h</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="pt-4 flex items-center justify-between border-t border-slate-50">
-                  <div className="flex items-center gap-2 text-slate-400">
-                    <Users className="w-4 h-4" />
-                    <span className="text-[10px] font-bold">Ver grupos asignados</span>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all" />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
       ) : (
-        <div className="bg-white rounded-[2.5rem] shadow-xl border border-slate-200/60 overflow-hidden animate-in fade-in duration-500">
+        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-200/60 dark:border-[#112240] overflow-hidden animate-in fade-in duration-500">
           <table className="w-full text-left">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200">
-                <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">Código</th>
-                <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">Asignatura</th>
-                <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Ciclo</th>
-                <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Créditos</th>
-                <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">Componentes</th>
-                <th className="px-8 py-5 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">Acciones</th>
+              <tr className="bg-gray-50/80 dark:bg-[#020C1B] border-b border-gray-200 dark:border-[#112240]">
+                <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Código</th>
+                <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Asignatura</th>
+                <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-center">Ciclo</th>
+                <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-center">Créditos</th>
+                <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Componentes</th>
+                <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-right">Detalles</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-gray-100 dark:divide-[#112240]">
               {cursosFiltrados.map((o: any) => (
-                <tr key={o.id} className="hover:bg-slate-50/50 transition-colors group">
-                  <td className="px-8 py-5 font-black text-slate-400 text-sm">{o.curso?.codigo}</td>
+                <tr key={o.id} className="hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors group">
+                  <td className="px-8 py-5 font-black text-gray-400 dark:text-gray-500 text-sm">{o.curso?.codigo}</td>
                   <td className="px-8 py-5">
-                    <span className="text-base font-black text-slate-700">{o.curso?.nombre}</span>
+                    <span className="text-base font-black text-gray-700 dark:text-white">{o.curso?.nombre}</span>
                   </td>
                   <td className="px-8 py-5 text-center">
-                    <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase border border-emerald-100">
+                    <span className="px-3 py-1 rounded-full bg-[#003366]/10 text-[#003366] dark:bg-white/10 dark:text-[#D4AF37] text-[10px] font-black uppercase border border-[#003366]/20 dark:border-white/10">
                       Ciclo {o.ciclo?.numero || o.ciclo?.id}
                     </span>
                   </td>
-                  <td className="px-8 py-5 text-center font-bold text-slate-600">{o.curso?.creditos}</td>
+                  <td className="px-8 py-5 text-center font-bold text-gray-600 dark:text-gray-400">{o.curso?.creditos}</td>
                   <td className="px-8 py-5">
                     <div className="flex gap-2">
                       {(o.componentes || []).map((c: any) => (
-                        <span key={c.id} className="text-[9px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
+                        <span 
+                          key={c.id} 
+                          className={cn(
+                            "text-[9px] font-bold px-2 py-0.5 rounded border",
+                            c.tipo === 'TEORIA' ? "bg-white text-[#003366] border-[#003366]/20 dark:bg-transparent dark:text-gray-300 dark:border-white/20" :
+                            c.tipo === 'PRACTICA' ? "bg-[#003366]/10 text-[#003366] border-transparent dark:bg-white/10 dark:text-white" :
+                            "bg-white text-[#D4AF37] border-[#D4AF37]/20 dark:bg-transparent dark:text-[#D4AF37] dark:border-[#D4AF37]/20"
+                          )}
+                        >
                           {c.tipo[0]} ({c.horas_semanales}h)
                         </span>
                       ))}
                     </div>
                   </td>
                   <td className="px-8 py-5 text-right">
-                    <button className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all">
+                    <button className="p-2 text-gray-400 hover:text-[#003366] hover:bg-gray-100 dark:hover:text-[#D4AF37] dark:hover:bg-white/10 rounded-xl transition-all">
                       <Info className="w-5 h-5" />
                     </button>
                   </td>
