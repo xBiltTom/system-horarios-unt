@@ -240,7 +240,7 @@ export default function DashboardDocentePage() {
               <Calendar className="w-3.5 h-3.5" />
               Período en Consulta
             </p>
-            <div className="relative mt-2">
+            <div className="relative mt-2 dark">
               <SelectorInstitucional
                 value={idPeriodo}
                 onChange={(val: any) => setIdPeriodoSeleccionado(Number(val))}
@@ -287,22 +287,22 @@ export default function DashboardDocentePage() {
 
           if (activa) {
             return (
-              <div className="relative overflow-hidden rounded-[2.5rem] bg-emerald-950 border border-emerald-800 p-8 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 group">
+              <div className="relative overflow-hidden rounded-[2.5rem] bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 p-8 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 group">
                 <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 <div className="flex items-center gap-6 relative z-10">
-                  <div className="p-5 bg-emerald-500/20 rounded-2xl border border-emerald-500/30 text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.2)] animate-pulse">
+                  <div className="p-5 bg-emerald-100 dark:bg-emerald-500/20 rounded-2xl border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.1)] dark:shadow-[0_0_30px_rgba(16,185,129,0.2)] animate-pulse">
                     <CheckCircle className="w-8 h-8" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-black text-white tracking-tight">¡Tu ventanilla está abierta!</h3>
-                    <p className="text-emerald-200 text-base font-medium mt-1">
-                      Puedes armar tu horario ahora mismo. Finaliza hoy a las <span className="font-bold text-white">{proximaVentana.horaFin}</span>.
+                    <h3 className="text-2xl font-black text-emerald-900 dark:text-white tracking-tight">¡Tu ventanilla está abierta!</h3>
+                    <p className="text-emerald-700 dark:text-emerald-200 text-base font-medium mt-1">
+                      Puedes armar tu horario ahora mismo. Finaliza hoy a las <span className="font-bold text-emerald-900 dark:text-white">{proximaVentana.horaFin}</span>.
                     </p>
                   </div>
                 </div>
                 <button 
                   onClick={() => router.push('/horarios/seleccion')} 
-                  className="relative z-10 w-full md:w-auto px-10 py-5 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-black rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_10px_40px_rgba(16,185,129,0.3)] text-lg text-center"
+                  className="relative z-10 w-full md:w-auto px-10 py-5 bg-emerald-500 hover:bg-emerald-600 dark:hover:bg-emerald-400 text-white dark:text-emerald-950 font-black rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_10px_40px_rgba(16,185,129,0.2)] dark:shadow-[0_10px_40px_rgba(16,185,129,0.3)] text-lg text-center"
                 >
                   Entrar a la Matriz
                 </button>
@@ -311,38 +311,38 @@ export default function DashboardDocentePage() {
           } else if (futura) {
             const formattedDate = pFecha.toLocaleDateString('es-PE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             return (
-              <div className="rounded-[2.5rem] bg-indigo-950 border border-indigo-900/50 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+              <div className="rounded-[2.5rem] bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-900/50 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
                 <div className="flex items-center gap-6">
-                  <div className="p-4 bg-indigo-500/20 rounded-2xl border border-indigo-500/30 text-indigo-400">
+                  <div className="p-4 bg-indigo-100 dark:bg-indigo-500/20 rounded-2xl border border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400">
                     <Calendar className="w-8 h-8" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-white tracking-tight">Turno Programado</h3>
-                    <p className="text-indigo-200 text-sm font-medium mt-1">
-                      El sistema se habilitará el <span className="font-bold text-white">{formattedDate}</span> desde las <span className="font-bold text-white">{proximaVentana.horaInicio}</span>.
+                    <h3 className="text-xl font-black text-indigo-900 dark:text-white tracking-tight">Turno Programado</h3>
+                    <p className="text-indigo-700 dark:text-indigo-200 text-sm font-medium mt-1">
+                      El sistema se habilitará el <span className="font-bold text-indigo-900 dark:text-white">{formattedDate}</span> desde las <span className="font-bold text-indigo-900 dark:text-white">{proximaVentana.horaInicio}</span>.
                     </p>
                   </div>
                 </div>
-                <span className="px-5 py-2.5 bg-indigo-500/20 text-indigo-300 text-xs font-black uppercase tracking-widest rounded-full border border-indigo-500/30 text-center">
+                <span className="px-5 py-2.5 bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-xs font-black uppercase tracking-widest rounded-full border border-indigo-200 dark:border-indigo-500/30 text-center">
                   En Espera
                 </span>
               </div>
             );
           } else {
             return (
-              <div className="rounded-[2.5rem] bg-slate-900 border border-slate-800 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
+              <div className="rounded-[2.5rem] bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
                 <div className="flex items-center gap-6">
-                  <div className="p-4 bg-slate-800 rounded-2xl border border-slate-700 text-slate-400">
+                  <div className="p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
                     <AlertCircle className="w-8 h-8" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-white tracking-tight">Ventanilla Cerrada</h3>
-                    <p className="text-slate-400 text-sm font-medium mt-1">
-                      Tu plazo para armar el horario de forma directa finalizó el <span className="text-slate-300 font-bold">{pFecha.toLocaleDateString('es-PE')}</span> a las <span className="text-slate-300 font-bold">{proximaVentana.horaFin}</span>.
+                    <h3 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">Ventanilla Cerrada</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm font-medium mt-1">
+                      Tu plazo para armar el horario de forma directa finalizó el <span className="text-slate-800 dark:text-slate-300 font-bold">{pFecha.toLocaleDateString('es-PE')}</span> a las <span className="text-slate-800 dark:text-slate-300 font-bold">{proximaVentana.horaFin}</span>.
                     </p>
                   </div>
                 </div>
-                <span className="px-5 py-2.5 bg-slate-800 text-slate-400 text-xs font-black uppercase tracking-widest rounded-full border border-slate-700 text-center">
+                <span className="px-5 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-black uppercase tracking-widest rounded-full border border-slate-200 dark:border-slate-700 text-center">
                   Finalizado
                 </span>
               </div>
@@ -350,19 +350,19 @@ export default function DashboardDocentePage() {
           }
         })()
       ) : (
-        <div className="rounded-[2.5rem] bg-amber-950/40 border border-amber-900/30 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
+        <div className="rounded-[2.5rem] bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/30 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
           <div className="flex items-center gap-6">
-            <div className="p-4 bg-amber-500/20 rounded-2xl border border-amber-500/30 text-amber-500">
+            <div className="p-4 bg-amber-100 dark:bg-amber-500/20 rounded-2xl border border-amber-200 dark:border-amber-500/30 text-amber-600 dark:text-amber-500">
               <AlertCircle className="w-8 h-8" />
             </div>
             <div>
-              <h3 className="text-xl font-black text-amber-500 tracking-tight">Sin Ventana Asignada</h3>
-              <p className="text-amber-200/60 text-sm font-medium mt-1">
+              <h3 className="text-xl font-black text-amber-900 dark:text-amber-500 tracking-tight">Sin Ventana Asignada</h3>
+              <p className="text-amber-700 dark:text-amber-200/60 text-sm font-medium mt-1">
                 No tienes un turno configurado para este periodo. Comunícate con secretaría si necesitas registrar carga académica.
               </p>
             </div>
           </div>
-          <span className="px-5 py-2.5 bg-amber-500/10 text-amber-500 text-xs font-black uppercase tracking-widest rounded-full border border-amber-500/20 text-center">
+          <span className="px-5 py-2.5 bg-amber-100 dark:bg-amber-500/10 text-amber-700 dark:text-amber-500 text-xs font-black uppercase tracking-widest rounded-full border border-amber-200 dark:border-amber-500/20 text-center">
             No Asignado
           </span>
         </div>
