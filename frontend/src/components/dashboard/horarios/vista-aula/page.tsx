@@ -3,14 +3,11 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ambientesService } from '@/services/ambientes.service';
-import { horariosService } from '@/services/horarios.service';
 import { periodosService } from '@/services/periodos.service';
 import { reportesService, descargarBlob } from '@/services/reportes.service';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorFiltrable } from '@/components/ui/SelectorFiltrable';
 import { CalendarioGeneral } from '@/components/horarios/CalendarioGeneral';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
-import { Boton } from '@/components/ui/Boton';
-import { Card, CardContent } from '@/components/ui/Card';
 import { 
   School, 
   Calendar, 
@@ -19,7 +16,8 @@ import {
   FileText, 
   FileDown, 
   Share2, 
-  Filter 
+  Filter,
+  MapPin
 } from 'lucide-react';
 
 export default function VistaHorarioAulaPage() {
@@ -72,158 +70,174 @@ export default function VistaHorarioAulaPage() {
   if (periodoLoading) return <SpinnerCarga />;
 
   return (
-    <div className="space-y-8 max-w-[1600px] mx-auto pb-10">
-      {/* Header Estilo Classroom */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-10 py-12 text-white shadow-2xl">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-        <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+    <div className="space-y-10 pb-20">
+      {/* PANEL DE CONTEXTO: INFRAESTRUCTURA EDUCATIVA */}
+      <div className="bg-[#0A192F] rounded-3xl shadow-2xl border border-[#112240] flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative transition-all p-8 lg:p-10">
+        <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-3xl" />
+          <div className="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
+        </div>
         
-        <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest text-white/90">
-              <School className="w-3.5 h-3.5" />
-              Infraestructura Educativa
+        <div className="relative z-10 space-y-4 max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
+            <School className="w-3.5 h-3.5" />
+            Infraestructura Educativa
+          </div>
+          <h1 className="text-3xl font-serif font-bold text-white tracking-tight">Ocupación de Ambientes</h1>
+          <p className="text-sm text-gray-400 font-medium leading-relaxed">
+            Consulte en tiempo real la asignación académica de aulas y laboratorios, y genere reportes operativos de la infraestructura física.
+          </p>
+        </div>
+        
+        {periodoActivo && (
+          <div className="relative z-10 flex items-center gap-4 bg-[#020C1B]/80 backdrop-blur-xl p-5 rounded-2xl border border-white/10 shadow-xl shrink-0">
+            <div className="p-3 bg-[#D4AF37]/20 rounded-xl border border-[#D4AF37]/30">
+              <Calendar className="w-5 h-5 text-[#D4AF37]" />
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Horario por Aula / Laboratorio</h1>
-            <p className="text-lg text-white/70 max-w-2xl">
-              Visualiza la ocupación de ambientes en tiempo real y descarga reportes de programación física.
-            </p>
+            <div>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Periodo Académico</p>
+              <p className="text-lg font-black text-white leading-tight">{periodoActivo.nombre}</p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* CONSOLA DE OPERACIÓN (FILTRO Y EXPORTACIÓN) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        {/* PANEL IZQUIERDO: SELECCIÓN DE AMBIENTE (5/12) */}
+        <div className="lg:col-span-5 bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col gap-6">
+          <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-5">
+            <div className="p-3 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400">
+              <MapPin className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-lg font-black text-gray-800 dark:text-white tracking-tight">Filtro de Localización</h3>
+              <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-0.5">Búsqueda de Aulas</p>
+            </div>
+          </div>
+
+          <div className="flex-1">
+            <SelectorFiltrable
+              label="Especifique el ambiente a consultar"
+              value={ambienteSeleccionado || ''}
+              onChange={(val) => setAmbienteSeleccionado(val ? Number(val) : null)}
+              opciones={(ambientes?.filter((a: any) => a.activo) || []).map((a: any) => ({
+                valor: a.id,
+                etiqueta: `${a.codigo} (${a.tipo === 'AULA' ? 'Aula' : 'Laboratorio'} - Cap: ${a.capacidad})`
+              }))}
+              placeholder="Escriba el código del ambiente..."
+            />
           </div>
           
-          {periodoActivo && (
-            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-xl p-4 rounded-[2rem] border border-white/20 shadow-inner">
-              <div className="p-3 bg-white/20 rounded-2xl">
-                <Calendar className="w-6 h-6 text-white" />
+          <div className="mt-2 bg-[#003366]/5 dark:bg-[#020C1B]/50 p-4 rounded-2xl border border-[#003366]/10 dark:border-white/5 border-l-4 border-l-[#003366] dark:border-l-[#D4AF37]">
+            <p className="text-xs text-[#003366]/80 dark:text-gray-400 font-medium leading-relaxed">
+              La cuadrícula operativa reflejará la ocupación del ambiente seleccionado en tiempo real.
+            </p>
+          </div>
+        </div>
+
+        {/* PANEL DERECHO: EXPORTACIÓN (7/12) */}
+        <div className="lg:col-span-7 bg-[#020C1B] rounded-[2.5rem] shadow-2xl p-8 border border-[#112240] flex flex-col gap-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+          
+          <div className="flex items-center gap-4 border-b border-white/10 pb-5 relative z-10">
+            <div className="p-3 bg-white/10 rounded-xl border border-white/10 text-white shadow-inner">
+              <Download className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-lg font-black tracking-tight text-white">Central de Exportación</h3>
+              <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-0.5">Generación de Reportes</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 relative z-10">
+            {/* Exportación Específica */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Ambiente en Vista</p>
+                {ambienteSeleccionado ? (
+                   <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[9px] font-bold border border-emerald-500/30">LISTO</span>
+                ) : (
+                   <span className="px-2 py-0.5 rounded-full bg-gray-500/20 text-gray-400 text-[9px] font-bold border border-gray-500/30">ESPERANDO</span>
+                )}
               </div>
-              <div>
-                <p className="text-[10px] font-bold text-white/50 uppercase tracking-tighter">Periodo Activo</p>
-                <p className="text-xl font-black text-white leading-none">{periodoActivo.nombre}</p>
+              
+              <div className="flex gap-3">
+                <button 
+                  disabled={!ambienteSeleccionado || !!descargando}
+                  onClick={() => exportarArchivo('excel')}
+                  className="flex-1 p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all disabled:opacity-50 flex flex-col items-center gap-2 group"
+                >
+                  {descargando === 'excel' ? <SpinnerCarga /> : <FileSpreadsheet className="w-5 h-5 text-emerald-400 group-hover:-translate-y-0.5 transition-transform" />}
+                  <span className="text-xs font-bold text-white mt-1">Excel</span>
+                </button>
+                <button 
+                  disabled={!ambienteSeleccionado || !!descargando}
+                  onClick={() => exportarArchivo('pdf')}
+                  className="flex-1 p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all disabled:opacity-50 flex flex-col items-center gap-2 group"
+                >
+                  {descargando === 'pdf' ? <SpinnerCarga /> : <FileText className="w-5 h-5 text-rose-400 group-hover:-translate-y-0.5 transition-transform" />}
+                  <span className="text-xs font-bold text-white mt-1">PDF</span>
+                </button>
               </div>
             </div>
-          )}
+
+            {/* Exportación Global */}
+            <div className="space-y-4">
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Consolidado Total (Pabellón)</p>
+              
+              <div className="flex gap-3">
+                <button 
+                  disabled={!!descargando}
+                  onClick={() => exportarArchivo('excel', true)}
+                  className="flex-1 p-3 bg-emerald-900/20 hover:bg-emerald-900/40 border border-emerald-500/30 rounded-xl transition-all disabled:opacity-50 flex flex-col items-center gap-2 group"
+                >
+                  {descargando === 'excel-todo' ? <SpinnerCarga /> : <Share2 className="w-5 h-5 text-emerald-500 group-hover:-translate-y-0.5 transition-transform" />}
+                  <span className="text-xs font-bold text-emerald-400 mt-1">Todos (XLS)</span>
+                </button>
+                <button 
+                  disabled={!!descargando}
+                  onClick={() => exportarArchivo('pdf', true)}
+                  className="flex-1 p-3 bg-rose-900/20 hover:bg-rose-900/40 border border-rose-500/30 rounded-xl transition-all disabled:opacity-50 flex flex-col items-center gap-2 group"
+                >
+                  {descargando === 'pdf-todo' ? <SpinnerCarga /> : <FileDown className="w-5 h-5 text-rose-500 group-hover:-translate-y-0.5 transition-transform" />}
+                  <span className="text-xs font-bold text-rose-400 mt-1">Todos (PDF)</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Controles de Filtrado y Exportación */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-        <Card className="xl:col-span-4 bg-white/80 backdrop-blur-sm border-slate-200/60 shadow-xl rounded-[2.5rem] overflow-visible group hover:shadow-2xl transition-all duration-500">
-          <CardContent className="p-8 space-y-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-indigo-50 rounded-2xl text-indigo-600 group-hover:scale-110 transition-transform duration-300">
-                <Filter className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-800 text-lg">Filtrar Ambiente</h3>
-                <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">Aulas y Laboratorios</p>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <Selector
-                label=""
-                opciones={[
-                  { valor: '', etiqueta: '-- Seleccionar Ambiente --' },
-                  ...(ambientes
-                    ?.filter((a: any) => a.activo)
-                    .map((a: any) => ({
-                      valor: String(a.id),
-                      etiqueta: `${a.codigo} (${a.tipo === 'AULA' ? 'Aula' : 'Laboratorio'}, Cap: ${a.capacidad})`,
-                    })) || []),
-                ]}
-                value={ambienteSeleccionado?.toString() || ''}
-                onChange={(e) => setAmbienteSeleccionado(e.target.value ? parseInt(e.target.value) : null)}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="xl:col-span-8 bg-white/80 backdrop-blur-sm border-slate-200/60 shadow-xl rounded-[2.5rem] group hover:shadow-2xl transition-all duration-500">
-          <CardContent className="p-8 h-full flex flex-col justify-between">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-600 group-hover:scale-110 transition-transform duration-300">
-                <Download className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-800 text-lg">Exportar Reportes</h3>
-                <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">Formatos Excel y PDF</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-3">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Ambiente Seleccionado</p>
-                <div className="flex gap-3">
-                  <Boton 
-                    className="flex-1 py-4 rounded-2xl shadow-sm hover:shadow-lg transition-all"
-                    onClick={() => exportarArchivo('excel')} 
-                    disabled={!ambienteSeleccionado || !!descargando}
-                  >
-                    {descargando === 'excel' ? <SpinnerCarga /> : <FileSpreadsheet className="w-5 h-5 mr-2" />}
-                    Excel
-                  </Boton>
-                  <Boton 
-                    className="flex-1 py-4 rounded-2xl shadow-sm hover:shadow-lg transition-all bg-rose-50 text-rose-600 border border-rose-100 hover:bg-rose-600 hover:text-white"
-                    onClick={() => exportarArchivo('pdf')} 
-                    disabled={!ambienteSeleccionado || !!descargando}
-                  >
-                    {descargando === 'pdf' ? <SpinnerCarga /> : <FileText className="w-5 h-5 mr-2" />}
-                    PDF
-                  </Boton>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Reporte General de Aulas</p>
-                <div className="flex gap-3">
-                  <Boton 
-                    variante="borde"
-                    className="flex-1 py-4 rounded-2xl border-slate-200 text-slate-700 font-bold hover:border-unt-primary transition-all"
-                    onClick={() => exportarArchivo('excel', true)} 
-                    disabled={!!descargando}
-                  >
-                    {descargando === 'excel-todo' ? <SpinnerCarga /> : <Share2 className="w-5 h-5 mr-2" />}
-                    Todos (XLS)
-                  </Boton>
-                  <Boton 
-                    variante="borde"
-                    className="flex-1 py-4 rounded-2xl border-rose-100 text-rose-700 font-bold hover:bg-rose-50 transition-all"
-                    onClick={() => exportarArchivo('pdf', true)} 
-                    disabled={!!descargando}
-                  >
-                    {descargando === 'pdf-todo' ? <SpinnerCarga /> : <FileDown className="w-5 h-5 mr-2" />}
-                    Todos (PDF)
-                  </Boton>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Calendario / Horario */}
+      {/* CUADRÍCULA OPERATIVA (CALENDARIO) */}
       {!ambienteSeleccionado ? (
-        <div className="flex flex-col items-center justify-center py-32 bg-white/50 backdrop-blur-sm rounded-[3rem] border-2 border-dashed border-slate-200 animate-in fade-in duration-1000">
-          <div className="p-8 bg-slate-100/50 rounded-full mb-6 ring-8 ring-slate-50">
-            <School className="w-16 h-12 text-slate-300" />
+        <div className="flex flex-col items-center justify-center py-24 bg-gray-50/50 dark:bg-[#0A192F]/50 backdrop-blur-sm rounded-[2.5rem] border-2 border-dashed border-gray-200 dark:border-[#112240] animate-in fade-in duration-700">
+          <div className="p-6 bg-gray-100/80 dark:bg-[#020C1B] rounded-full mb-6 border border-gray-200 dark:border-[#112240] shadow-sm">
+            <School className="w-10 h-10 text-gray-400 dark:text-gray-500" />
           </div>
-          <h4 className="text-xl font-bold text-slate-800">Panel en Espera</h4>
-          <p className="text-slate-400 font-medium mt-2">Seleccione un ambiente académico para cargar el cronograma visual.</p>
+          <h4 className="text-lg font-black text-gray-800 dark:text-white">Panel en Espera</h4>
+          <p className="text-sm text-gray-500 dark:text-gray-400 font-medium mt-2 text-center max-w-sm leading-relaxed">
+            Busque y seleccione un aula o laboratorio para cargar su cronograma visual de ocupación.
+          </p>
         </div>
       ) : (
-        <div className="bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-200/60 overflow-hidden animate-in zoom-in-95 duration-500">
+        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] overflow-hidden animate-in zoom-in-95 duration-500">
           {periodoActivo ? (
-            <CalendarioGeneral 
-              idPeriodo={periodoActivo.id} 
-              filtroTipo="AULA" 
-              filtroId={ambienteSeleccionado} 
-              modo="LECTURA" 
-            />
+            <div className="p-6 md:p-8">
+              <CalendarioGeneral 
+                idPeriodo={periodoActivo.id} 
+                filtroTipo="AULA" 
+                filtroId={ambienteSeleccionado} 
+                modo="LECTURA" 
+              />
+            </div>
           ) : (
             <div className="p-20 text-center flex flex-col items-center gap-4">
-              <div className="p-4 bg-amber-50 rounded-full text-amber-500">
+              <div className="p-4 bg-amber-50 dark:bg-amber-500/10 rounded-full text-amber-500 border border-amber-100 dark:border-amber-500/20">
                 <Share2 className="w-8 h-8" />
               </div>
-              <p className="text-amber-700 font-bold text-lg">No hay un periodo académico activo para mostrar horarios.</p>
+              <p className="text-amber-700 dark:text-amber-400 font-bold text-lg">No hay un periodo académico activo para mostrar horarios.</p>
             </div>
           )}
         </div>
