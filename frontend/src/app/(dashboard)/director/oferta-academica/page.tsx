@@ -7,12 +7,12 @@ import { cursosService } from '@/services/cursos.service';
 import { curriculaService } from '@/services/curricula.service';
 import { cargaHorariaService } from '@/services/carga-horaria.service';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { Boton } from '@/components/ui/Boton';
 import { CampoTexto } from '@/components/ui/CampoTexto';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
 import { SelectorFiltrable } from '@/components/ui/SelectorFiltrable';
-import { Plus, Trash2, Save, Clock, GraduationCap } from 'lucide-react';
+import { Plus, Trash2, Save, Clock, GraduationCap, Server } from 'lucide-react';
 
 export default function OfertaAcademicaPage() {
   const queryClient = useQueryClient();
@@ -183,19 +183,21 @@ export default function OfertaAcademicaPage() {
 
   return (
     <div className="space-y-8 max-w-[1800px] mx-auto pb-20 animate-in fade-in duration-500">
-      {/* Header Estilo Classroom */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-10 py-12 text-white shadow-2xl">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-        <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+      {/* Header Institucional */}
+      <div className="relative overflow-hidden rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240]">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
+          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+        </div>
         
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest text-white/90">
-              <GraduationCap className="w-3.5 h-3.5" />
+          <div className="space-y-5">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 backdrop-blur-md rounded-full border border-[#D4AF37]/30 text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
+              <Server className="w-4 h-4" />
               Configuración Académica
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Oferta Académica</h1>
-            <p className="text-lg text-white/70 max-w-2xl">
+            <h1 className="text-4xl font-serif font-extrabold tracking-wide text-white">Oferta Académica</h1>
+            <p className="text-lg text-gray-400 font-light max-w-2xl">
               Configura los cursos que se dictarán en el periodo, sus componentes y distribución por grupos.
             </p>
           </div>
@@ -203,42 +205,40 @@ export default function OfertaAcademicaPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-1 overflow-visible">
-          <CardHeader>
-            <CardTitle>Datos de la Oferta</CardTitle>
+        <Card className="lg:col-span-1 overflow-visible border-none shadow-xl bg-white dark:bg-[#0A192F] rounded-[2rem]">
+          <CardHeader className="border-b border-gray-100 dark:border-white/5 pb-4">
+            <CardTitle className="text-xl font-serif text-[#003366] dark:text-white">Datos de la Oferta</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 min-h-[450px]">
-            <Selector
+          <CardContent className="space-y-6 pt-6 min-h-[450px]">
+            <SelectorInstitucional
               label="Período Académico"
               value={idPeriodo}
-              onChange={(e: any) => setIdPeriodo(Number(e.target.value))}
-            >
-              <option value={0}>Seleccione un periodo</option>
-              {periodos?.map((p: any) => (
-                <option key={p.id} value={p.id}>{p.nombre}</option>
-              ))}
-            </Selector>
+              onChange={(val: any) => setIdPeriodo(Number(val))}
+              opciones={[
+                { value: 0, label: '-- Seleccione un periodo --' },
+                ...(periodos?.map((p: any) => ({ value: p.id, label: p.nombre })) || [])
+              ]}
+            />
 
-            <Selector
+            <SelectorInstitucional
               label="Ciclo"
               value={idCiclo}
-              onChange={(e: any) => setIdCiclo(Number(e.target.value))}
+              onChange={(val: any) => setIdCiclo(Number(val))}
               disabled={!idPeriodo}
-            >
-              <option value={0}>Seleccione un ciclo</option>
-              {ciclosDisponibles?.map((c: any) => (
-                <option key={c.id} value={c.id}>Ciclo {c.numero}</option>
-              ))}
-            </Selector>
+              opciones={[
+                { value: 0, label: '-- Seleccione un ciclo --' },
+                ...(ciclosDisponibles?.map((c: any) => ({ value: c.id, label: `Ciclo ${c.numero}` })) || [])
+              ]}
+            />
 
-            <Selector
+            <SelectorInstitucional
               label="Currícula"
               value={idCurricula?.toString() || ''}
-              onChange={(e) => setIdCurricula(e.target.value ? parseInt(e.target.value) : null)}
+              onChange={(val: any) => setIdCurricula(val ? parseInt(val) : null)}
               opciones={
                 (curricula || []).map((c: any) => ({
-                  valor: String(c.id),
-                  etiqueta: `${c.codigo} - ${c.nombre}${c.vigente ? ' (Vigente)' : ''}`
+                  value: String(c.id),
+                  label: `${c.codigo} - ${c.nombre}${c.vigente ? ' (Vigente)' : ''}`
                 }))
               }
             />
@@ -248,56 +248,57 @@ export default function OfertaAcademicaPage() {
               value={idCurso}
               onChange={(valor) => setIdCurso(Number(valor))}
               opciones={cursos?.map((c: any) => ({
-                valor: c.id,
-                etiqueta: `${c.codigo} - ${c.nombre}`
+                value: c.id,
+                label: `${c.codigo} - ${c.nombre}`
               })) || []}
               placeholder="Buscar curso por código o nombre..."
             />
 
-            <Selector
+            <SelectorInstitucional
               label="Tipo de Curso"
               value={tipoCurso}
-              onChange={(e: any) => setTipoCurso(e.target.value)}
-            >
-              <option value="REGULAR">Regular</option>
-              <option value="ELECTIVO">Electivo</option>
-            </Selector>
+              onChange={(val: any) => setTipoCurso(val)}
+              opciones={[
+                { value: 'REGULAR', label: 'Regular' },
+                { value: 'ELECTIVO', label: 'Electivo' }
+              ]}
+            />
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Componentes y Grupos</CardTitle>
+        <Card className="lg:col-span-2 border-none shadow-xl bg-white dark:bg-[#0A192F] rounded-[2rem]">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-gray-100 dark:border-white/5 pb-4">
+            <CardTitle className="text-xl font-serif text-[#003366] dark:text-white">Componentes y Grupos</CardTitle>
             <Boton
               onClick={agregarComponente}
-              variante="borde"
-              className="px-3 py-1.5 text-sm"
+              className="px-4 py-2 text-sm bg-white hover:bg-gray-50 text-[#003366] border border-gray-200 dark:bg-white/5 dark:hover:bg-white/10 dark:border-white/10 dark:text-white rounded-xl font-bold shadow-sm"
             >
               <Plus className="h-4 w-4 mr-2" />
               Agregar Componente
             </Boton>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6 pt-6">
             {componentes.map((comp, index) => (
-              <div key={index} className="p-4 border rounded-lg bg-gray-50 space-y-3 relative">
+              <div key={index} className="p-6 border border-gray-100 dark:border-white/5 rounded-2xl bg-gray-50/50 dark:bg-[#050f20] space-y-4 relative group transition-colors">
                 <button
                   onClick={() => eliminarComponente(index)}
-                  className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                  className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                  title="Eliminar Componente"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-5 w-5" />
                 </button>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Selector
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <SelectorInstitucional
                     label="Tipo de Componente"
                     value={comp.tipo}
-                    onChange={(e: any) => actualizarComponente(index, 'tipo', e.target.value)}
+                    onChange={(val: any) => actualizarComponente(index, 'tipo', val)}
                     opciones={[
-                      { valor: 'TEORIA', etiqueta: 'Teoría-Práctica' },
-                      { valor: 'LABORATORIO', etiqueta: 'Laboratorio' },
+                      { value: 'TEORIA', label: 'Teoría-Práctica' },
+                      { value: 'LABORATORIO', label: 'Laboratorio' },
                     ]}
                   />
                   <CampoTexto
-                    label={comp.tipo === 'LABORATORIO' ? "Horas/Semana (por grupo)" : "Horas/Semana (Teoría-Práctica)"}
+                    label={comp.tipo === 'LABORATORIO' ? "Horas/Semana (por grupo)" : "Horas/Semana (Teoría)"}
                     type="number"
                     value={comp.horas_requeridas}
                     onChange={(e: any) => actualizarComponente(index, 'horas_requeridas', Number(e.target.value))}
@@ -307,19 +308,26 @@ export default function OfertaAcademicaPage() {
                     type="number"
                     value={comp.n_grupos}
                     onChange={(e: any) => actualizarComponente(index, 'n_grupos', Number(e.target.value))}
-                    disabled={comp.tipo === 'TEORIA'} // Teoría-Práctica suele ser único
+                    disabled={comp.tipo === 'TEORIA'}
                   />
                 </div>
-                <p className="text-[11px] font-bold text-unt-primary mt-2 flex items-center gap-1 bg-unt-primary/5 p-2 rounded-lg">
-                  <Clock className="w-4 h-4" />
-                  RESUMEN: {comp.horas_requeridas}h por grupo × {comp.n_grupos} {comp.n_grupos === 1 ? 'grupo' : 'grupos'} = {comp.horas_requeridas * comp.n_grupos} horas totales de carga.
-                </p>
+                <div className="pt-2">
+                  <p className="text-xs font-bold text-[#003366] dark:text-[#D4AF37] flex items-center gap-2 bg-[#003366]/5 dark:bg-[#D4AF37]/10 p-3 rounded-xl border border-[#003366]/10 dark:border-[#D4AF37]/20">
+                    <Clock className="w-4 h-4" />
+                    RESUMEN: {comp.horas_requeridas}h por grupo × {comp.n_grupos} {comp.n_grupos === 1 ? 'grupo' : 'grupos'} = {comp.horas_requeridas * comp.n_grupos} horas totales de carga.
+                  </p>
+                </div>
               </div>
             ))}
 
-            <div className="pt-4 flex justify-end">
-              <Boton onClick={guardarOferta} disabled={mutation.isPending}>
-                <Save className="h-4 w-4 mr-2" /> {mutation.isPending ? 'Guardando...' : 'Guardar Oferta'}
+            <div className="pt-6 flex justify-end border-t border-gray-100 dark:border-white/5">
+              <Boton 
+                onClick={guardarOferta} 
+                disabled={mutation.isPending}
+                className="px-8 py-3.5 rounded-xl bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] font-bold shadow-lg shadow-[#003366]/20 dark:shadow-[#D4AF37]/10"
+              >
+                <Save className="h-5 w-5 mr-2" /> 
+                {mutation.isPending ? 'Guardando...' : 'Guardar Oferta'}
               </Boton>
             </div>
           </CardContent>
