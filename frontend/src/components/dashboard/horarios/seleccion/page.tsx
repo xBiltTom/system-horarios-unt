@@ -414,9 +414,11 @@ export default function SeleccionHorarioPage() {
         
         {/* Left column: Console (Command Center) - Always Dark */}
         <div className="lg:col-span-4 lg:col-start-1">
-          <div className="dark bg-[#020C1B] rounded-[2.5rem] border border-white/10 shadow-2xl p-8 relative overflow-hidden flex flex-col gap-8 h-full">
+          <div className="dark bg-[#020C1B] rounded-[2.5rem] border border-white/10 shadow-2xl p-8 relative flex flex-col gap-8 h-full">
             {/* Ambient Background Glow */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+            <div className="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+            </div>
             
             {/* Panel Header */}
             <div>
@@ -440,7 +442,7 @@ export default function SeleccionHorarioPage() {
             </div>
 
             {/* Selectores */}
-            <div className="relative z-10 space-y-6 pt-6 border-t border-white/10">
+            <div className="relative z-50 space-y-6 pt-6 border-t border-white/10">
               <h3 className="text-sm font-bold text-gray-400">2. Ubicación y Grupo</h3>
               <SelectorInstitucional
                 label="Ambiente (Aula/Lab)"
