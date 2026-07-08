@@ -5,10 +5,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { periodosService } from '@/services/periodos.service';
 import { ventanasService } from '@/services/ventanas.service';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
-import { ArrowLeft, Calendar, Clock, Layout, Sparkles, AlertCircle, HelpCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, Layout, Sparkles, AlertCircle, HelpCircle, CalendarClock } from 'lucide-react';
 import { cn } from '@/lib/utilidades';
 import { ModalConfirmacion } from '@/components/ui/ModalConfirmacion';
 
@@ -104,26 +104,30 @@ export default function CrearVentanaSecretariaPage() {
 
   return (
     <div className="space-y-10 max-w-5xl mx-auto pb-20">
-      {/* Header Estilo Classroom */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-10 py-12 text-white shadow-2xl">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-        <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+      {/* Header Institucional UNT */}
+      <div className="relative overflow-hidden rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240] z-20">
+        <div className="absolute inset-0 overflow-hidden rounded-[3rem] pointer-events-none">
+          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
+          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+        </div>
         
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest text-white/90">
-              <Sparkles className="w-3.5 h-3.5" />
-              Gestión de Turnos
+          <div className="space-y-4 text-center md:text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
+              <CalendarClock className="w-3.5 h-3.5" />
+              Gestión de Accesos
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Crear Ventana de Atención</h1>
-            <p className="text-lg text-white/70 max-w-xl">
-              Define los parámetros para generar los turnos automáticos de selección de horarios para los docentes.
+            <h1 className="text-4xl font-serif font-bold tracking-tight text-white drop-shadow-sm">
+              Crear Ventana de <span className="text-[#D4AF37]">Atención</span>
+            </h1>
+            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
+              Define los parámetros institucionales para generar y asignar los turnos automáticos al padrón de docentes.
             </p>
           </div>
 
           <button 
             onClick={() => router.back()}
-            className="flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-2xl border border-white/20 transition-all font-bold text-sm"
+            className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 transition-all font-bold text-sm text-white/90 hover:text-white"
           >
             <ArrowLeft className="w-4 h-4" />
             Volver
@@ -134,54 +138,56 @@ export default function CrearVentanaSecretariaPage() {
       <div className="grid grid-cols-1 gap-8 animate-in slide-in-from-bottom-4 duration-700">
         
         {/* Card Principal de Configuración */}
-        <div className="bg-white rounded-[3rem] shadow-xl border border-slate-200/60 p-10 space-y-12">
+        <div className="bg-white dark:bg-[#0A192F] rounded-[3rem] shadow-xl border border-gray-100 dark:border-[#112240] p-10 space-y-12 relative overflow-hidden group">
+          <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-gray-50/50 dark:bg-white/5 rounded-full transition-transform group-hover:scale-150 duration-700 pointer-events-none" />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
             {/* Periodo */}
             <div className="space-y-4">
               <div className="flex items-center gap-3 ml-1">
-                <div className="p-2 bg-indigo-50 rounded-lg">
-                  <Layout className="w-4 h-4 text-indigo-500" />
+                <div className="p-2 bg-[#003366]/5 dark:bg-[#003366]/30 border border-[#003366]/10 dark:border-[#003366]/50 rounded-xl">
+                  <Layout className="w-4 h-4 text-[#003366] dark:text-[#D4AF37]" />
                 </div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Periodo Académico</p>
+                <p className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Periodo Lectivo</p>
               </div>
-              <Selector
-                label=""
-                opciones={[
-                  { valor: '', etiqueta: 'Seleccionar periodo' },
-                  ...(periodos || []).map((p: any) => ({ valor: String(p.id), etiqueta: p.nombre })),
-                ]}
-                value={idPeriodo?.toString() || ''}
-                onChange={(e) => setIdPeriodo(e.target.value ? parseInt(e.target.value, 10) : null)}
-                className="rounded-2xl border-slate-200 bg-slate-50/50 focus:bg-white transition-all h-14 font-bold text-slate-700"
-              />
+              <div className="h-14">
+                <SelectorInstitucional
+                  opciones={[
+                    { value: '', label: 'Seleccionar periodo...' },
+                    ...(periodos || []).map((p: any) => ({ value: String(p.id), label: p.nombre })),
+                  ]}
+                  value={idPeriodo?.toString() || ''}
+                  onChange={(val) => setIdPeriodo(val ? parseInt(val as string, 10) : null)}
+                  className="w-full"
+                />
+              </div>
             </div>
 
             {/* Fechas */}
             <div className="space-y-4 md:col-span-1 lg:col-span-1">
               <div className="flex items-center gap-3 ml-1">
-                <div className="p-2 bg-emerald-50 rounded-lg">
-                  <Calendar className="w-4 h-4 text-emerald-500" />
+                <div className="p-2 bg-[#003366]/5 dark:bg-[#003366]/30 border border-[#003366]/10 dark:border-[#003366]/50 rounded-xl">
+                  <Calendar className="w-4 h-4 text-[#003366] dark:text-[#D4AF37]" />
                 </div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Rango de Fechas</p>
+                <p className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Fechas del Proceso</p>
               </div>
               <div className="flex flex-col gap-3">
-                <div className="relative group">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[9px] font-black text-slate-400 uppercase pointer-events-none group-focus-within:text-emerald-500 transition-colors">Inicio</span>
+                <div className="relative group/input">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[9px] font-black text-gray-400 uppercase pointer-events-none group-focus-within/input:text-[#003366] dark:group-focus-within/input:text-[#D4AF37] transition-colors">Inicio</span>
                   <input
                     type="date"
                     value={fechaInicio}
                     onChange={(e) => setFechaInicio(e.target.value)}
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 pl-14 pr-4 py-3.5 text-xs font-bold focus:bg-white focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none h-14"
+                    className="w-full rounded-2xl border border-gray-200 dark:border-[#112240] bg-gray-50/50 dark:bg-[#020C1B] pl-14 pr-4 py-3.5 text-xs font-bold text-gray-800 dark:text-white focus:bg-white dark:focus:bg-[#0A192F] focus:ring-4 focus:ring-[#003366]/10 dark:focus:ring-[#D4AF37]/10 focus:border-[#003366] dark:focus:border-[#D4AF37] transition-all outline-none h-14"
                   />
                 </div>
-                <div className="relative group">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[9px] font-black text-slate-400 uppercase pointer-events-none group-focus-within:text-emerald-500 transition-colors">Fin</span>
+                <div className="relative group/input">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[9px] font-black text-gray-400 uppercase pointer-events-none group-focus-within/input:text-[#003366] dark:group-focus-within/input:text-[#D4AF37] transition-colors">Fin</span>
                   <input
                     type="date"
                     value={fechaFin}
                     onChange={(e) => setFechaFin(e.target.value)}
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 pl-14 pr-4 py-3.5 text-xs font-bold focus:bg-white focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none h-14"
+                    className="w-full rounded-2xl border border-gray-200 dark:border-[#112240] bg-gray-50/50 dark:bg-[#020C1B] pl-14 pr-4 py-3.5 text-xs font-bold text-gray-800 dark:text-white focus:bg-white dark:focus:bg-[#0A192F] focus:ring-4 focus:ring-[#003366]/10 dark:focus:ring-[#D4AF37]/10 focus:border-[#003366] dark:focus:border-[#D4AF37] transition-all outline-none h-14"
                   />
                 </div>
               </div>
@@ -190,63 +196,63 @@ export default function CrearVentanaSecretariaPage() {
             {/* Horas */}
             <div className="space-y-4 md:col-span-2 lg:col-span-2">
               <div className="flex items-center gap-3 ml-1">
-                <div className="p-2 bg-amber-50 rounded-lg">
-                  <Clock className="w-4 h-4 text-amber-500" />
+                <div className="p-2 bg-[#003366]/5 dark:bg-[#003366]/30 border border-[#003366]/10 dark:border-[#003366]/50 rounded-xl">
+                  <Clock className="w-4 h-4 text-[#003366] dark:text-[#D4AF37]" />
                 </div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Horario Diario de Atención</p>
+                <p className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Rango Diario de Atención</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="relative group">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[9px] font-black text-slate-400 uppercase pointer-events-none group-focus-within:text-amber-500 transition-colors">Desde</span>
+                <div className="relative group/input">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[9px] font-black text-gray-400 uppercase pointer-events-none group-focus-within/input:text-[#003366] dark:group-focus-within/input:text-[#D4AF37] transition-colors">Apertura</span>
                   <input
                     type="time"
                     value={horaInicio}
                     onChange={(e) => setHoraInicio(e.target.value)}
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 pl-14 pr-4 py-3.5 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-amber-500/20 transition-all outline-none h-14"
+                    className="w-full rounded-2xl border border-gray-200 dark:border-[#112240] bg-gray-50/50 dark:bg-[#020C1B] pl-[4.5rem] pr-4 py-3.5 text-sm font-bold text-gray-800 dark:text-white focus:bg-white dark:focus:bg-[#0A192F] focus:ring-4 focus:ring-[#003366]/10 dark:focus:ring-[#D4AF37]/10 focus:border-[#003366] dark:focus:border-[#D4AF37] transition-all outline-none h-14"
                   />
                 </div>
-                <div className="relative group">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[9px] font-black text-slate-400 uppercase pointer-events-none group-focus-within:text-amber-500 transition-colors">Hasta</span>
+                <div className="relative group/input">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[9px] font-black text-gray-400 uppercase pointer-events-none group-focus-within/input:text-[#003366] dark:group-focus-within/input:text-[#D4AF37] transition-colors">Cierre</span>
                   <input
                     type="time"
                     value={horaFin}
                     onChange={(e) => setHoraFin(e.target.value)}
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50/50 pl-14 pr-4 py-3.5 text-sm font-bold focus:bg-white focus:ring-2 focus:ring-amber-500/20 transition-all outline-none h-14"
+                    className="w-full rounded-2xl border border-gray-200 dark:border-[#112240] bg-gray-50/50 dark:bg-[#020C1B] pl-16 pr-4 py-3.5 text-sm font-bold text-gray-800 dark:text-white focus:bg-white dark:focus:bg-[#0A192F] focus:ring-4 focus:ring-[#003366]/10 dark:focus:ring-[#D4AF37]/10 focus:border-[#003366] dark:focus:border-[#D4AF37] transition-all outline-none h-14"
                   />
                 </div>
               </div>
-              <p className="text-[10px] text-slate-400 font-medium ml-1">
-                Los turnos se generarán automáticamente dentro de este rango horario para cada día del periodo.
+              <p className="text-[10px] text-gray-500 font-bold ml-1 uppercase tracking-widest mt-2">
+                * Los turnos se distribuirán equitativamente dentro de este lapso.
               </p>
             </div>
           </div>
 
           {ventanaActiva && (
-            <div className="flex items-start gap-5 p-8 bg-amber-50 border border-amber-100 rounded-[2.5rem] animate-in zoom-in-95">
-              <div className="p-4 bg-white rounded-2xl text-amber-500 shadow-sm shrink-0">
+            <div className="relative z-10 flex items-start gap-5 p-8 bg-amber-50 dark:bg-amber-900/10 border border-amber-200/60 dark:border-amber-800/30 rounded-[2rem] animate-in zoom-in-95">
+              <div className="p-4 bg-white dark:bg-[#0A192F] rounded-2xl text-amber-600 dark:text-amber-400 shadow-sm shrink-0 border border-amber-100 dark:border-amber-800/50">
                 <AlertCircle className="w-7 h-7" />
               </div>
               <div className="space-y-2">
-                <p className="text-lg font-black text-amber-900 tracking-tight">Ventana de Atención Activa</p>
-                <p className="text-sm text-amber-800/70 leading-relaxed font-medium">
-                  El sistema ha detectado una ventana de atención vigente para este periodo. Para garantizar la integridad de los turnos ya asignados, no se permite la creación de una nueva ventana simultánea.
+                <p className="text-lg font-black text-amber-900 dark:text-amber-500 tracking-tight">Acceso Institucional Vigente</p>
+                <p className="text-sm text-amber-800/80 dark:text-amber-200/70 leading-relaxed font-bold">
+                  El sistema certifica una ventana de atención activa para este periodo académico. Para garantizar la consistencia e integridad de los padrones, no se permite sobreescribir ni generar ventanas paralelas simultáneas.
                 </p>
               </div>
             </div>
           )}
 
-          <div className="pt-10 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-8">
+          <div className="relative z-10 pt-10 border-t border-gray-100 dark:border-[#112240] flex flex-col sm:flex-row items-center justify-between gap-8">
             <div className="flex items-center gap-5">
-              <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 border border-slate-100 shadow-inner">
+              <div className="w-14 h-14 rounded-2xl bg-gray-50 dark:bg-white/5 flex items-center justify-center text-gray-400 dark:text-gray-500 border border-gray-100 dark:border-white/10 shadow-inner">
                 <Layout className="w-7 h-7" />
               </div>
               <div>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Estado del Proceso</p>
+                <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Estado del Proceso</p>
                 <p className={cn(
                   "text-base font-black tracking-tight",
-                  ventanaActiva ? "text-amber-600" : "text-emerald-600"
+                  ventanaActiva ? "text-amber-600 dark:text-amber-400" : "text-[#003366] dark:text-[#D4AF37]"
                 )}>
-                  {ventanaActiva ? 'Acción Bloqueada' : 'Listo para Procesar'}
+                  {ventanaActiva ? 'Acción Restringida' : 'Autorizado para Generación'}
                 </p>
               </div>
             </div>
@@ -266,19 +272,19 @@ export default function CrearVentanaSecretariaPage() {
                 className={cn(
                   "flex-1 sm:flex-none px-12 py-5 rounded-[2rem] font-black text-sm uppercase tracking-widest transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3",
                   ventanaActiva || !idPeriodo 
-                    ? "bg-slate-100 text-slate-400 cursor-not-allowed shadow-none"
-                    : "bg-[#0f4c81] text-white hover:bg-[#0b1f3a] shadow-blue-900/20"
+                    ? "bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-600 cursor-not-allowed shadow-none"
+                    : "bg-[#0A192F] text-white hover:bg-[#003366] dark:bg-[#D4AF37] dark:text-[#0A192F] dark:hover:bg-[#b08d28] shadow-[#0A192F]/20 dark:shadow-[#D4AF37]/20"
                 )}
               >
                 {crearMutation.isPending ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
                     Procesando...
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-4 h-4" />
-                    Generar Ventanas
+                    Generar Padrón de Turnos
                   </>
                 )}
               </button>
