@@ -128,22 +128,24 @@ export default function DashboardPage() {
       <PanelKPIs kpis={kpis} />
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        {/* FILA 1: Mapa (2/3) y Alertas (1/3) */}
-        <Card className="lg:col-span-2 border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col">
-          <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5 shrink-0">
-            <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Mapa de Uso (Ocupación Global)</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6">
-            {mapaCalor && <MapaCalorOcupacion dias={mapaCalor.dias} horas={mapaCalor.horas} conteo={mapaCalor.conteo} />}
-          </CardContent>
-        </Card>
+        {/* Mapa de Uso (Solo Admin/Secretaria) */}
+        {usuario?.rol !== 'DIRECTOR' && (
+          <Card className="lg:col-span-2 border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col">
+            <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5 shrink-0">
+              <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Mapa de Uso (Ocupación Global)</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              {mapaCalor && <MapaCalorOcupacion dias={mapaCalor.dias} horas={mapaCalor.horas} conteo={mapaCalor.conteo} />}
+            </CardContent>
+          </Card>
+        )}
 
-        <Card className="lg:col-span-1 border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col">
+        <Card className={`${usuario?.rol === 'DIRECTOR' ? 'lg:col-span-2 h-[420px]' : 'lg:col-span-1 h-[420px]'} border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col`}>
           <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5 shrink-0">
             <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Alertas de Carga Docente</CardTitle>
           </CardHeader>
           <CardContent className="pt-6 flex-1 min-h-0">
-            <div className="h-full space-y-3 overflow-y-auto pr-2 custom-scrollbar">
+            <div className={`h-full overflow-y-auto pr-2 custom-scrollbar ${usuario?.rol === 'DIRECTOR' ? 'grid grid-cols-1 sm:grid-cols-2 gap-4' : 'space-y-3'}`}>
               {docentesOrdenados.map((item: any) => {
                 const esCritico = item.porcentajeCumplimiento < 50;
                 const colorBadge = esCritico ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-[#D4AF37]/10 text-[#D4AF37]';
@@ -164,7 +166,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* FILA 2: Progreso (1/3), Aulas (1/3) y Actividad (1/3) */}
+        {/* Progreso por Categoría (Visible para todos) */}
         <Card className="lg:col-span-1 border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col">
           <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5 shrink-0">
             <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Progreso por Categoría</CardTitle>
@@ -176,18 +178,21 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-1 border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col">
-          <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5 shrink-0">
-            <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Aulas Más Saturadas</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6 flex-1">
-            <div className="h-[280px]">
-              {ocupacionTop.length > 0 && <GraficoOcupacionAmbientes datos={ocupacionTop} />}
-            </div>
-          </CardContent>
-        </Card>
+        {/* Aulas Saturadas (Solo Admin/Secretaria) */}
+        {usuario?.rol !== 'DIRECTOR' && (
+          <Card className="lg:col-span-1 border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col">
+            <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5 shrink-0">
+              <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Aulas Más Saturadas</CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6 flex-1">
+              <div className="h-[280px]">
+                {ocupacionTop.length > 0 && <GraficoOcupacionAmbientes datos={ocupacionTop} />}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
-        <Card className="lg:col-span-1 border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col">
+        <Card className={`${usuario?.rol === 'DIRECTOR' ? 'lg:col-span-3' : 'lg:col-span-1'} border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col`}>
           <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5 shrink-0">
             <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Actividad Reciente</CardTitle>
           </CardHeader>
