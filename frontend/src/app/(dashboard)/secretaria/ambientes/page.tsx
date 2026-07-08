@@ -117,8 +117,8 @@ export default function AmbientesSecretariaPage() {
                   key={tipo}
                   onClick={() => setFiltroTipo(tipo)}
                   className={cn(
-                    "flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
-                    filtroTipo === tipo ? "bg-white dark:bg-[#0A192F] text-[#003366] dark:text-[#D4AF37] shadow-sm border border-gray-100 dark:border-[#112240]" : "text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+                    "flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border outline-none focus:outline-none",
+                    filtroTipo === tipo ? "bg-white dark:bg-[#0A192F] text-[#003366] dark:text-[#D4AF37] shadow-sm border-gray-100 dark:border-[#112240]" : "border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                   )}
                 >
                   {tipo === 'TODOS' ? 'Todos' : tipo === 'AULA' ? 'Aulas' : 'Labs'}
@@ -140,8 +140,8 @@ export default function AmbientesSecretariaPage() {
                   key={cap.id}
                   onClick={() => setFiltroCapacidad(cap.id)}
                   className={cn(
-                    "flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
-                    filtroCapacidad === cap.id ? "bg-white dark:bg-[#0A192F] text-[#003366] dark:text-[#D4AF37] shadow-sm border border-gray-100 dark:border-[#112240]" : "text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+                    "flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border outline-none focus:outline-none",
+                    filtroCapacidad === cap.id ? "bg-white dark:bg-[#0A192F] text-[#003366] dark:text-[#D4AF37] shadow-sm border-gray-100 dark:border-[#112240]" : "border-transparent text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                   )}
                 >
                   {cap.label}
@@ -153,7 +153,7 @@ export default function AmbientesSecretariaPage() {
           <div className="space-y-2">
             <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">Estado</label>
             <div className="flex items-center gap-2 bg-gray-50 dark:bg-[#020C1B] p-1.5 rounded-2xl border border-gray-200 dark:border-[#112240]">
-              <div className="flex-1 py-2.5 px-4 bg-white dark:bg-[#0A192F] rounded-xl text-[10px] font-black uppercase tracking-widest text-[#003366] dark:text-[#D4AF37] shadow-sm border border-gray-100 dark:border-[#112240] flex items-center justify-center gap-2">
+              <div className="flex-1 py-2.5 px-4 bg-white dark:bg-[#0A192F] rounded-xl text-[10px] font-black uppercase tracking-widest text-[#003366] dark:text-[#D4AF37] shadow-sm border border-gray-100 dark:border-[#112240] flex items-center justify-center gap-2 outline-none">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
                 Operativos
               </div>
