@@ -4,13 +4,13 @@ import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { cn } from '@/lib/utilidades';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { periodosService } from '@/services/periodos.service';
 import { curriculaService } from '@/services/curricula.service';
 import { cargaHorariaService } from '@/services/carga-horaria.service';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
-import { LayoutGrid, Filter, BookOpen, Clock, Users, GraduationCap, Trash2 } from 'lucide-react';
+import { LayoutGrid, Filter, BookOpen, Clock, Users, GraduationCap, Trash2, List } from 'lucide-react';
 
 export default function OfertaPorCiclosPage() {
   const queryClient = useQueryClient();
@@ -62,8 +62,8 @@ export default function OfertaPorCiclosPage() {
 
   // Ciclos formateados para el selector
   const opcionesCiclos = (ciclos || []).map((c: any) => ({
-    valor: String(c.id),
-    etiqueta: `Ciclo ${c.numero}`,
+    value: String(c.id),
+    label: `Ciclo ${c.numero}`,
   }));
 
   // Auto-seleccionar primer ciclo cuando carguen
@@ -99,55 +99,57 @@ export default function OfertaPorCiclosPage() {
 
   return (
     <div className="space-y-8 max-w-[1800px] mx-auto pb-20 animate-in fade-in duration-500">
-      {/* Header Estilo Classroom */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-10 py-12 text-white shadow-2xl">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-        <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+      {/* Header Institucional */}
+      <div className="relative overflow-hidden rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240]">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
+          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+        </div>
         
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest text-white/90">
-              <LayoutGrid className="w-3.5 h-3.5" />
+          <div className="space-y-5">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 backdrop-blur-md rounded-full border border-[#D4AF37]/30 text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
+              <List className="w-4 h-4" />
               Catálogo por Ciclo
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Oferta por Ciclos</h1>
-            <p className="text-lg text-white/70 max-w-2xl">
+            <h1 className="text-4xl font-serif font-extrabold tracking-wide text-white">Malla y Oferta</h1>
+            <p className="text-lg text-gray-400 font-light max-w-2xl">
               Visualiza los cursos, componentes y distribución por grupos de cada ciclo académico del periodo.
             </p>
           </div>
         </div>
       </div>
 
-      <Card className="bg-white/80 backdrop-blur-sm border-slate-200/60 shadow-xl rounded-[2.5rem] overflow-hidden">
+      <Card className="bg-white dark:bg-[#0A192F] border-none shadow-xl rounded-[2.5rem] overflow-visible z-20 relative">
         <CardContent className="p-6">
           <div className="flex flex-wrap items-center gap-6">
-            <div className="flex items-center gap-3 bg-slate-50 px-4 py-2 rounded-2xl border border-slate-100">
-              <Filter className="w-4 h-4 text-slate-400" />
-              <span className="text-sm font-semibold text-slate-600">Filtrar Ciclo y Currícula:</span>
+            <div className="flex items-center gap-3 bg-gray-50 dark:bg-[#020C1B] px-4 py-3 rounded-2xl border border-gray-100 dark:border-white/10">
+              <Filter className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+              <span className="text-sm font-bold text-gray-700 dark:text-gray-300">Filtros Activos:</span>
             </div>
 
             <div className="w-64">
-              <Selector
-                label="Ciclo Académico"
+              <SelectorInstitucional
                 opciones={opcionesCiclos}
                 value={cicloSeleccionado?.toString() || ''}
-                onChange={(e) => setCicloSeleccionado(e.target.value ? parseInt(e.target.value) : null)}
+                onChange={(val: any) => setCicloSeleccionado(val ? parseInt(val) : null)}
+                placeholder="Seleccione un Ciclo"
               />
             </div>
             <div className="w-72">
-              <Selector
-                label="Currícula"
+              <SelectorInstitucional
                 value={idCurricula?.toString() || ''}
-                onChange={(e) => setIdCurricula(e.target.value ? parseInt(e.target.value) : null)}
+                onChange={(val: any) => setIdCurricula(val ? parseInt(val) : null)}
                 opciones={(curricula || []).map((c: any) => ({
-                  valor: String(c.id),
-                  etiqueta: `${c.codigo} - ${c.nombre}${c.vigente ? ' (Vigente)' : ''}`
+                  value: String(c.id),
+                  label: `${c.codigo} - ${c.nombre}${c.vigente ? ' (Vigente)' : ''}`
                 }))}
+                placeholder="Seleccione Currícula"
               />
             </div>
 
             {periodoActivo && (
-              <div className="ml-auto flex items-center gap-2 px-4 py-2 bg-unt-primary/10 text-unt-primary rounded-xl text-sm font-bold border border-unt-primary/20">
+              <div className="ml-auto flex items-center gap-2 px-5 py-3 bg-[#003366]/5 dark:bg-[#D4AF37]/10 text-[#003366] dark:text-[#D4AF37] rounded-2xl text-sm font-bold border border-[#003366]/10 dark:border-[#D4AF37]/20">
                 <BookOpen className="w-4 h-4" />
                 Periodo: {periodoActivo.nombre}
               </div>
@@ -157,85 +159,94 @@ export default function OfertaPorCiclosPage() {
       </Card>
 
       {!cicloSeleccionado ? (
-        <div className="flex flex-col items-center justify-center py-24 bg-white/50 backdrop-blur-sm rounded-[2.5rem] border border-dashed border-slate-300">
-          <div className="p-4 bg-slate-100 rounded-full mb-4">
-            <LayoutGrid className="w-12 h-12 text-slate-400" />
+        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#0A192F] rounded-[2.5rem] border border-dashed border-gray-200 dark:border-white/10 shadow-sm">
+          <div className="p-4 bg-gray-50 dark:bg-white/5 rounded-full mb-4">
+            <List className="w-12 h-12 text-gray-400 dark:text-gray-500" />
           </div>
-          <p className="text-slate-500 font-medium">Seleccione un ciclo académico para visualizar su oferta.</p>
+          <p className="text-gray-500 dark:text-gray-400 font-medium">Seleccione un ciclo académico para visualizar su oferta.</p>
         </div>
       ) : isLoadingCursos ? (
         <div className="py-20 flex justify-center">
           <SpinnerCarga />
         </div>
       ) : cursos && cursos.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {cursos.map((curso: any) => {
-            const color = getCardColor(curso.id);
-            return (
-              <Card key={curso.id} className="group hover:shadow-2xl transition-all duration-300 rounded-[2rem] border-slate-200/60 overflow-hidden bg-white hover:-translate-y-1">
-                <div className={cn("h-2 w-full opacity-80 group-hover:opacity-100 transition-opacity", color.accent)} />
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex items-center gap-2">
-                      <div className={cn("text-[10px] font-bold px-2.5 py-1 rounded-full border uppercase", color.icon, color.border)}>
+        <Card className="border-none shadow-xl bg-white dark:bg-[#0A192F] rounded-[2.5rem] overflow-hidden z-10 relative">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-gray-50 dark:bg-[#020C1B] border-b border-gray-100 dark:border-white/5">
+                  <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">CÓDIGO</th>
+                  <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">CURSO</th>
+                  <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-center">CRÉDITOS</th>
+                  <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">COMPONENTES</th>
+                  <th className="px-6 py-4 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">ACCIONES</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100 dark:divide-white/5">
+                {cursos.map((curso: any) => (
+                  <tr key={curso.id} className="hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors group">
+                    <td className="px-6 py-5 align-top">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-[#003366]/5 text-[#003366] dark:bg-white/5 dark:text-gray-300 border border-[#003366]/10 dark:border-white/10 font-mono">
                         {curso.curso?.codigo}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 align-top">
+                      <p className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-[#003366] dark:group-hover:text-[#D4AF37] transition-colors">
+                        {curso.curso?.nombre}
+                      </p>
+                    </td>
+                    <td className="px-6 py-5 align-top text-center">
+                      <span className="inline-flex items-center gap-1.5 text-[#003366] dark:text-[#D4AF37] bg-[#003366]/5 dark:bg-[#D4AF37]/10 px-2.5 py-1 rounded-lg text-xs font-bold border border-[#003366]/10 dark:border-[#D4AF37]/20">
+                        <GraduationCap className="w-3.5 h-3.5" />
+                        {curso.curso?.creditos}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 align-top">
+                      <div className="flex flex-col gap-2">
+                        {curso.componentes && curso.componentes.map((comp: any) => (
+                          <div key={comp.id} className="flex items-center gap-4 bg-white dark:bg-[#020C1B] border border-gray-100 dark:border-white/10 px-3 py-2 rounded-xl">
+                            <div className="flex items-center gap-2 w-32">
+                              <Clock className={cn("w-3.5 h-3.5", comp.tipo === 'TEORIA' ? 'text-blue-500' : 'text-purple-500')} />
+                              <span className="text-[11px] font-bold text-gray-700 dark:text-gray-300">
+                                {comp.tipo === 'TEORIA' ? 'TEORÍA' : 'LABORATORIO'}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1 w-24">
+                              <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                                {comp.horas_requeridas / (comp.grupos?.length || 1)}h/sem
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <Users className="w-3.5 h-3.5 text-gray-400" />
+                              <span className="text-[11px] font-bold text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-white/5 px-2 py-0.5 rounded-md">
+                                {comp.grupos?.length || 0} GRUPO(S)
+                              </span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
+                    </td>
+                    <td className="px-6 py-5 align-top text-right">
                       <button
                         onClick={() => alEliminar(curso)}
-                        className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        className="inline-flex items-center justify-center p-2 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-all"
                         title="Eliminar oferta"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="w-4 h-4" />
                       </button>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-slate-500 bg-slate-100 px-2 py-1 rounded-lg text-[10px] font-bold">
-                      <GraduationCap className="w-3 h-3" />
-                      {curso.curso?.creditos} CRÉDITOS
-                    </div>
-                  </div>
-
-                  <h3 className="text-lg font-bold text-slate-800 mb-4 line-clamp-2 leading-tight group-hover:text-unt-primary transition-colors">
-                    {curso.curso?.nombre}
-                  </h3>
-
-                  <div className="space-y-3">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Componentes:</p>
-                    {curso.componentes && curso.componentes.map((comp: any) => (
-                      <div key={comp.id} className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-white hover:border-unt-primary/30 transition-all group/comp">
-                        <div className="flex items-center gap-3">
-                          <div className={cn("p-2 rounded-xl", comp.tipo === 'TEORIA' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600')}>
-                            <Clock className="w-3.5 h-3.5" />
-                          </div>
-                          <div>
-                            <p className="text-xs font-bold text-slate-700">
-                              {comp.tipo === 'TEORIA' ? 'TEORÍA-PRÁCTICA' : 'LABORATORIO'}
-                            </p>
-                            <p className="text-[10px] text-slate-500 font-medium">
-                              {comp.horas_requeridas / (comp.grupos?.length || 1)}h/semana
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col items-end">
-                          <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400 bg-white px-2 py-0.5 rounded-full border border-slate-100">
-                            <Users className="w-3 h-3" />
-                            {comp.grupos?.length || 0} GRUPOS
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center py-20 bg-white/50 backdrop-blur-sm rounded-[2.5rem] border border-dashed border-slate-300">
-          <div className="p-4 bg-slate-100 rounded-full mb-4">
-            <BookOpen className="w-12 h-12 text-slate-400" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          <p className="text-slate-500 font-medium">No se encontraron cursos asignados a este ciclo.</p>
+        </Card>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#0A192F] rounded-[2.5rem] border border-dashed border-gray-200 dark:border-white/10 shadow-sm">
+          <div className="p-4 bg-gray-50 dark:bg-white/5 rounded-full mb-4">
+            <BookOpen className="w-12 h-12 text-gray-400 dark:text-gray-500" />
+          </div>
+          <p className="text-gray-500 dark:text-gray-400 font-medium">No se encontraron cursos asignados a este ciclo.</p>
         </div>
       )}
 
