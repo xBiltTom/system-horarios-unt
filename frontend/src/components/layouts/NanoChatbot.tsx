@@ -652,70 +652,69 @@ export const NanoChatbot = () => {
     <div className="fixed bottom-6 right-6 z-50">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] text-white shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 group"
+        className="flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-[1.5rem] bg-[#020C1B] dark:bg-[#D4AF37] text-[#D4AF37] dark:text-[#020C1B] shadow-[0_8px_30px_rgb(2,12,27,0.3)] dark:shadow-[0_8px_30px_rgba(212,175,55,0.3)] hover:scale-105 transition-all duration-300 group border border-[#D4AF37]/20 dark:border-transparent"
       >
         {isOpen ? (
-          <X className="w-8 h-8 transition-transform duration-300" />
+          <X className="w-7 h-7 transition-transform duration-300" />
         ) : (
           <div className="relative">
-            <Bot className="w-8 h-8 transition-transform duration-300 group-hover:rotate-12" />
-            <Sparkles className="w-4 h-4 absolute -top-1 -right-1 text-yellow-300 animate-pulse" />
+            <Sparkles className="w-7 h-7 transition-transform duration-300 group-hover:rotate-12" />
           </div>
         )}
       </button>
 
       {isOpen && (
-        <div className="absolute bottom-20 right-0 w-[420px] max-w-[92vw] h-[600px] bg-white rounded-[2.5rem] shadow-2xl border border-gray-100 overflow-hidden flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-300">
-          <div className="p-5 bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] text-white">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md">
-                <Bot className="w-7 h-7" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-lg">Nano</h3>
-                <p className="text-white/70 text-sm flex items-center gap-1">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  Asistente virtual
-                </p>
-              </div>
+        <div className="absolute bottom-20 right-0 w-[400px] max-w-[92vw] h-[650px] max-h-[80vh] bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-white/10 overflow-hidden flex flex-col animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-300">
+          
+          <div className="relative px-6 py-5 bg-[#020C1B] flex items-center gap-4 shrink-0 overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/20 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
+            <div className="relative z-10 w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md">
+              <Sparkles className="w-6 h-6 text-[#D4AF37]" />
+            </div>
+            <div className="relative z-10 flex-1">
+              <h3 className="font-black text-white text-lg tracking-tight">Nano <span className="text-[#D4AF37]">AI</span></h3>
+              <p className="text-white/60 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 mt-0.5">
+                <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+                Asistente Operativo
+              </p>
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50/50">
+          <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50 dark:bg-transparent custom-scrollbar">
             {messages.map((message) => (
               <div
                 key={message.id}
                 className={cn(
-                  'flex gap-3 max-w-[85%]',
+                  'flex gap-3 max-w-[88%]',
                   message.role === 'user' ? 'ml-auto flex-row-reverse' : 'mr-auto'
                 )}
               >
                 <div
                   className={cn(
-                    'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0',
+                    'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-auto shadow-sm',
                     message.role === 'user'
-                      ? 'bg-gradient-to-br from-blue-500 to-blue-700'
-                      : 'bg-gradient-to-br from-[#0b1f3a] to-[#0f4c81]'
+                      ? 'bg-white dark:bg-white/10'
+                      : 'bg-[#020C1B] dark:bg-[#D4AF37]'
                   )}
                 >
                   {message.role === 'user' ? (
-                    <User className="w-4 h-4 text-white" />
+                    <User className="w-4 h-4 text-gray-500 dark:text-gray-300" />
                   ) : (
-                    <Bot className="w-4 h-4 text-white" />
+                    <Sparkles className="w-4 h-4 text-[#D4AF37] dark:text-[#020C1B]" />
                   )}
                 </div>
                 <div
                   className={cn(
-                    'p-4 rounded-2xl text-sm leading-relaxed whitespace-pre-line',
+                    'p-4 text-[13px] leading-relaxed whitespace-pre-line shadow-sm',
                     message.role === 'user'
-                      ? 'bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-tr-sm'
-                      : 'bg-white text-slate-800 rounded-tl-sm shadow-sm border border-slate-100'
+                      ? 'bg-[#020C1B] text-white rounded-[1.5rem] rounded-br-sm dark:bg-white/10 dark:text-white'
+                      : 'bg-white text-gray-700 border border-gray-100 rounded-[1.5rem] rounded-bl-sm dark:bg-[#112240] dark:border-white/5 dark:text-gray-300'
                   )}
                 >
                   {message.isLoading ? (
                     <div className="flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Procesando...</span>
+                      <Loader2 className="w-4 h-4 animate-spin text-[#D4AF37]" />
+                      <span className="font-bold text-gray-400 text-xs uppercase tracking-wider">Analizando</span>
                     </div>
                   ) : (
                     message.content
@@ -727,14 +726,14 @@ export const NanoChatbot = () => {
           </div>
 
           {sugerencias.length > 0 && (
-            <div className="px-4 pb-2 pt-2 bg-white border-t border-gray-100">
-              <div className="flex flex-wrap gap-1.5">
+            <div className="px-5 pb-3 pt-3 bg-white dark:bg-[#0A192F] border-t border-gray-100 dark:border-white/10 shrink-0">
+              <div className="flex overflow-x-auto gap-2 pb-2 custom-scrollbar">
                 {sugerencias.map((s) => (
                   <button
                     key={s.texto}
                     type="button"
                     onClick={() => handleSugerenciaClick(s.consulta)}
-                    className="px-3 py-1.5 rounded-full text-xs bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-700 border border-slate-200 hover:border-blue-200 transition-all cursor-pointer"
+                    className="flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-[#020C1B] hover:text-white dark:hover:bg-[#D4AF37] dark:hover:text-[#020C1B] dark:hover:border-transparent text-slate-600 dark:text-gray-400 transition-colors"
                   >
                     {s.texto}
                   </button>
@@ -745,26 +744,26 @@ export const NanoChatbot = () => {
 
           <form
             onSubmit={handleSendMessage}
-            className="p-4 bg-white border-t border-gray-100"
+            className="p-4 bg-white dark:bg-[#0A192F] shrink-0"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 bg-slate-50 dark:bg-white/5 p-1.5 rounded-[1.5rem] border border-gray-200 dark:border-white/10 focus-within:ring-2 focus-within:ring-[#020C1B]/20 dark:focus-within:ring-[#D4AF37]/30 transition-all">
               <input
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Escribe tu consulta..."
-                className="flex-1 px-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-sm"
+                placeholder="Pregúntale a Nano..."
+                className="flex-1 px-4 py-3 bg-transparent focus:outline-none text-sm text-gray-800 dark:text-white placeholder:text-gray-400 font-medium"
                 disabled={isProcessing}
               />
               <button
                 type="submit"
                 disabled={!inputValue.trim() || isProcessing}
-                className="p-3 rounded-2xl bg-gradient-to-br from-[#0b1f3a] to-[#0f4c81] text-white disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:scale-105 transition-all"
+                className="w-12 h-12 flex items-center justify-center rounded-[1.2rem] bg-[#020C1B] dark:bg-[#D4AF37] text-white dark:text-[#020C1B] disabled:opacity-50 hover:scale-105 transition-transform shrink-0"
               >
                 {isProcessing ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
-                  <Send className="w-5 h-5" />
+                  <Send className="w-5 h-5 ml-1" />
                 )}
               </button>
             </div>
