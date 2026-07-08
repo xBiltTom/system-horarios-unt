@@ -57,7 +57,7 @@ export function SelectorInstitucional({ label, value, onChange, opciones, placeh
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 w-full mt-2 bg-white dark:bg-[#020C1B] border border-gray-200 dark:border-[#112240] rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-100">
+        <div className="absolute z-50 w-full mt-2 bg-white dark:bg-[#0A192F] border border-gray-200 dark:border-white/20 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)] overflow-hidden animate-in fade-in zoom-in-95 duration-100">
           <ul className="max-h-60 overflow-y-auto custom-scrollbar py-1">
             <li 
               onClick={() => { onChange(0); setIsOpen(false); }}
@@ -77,7 +77,7 @@ export function SelectorInstitucional({ label, value, onChange, opciones, placeh
                   className={cn(
                     "flex items-center justify-between px-4 py-2.5 text-sm cursor-pointer transition-colors",
                     isSelected 
-                      ? "bg-[#F0F4F8] dark:bg-[#112240] text-[#003366] dark:text-[#D4AF37] font-bold" 
+                      ? "bg-[#F0F4F8] dark:bg-white/10 text-[#003366] dark:text-[#D4AF37] font-bold" 
                       : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5"
                   )}
                 >

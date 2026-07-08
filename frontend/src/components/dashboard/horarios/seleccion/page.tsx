@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Clock, CheckCircle2, AlertCircle, AlertTriangle } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/stores/auth.store';
 import { useDisponibilidad } from '@/hooks/useDisponibilidad';
@@ -15,7 +16,7 @@ import { PanelSeleccionCurso } from '@/components/horarios/PanelSeleccionCurso';
 import { IndicadorProgresoHoras } from '@/components/horarios/IndicadorProgresoHoras';
 import { PanelValidaciones } from '@/components/horarios/PanelValidaciones';
 
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { useQueryClient } from '@tanstack/react-query';
 import { gruposService } from '@/services/grupos.service';
 import { ConfirmacionHorario } from '@/components/horarios/ConfirmacionHorario';
@@ -322,24 +323,27 @@ export default function SeleccionHorarioPage() {
   return (
     <div className="space-y-8 max-w-7xl mx-auto px-4 py-2 animate-fadeIn">
       {/* Header section with premium look */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-150 pb-6 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-100 dark:border-white/10 pb-6 gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-800 flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-unt-primary text-white shadow-md">
+          <h1 className="text-3xl font-black tracking-tight text-gray-900 dark:text-white flex items-center gap-4">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#003366] dark:bg-[#D4AF37] text-white dark:text-[#020C1B] shadow-lg shadow-[#003366]/20 dark:shadow-[#D4AF37]/20">
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </span>
             Elegir mi Horario
           </h1>
-          <p className="text-sm text-slate-500 mt-2">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mt-3 ml-2">
             Gestiona la asignación de tus cursos en los ambientes disponibles para el período académico activo.
           </p>
         </div>
         {periodoActivo && (
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-600 shadow-sm">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Periodo Activo: {periodoActivo.nombre}
+          <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs font-bold text-gray-700 dark:text-gray-300 shadow-sm">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+            Periodo Activo: <span className="text-[#003366] dark:text-[#D4AF37]">{periodoActivo.nombre}</span>
           </div>
         )}
       </div>
@@ -348,28 +352,28 @@ export default function SeleccionHorarioPage() {
       {!!docenteId && !!idPeriodo && turnoData && (
         <div
           className={[
-            'rounded-2xl border px-5 py-4 flex items-center gap-4 shadow-sm transition-all duration-300',
+            'rounded-3xl border px-6 py-5 flex flex-col md:flex-row md:items-center gap-5 shadow-sm transition-all duration-300',
             turnoData.acceso === true
               ? turnoData.razon === 'SIN_RESTRICCION' || turnoData.razon === 'NO_ES_DOCENTE'
-                ? 'bg-slate-50 border-slate-200 text-slate-700'
-                : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                ? 'bg-slate-50 border-slate-200 text-slate-800 dark:bg-white/5 dark:border-white/10 dark:text-slate-200'
+                : 'bg-emerald-50 border-emerald-200 text-emerald-900 dark:bg-emerald-900/10 dark:border-emerald-500/20 dark:text-emerald-300'
               : turnoData.razon === 'AUN_NO_ES_SU_TURNO'
-              ? 'bg-amber-50 border-amber-200 text-amber-800'
-              : 'bg-rose-50 border-rose-200 text-rose-800',
+              ? 'bg-amber-50 border-amber-200 text-amber-900 dark:bg-amber-900/10 dark:border-amber-500/20 dark:text-amber-300'
+              : 'bg-rose-50 border-rose-200 text-rose-900 dark:bg-rose-900/10 dark:border-rose-500/20 dark:text-rose-300',
           ].join(' ')}
         >
           <span className={[
-            'flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full text-xl',
+            'flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-2xl shadow-sm',
             turnoData.acceso
-              ? turnoData.razon === 'SIN_RESTRICCION' ? 'bg-slate-200' : 'bg-emerald-100'
-              : turnoData.razon === 'AUN_NO_ES_SU_TURNO' ? 'bg-amber-100' : 'bg-rose-100',
+              ? turnoData.razon === 'SIN_RESTRICCION' ? 'bg-white text-slate-500 dark:bg-slate-800 dark:text-slate-400' : 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'
+              : turnoData.razon === 'AUN_NO_ES_SU_TURNO' ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400' : 'bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400',
           ].join(' ')}>
             {turnoData.acceso
-              ? turnoData.razon === 'SIN_RESTRICCION' ? '✓' : '🟢'
-              : turnoData.razon === 'AUN_NO_ES_SU_TURNO' ? '⏰' : '🔴'}
+              ? turnoData.razon === 'SIN_RESTRICCION' ? <CheckCircle2 className="w-6 h-6" /> : <CheckCircle2 className="w-6 h-6" />
+              : turnoData.razon === 'AUN_NO_ES_SU_TURNO' ? <Clock className="w-6 h-6" /> : <AlertCircle className="w-6 h-6" />}
           </span>
           <div className="flex-1 min-w-0">
-            <p className="font-bold text-sm">
+            <p className="font-black text-base tracking-tight">
               {turnoData.acceso
                 ? turnoData.razon === 'SIN_RESTRICCION'
                   ? 'Sin restricción de turno activa'
@@ -382,7 +386,7 @@ export default function SeleccionHorarioPage() {
                 ? 'Selección no habilitada'
                 : 'No tienes ventana de atención asignada'}
             </p>
-            <p className="text-xs mt-0.5 opacity-80">
+            <p className="text-sm font-medium mt-1 opacity-80 leading-relaxed">
               {turnoData.acceso
                 ? turnoData.razon === 'EN_TURNO'
                   ? `Acceso activo hasta las ${turnoData.turnoAsignado?.horaFin}`
@@ -395,104 +399,108 @@ export default function SeleccionHorarioPage() {
             </p>
           </div>
           {esBloqueado && (
-            <span className="text-xs font-bold px-3 py-1 rounded-full bg-rose-200 text-rose-800 border border-rose-300 flex-shrink-0">
-              Selección bloqueada
-            </span>
+            <div className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-500/30">
+              <AlertTriangle className="w-4 h-4" />
+              <span className="text-xs font-bold uppercase tracking-widest">
+                Acción Bloqueada
+              </span>
+            </div>
           )}
         </div>
       )}
 
-      {esBloqueado && (
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-800 shadow-sm">
-          No puede realizar cambios porque no tiene una ventana de atención asignada.
-        </div>
-      )}
-
-      {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Main Grid Layout - Split Pane */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        {/* Left column: Courses and settings (1/3 width on desktop) */}
-        <div className="lg:col-span-1 space-y-6">
-          {/* Card: Course selection & groups */}
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-6">
-            <h2 className="text-lg font-bold text-slate-700 border-b border-gray-100 pb-3 flex items-center gap-2">
-              <span className="w-1 h-5 rounded-full bg-unt-primary"></span>
-              Cursos Asignados
-            </h2>
+        {/* Left column: Console (Command Center) - Always Dark */}
+        <div className="lg:col-span-4 lg:col-start-1">
+          <div className="dark bg-[#020C1B] rounded-[2.5rem] border border-white/10 shadow-2xl p-8 relative overflow-hidden flex flex-col gap-8 h-full">
+            {/* Ambient Background Glow */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
             
-            <PanelSeleccionCurso
-              componentes={progreso || []}
-              componenteSeleccionado={componenteSeleccionado}
-              alCambiarComponente={(id) => setComponenteSeleccionado(id || null)}
-            />
+            {/* Panel Header */}
+            <div>
+              <h2 className="text-xl font-black text-white flex items-center gap-3 tracking-tight">
+                <span className="w-1.5 h-6 rounded-full bg-[#D4AF37]"></span>
+                Panel de Control
+              </h2>
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-2 ml-4">
+                Configuración de Asignación
+              </p>
+            </div>
 
-            {/* Selector de ambiente siempre visible para no obligar a seleccionar un componente primero */}
-            <div className="space-y-4 pt-4 border-t border-gray-100">
-              <Selector
-                label="Ambiente (Aula/Lab)"
-                opciones={[
-                  { valor: '', etiqueta: 'Seleccionar ambiente' },
-                  ...ambientesFiltrados.map((a: any) => ({
-                    valor: String(a.id),
-                    etiqueta: `${a.codigo} (${a.tipo === 'AULA' ? 'Aula' : 'Laboratorio'}, Cap: ${a.capacidad})`,
-                  })),
-                ]}
-                value={ambienteId?.toString() || ''}
-                onChange={(e) => setAmbienteId(e.target.value ? parseInt(e.target.value) : null)}
+            {/* Panel de Cursos */}
+            <div className="relative z-10 space-y-4">
+              <h3 className="text-sm font-bold text-gray-400">1. Seleccionar Carga Pendiente</h3>
+              <PanelSeleccionCurso
+                componentes={progreso || []}
+                componenteSeleccionado={componenteSeleccionado}
+                alCambiarComponente={(id) => setComponenteSeleccionado(id || null)}
               />
             </div>
 
-            {componenteSeleccionado && (
-              <div className="space-y-4 pt-4 border-t border-gray-100 animate-fadeIn">
-                <h3 className="text-sm font-semibold text-slate-600">Configuración de Grupo Académico</h3>
-                
-                <div className="space-y-4">
-                  <Selector
+            {/* Selectores */}
+            <div className="relative z-10 space-y-6 pt-6 border-t border-white/10">
+              <h3 className="text-sm font-bold text-gray-400">2. Ubicación y Grupo</h3>
+              <SelectorInstitucional
+                label="Ambiente (Aula/Lab)"
+                opciones={[
+                  { value: '', label: 'Seleccionar ambiente...' },
+                  ...ambientesFiltrados.map((a: any) => ({
+                    value: String(a.id),
+                    label: `${a.codigo} (${a.tipo === 'AULA' ? 'Aula' : 'Lab'}, Cap: ${a.capacidad})`,
+                  })),
+                ]}
+                value={ambienteId?.toString() || ''}
+                onChange={(val) => setAmbienteId(val ? parseInt(val.toString()) : null)}
+              />
+
+              {componenteSeleccionado && (
+                <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                  <SelectorInstitucional
                     label="Grupo Académico"
                     opciones={[
-                      { valor: '', etiqueta: 'Seleccionar grupo' },
+                      { value: '', label: 'Seleccionar grupo...' },
                       ...((gruposDisponibles || []).map((g: any) => ({
-                        valor: String(g.id),
-                        etiqueta: `Grupo ${g.codigo} (Cap: ${g.capacidad_maxima})`,
+                        value: String(g.id),
+                        label: `Grupo ${g.codigo} (Cap: ${g.capacidad_maxima})`,
                       })) || []),
                     ]}
                     value={grupoSeleccionado?.toString() || ''}
-                    onChange={(e) => setGrupoSeleccionado(e.target.value ? parseInt(e.target.value) : null)}
-                    disabled={gruposLoading}
+                    onChange={(val) => setGrupoSeleccionado(val ? parseInt(val.toString()) : null)}
                   />
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
-          {/* Card: Progress */}
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-            <h2 className="text-lg font-bold text-slate-700 border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
-              <span className="w-1 h-5 rounded-full bg-indigo-500"></span>
-              Avance de Horas
-            </h2>
-            <IndicadorProgresoHoras progreso={progreso || []} />
-          </div>
+            {/* Avance de horas */}
+            <div className="relative z-10 pt-6 border-t border-white/10">
+              <h3 className="text-sm font-bold text-gray-400 mb-4">Progreso de Asignación</h3>
+              <IndicadorProgresoHoras progreso={progreso || []} />
+            </div>
 
-          {/* Card: Validations */}
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-            <h2 className="text-lg font-bold text-slate-700 border-b border-gray-100 pb-3 mb-4 flex items-center gap-2">
-              <span className="w-1 h-5 rounded-full bg-rose-500"></span>
-              Validaciones de Reglas
-            </h2>
-            <PanelValidaciones validacion={validacion || null} />
+            {/* Validaciones */}
+            <div className="relative z-10 pt-6 border-t border-white/10">
+              <h3 className="text-sm font-bold text-gray-400 mb-4">Validaciones del Sistema</h3>
+              <PanelValidaciones validacion={validacion || null} />
+            </div>
           </div>
         </div>
 
-        {/* Right column: Availability Matrix and Confirmation (2/3 width on desktop) */}
-        <div className="lg:col-span-2 space-y-6">
+        {/* Right column: Availability Matrix (Canvas) */}
+        <div className="lg:col-span-8 space-y-6">
+          {/* Card: Course selection & groups */}
+
           {/* Matrix Card */}
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
-              <h2 className="text-lg font-bold text-slate-700 flex items-center gap-2">
-                <span className="w-1 h-5 rounded-full bg-emerald-500"></span>
-                Horarios en Ambiente
-              </h2>
+          <div className="bg-white dark:bg-[#020C1B] rounded-[2.5rem] border border-gray-100 dark:border-white/10 shadow-xl p-8">
+            <div className="flex items-center justify-between border-b border-gray-100 dark:border-white/10 pb-6 mb-6">
+              <div>
+                <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3 tracking-tight">
+                  <span className="w-1.5 h-6 rounded-full bg-emerald-500 dark:bg-emerald-400"></span>
+                  Horarios en Ambiente
+                </h2>
+                <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-1 ml-4">Disponibilidad de Aulas en Tiempo Real</p>
+              </div>
               {ambienteId && (
                 <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
                   Verificando Disponibilidad
@@ -516,10 +524,10 @@ export default function SeleccionHorarioPage() {
 
           {/* Confirmation Box */}
           {!!docenteId && !!idPeriodo && (
-            <div className="bg-gradient-to-r from-slate-50 to-slate-100 rounded-2xl border border-slate-200 p-6 flex flex-col items-center justify-between gap-4 md:flex-row shadow-sm">
+            <div className="bg-white dark:bg-[#020C1B] rounded-[2.5rem] border border-gray-100 dark:border-white/10 p-8 flex flex-col items-center justify-between gap-6 md:flex-row shadow-xl">
               <div className="text-center md:text-left">
-                <h3 className="font-bold text-slate-700 text-base">¿Listo con tus selecciones?</h3>
-                <p className="text-xs text-slate-500 mt-1 max-w-md">
+                <h3 className="font-black text-gray-900 dark:text-white text-lg tracking-tight">¿Listo con tus selecciones?</h3>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mt-2 max-w-md leading-relaxed">
                   Confirma tus selecciones temporales. Al confirmar, tus bloques se guardarán en la base de datos como Borrador Oficial.
                 </p>
               </div>
