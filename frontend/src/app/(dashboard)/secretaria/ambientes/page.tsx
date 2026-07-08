@@ -71,10 +71,10 @@ export default function AmbientesSecretariaPage() {
               Gestión de Espacios
             </div>
             <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-white drop-shadow-sm">
-              Ambientes <span className="text-[#D4AF37]">Disponibles</span>
+              Infraestructura <span className="text-[#D4AF37]">Académica</span>
             </h1>
             <p className="text-lg text-white/70 max-w-2xl font-medium leading-relaxed">
-              Supervisa la ocupación y capacidad de las aulas y laboratorios de la Escuela en tiempo real para una asignación eficiente.
+              Monitorea el aforo y el nivel de ocupación de todos los espacios físicos de la Escuela.
             </p>
           </div>
           
@@ -128,10 +128,10 @@ export default function AmbientesSecretariaPage() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">Capacidad (Est.)</label>
+            <label className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">Aforo (Alumnos)</label>
             <div className="flex items-center gap-2 bg-gray-50 dark:bg-[#020C1B] p-1.5 rounded-2xl border border-gray-200 dark:border-[#112240]">
               {[
-                { id: 'TODOS', label: 'Cualquiera' },
+                { id: 'TODOS', label: 'Todos' },
                 { id: 'PEQUENO', label: '≤ 20' },
                 { id: 'MEDIANO', label: '21 - 40' },
                 { id: 'GRANDE', label: '> 40' }
@@ -172,9 +172,9 @@ export default function AmbientesSecretariaPage() {
               <tr className="bg-gray-50/80 dark:bg-[#020C1B] border-b border-gray-200 dark:border-[#112240]">
                 <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Código</th>
                 <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Tipo</th>
-                <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-center">Capacidad</th>
-                <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-center">Horas Asignadas</th>
-                <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-right">Acciones</th>
+                <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-center">Aforo Máximo</th>
+                <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-center">Nivel de Ocupación</th>
+                <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-right">Detalles</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-[#112240]">
