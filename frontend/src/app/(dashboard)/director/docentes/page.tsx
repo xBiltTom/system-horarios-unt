@@ -6,11 +6,12 @@ import { docentesService } from '@/services/docentes.service';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Boton } from '@/components/ui/Boton';
 import { CampoTexto } from '@/components/ui/CampoTexto';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { Modal } from '@/components/ui/Modal';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
 import { TablaDatos } from '@/components/ui/TablaDatos';
-import { UserPlus, Search, Mail, Phone, Briefcase, GraduationCap, Calendar, Edit2, Users } from 'lucide-react';
+import { UserPlus, Search, Mail, Phone, Briefcase, GraduationCap, Calendar, Edit2, Users, FileText } from 'lucide-react';
+import { cn } from '@/lib/utilidades';
 
 export default function GestionDocentesPage() {
   const queryClient = useQueryClient();
@@ -147,8 +148,8 @@ export default function GestionDocentesPage() {
       titulo: 'Docente',
       render: (item: any) => (
         <div className="flex flex-col">
-          <span className="font-bold text-slate-900">{item.apellidos}, {item.nombres}</span>
-          <span className="text-xs text-slate-500 flex items-center gap-1">
+          <span className="font-bold text-gray-900 dark:text-white">{item.apellidos}, {item.nombres}</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-1">
             <Mail className="w-3 h-3" /> {item.email}
           </span>
         </div>
@@ -159,8 +160,8 @@ export default function GestionDocentesPage() {
       titulo: 'Modalidad',
       render: (item: any) => (
         <div className="flex items-center gap-2">
-          <Briefcase className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-sm font-medium text-slate-700">{item.modalidad}</span>
+          <Briefcase className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{item.modalidad}</span>
         </div>
       )
     },
@@ -169,8 +170,8 @@ export default function GestionDocentesPage() {
       titulo: 'Categoría',
       render: (item: any) => (
         <div className="flex items-center gap-2">
-          <GraduationCap className="w-3.5 h-3.5 text-slate-400" />
-          <span className="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-bold uppercase tracking-tight">
+          <GraduationCap className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
+          <span className="px-2.5 py-1 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 rounded-lg text-xs font-bold uppercase tracking-tight border border-gray-200 dark:border-white/10">
             {item.categoria}
           </span>
         </div>
@@ -180,7 +181,7 @@ export default function GestionDocentesPage() {
       clave: 'horas_max_semana', 
       titulo: 'Carga Máx.',
       render: (item: any) => (
-        <span className="font-mono font-bold text-unt-primary bg-unt-primary/5 px-2 py-1 rounded text-xs">
+        <span className="font-mono font-bold text-[#003366] dark:text-[#D4AF37] bg-[#003366]/5 dark:bg-[#D4AF37]/10 px-2 py-1 rounded text-xs border border-[#003366]/10 dark:border-[#D4AF37]/20">
           {item.horas_max_semana}H / SEM
         </span>
       )
@@ -189,10 +190,16 @@ export default function GestionDocentesPage() {
       clave: 'activo',
       titulo: 'Estado',
       render: (item: any) => (
-        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${
-          item.activo ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'
-        }`}>
-          <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${item.activo ? 'bg-green-500' : 'bg-red-500'}`} />
+        <span className={cn(
+          "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border",
+          item.activo 
+            ? "bg-green-50 text-green-700 border-green-100 dark:bg-green-900/30 dark:text-green-400 dark:border-green-900/50" 
+            : "bg-red-50 text-red-700 border-red-100 dark:bg-red-900/30 dark:text-red-400 dark:border-red-900/50"
+        )}>
+          <span className={cn(
+            "w-1.5 h-1.5 rounded-full mr-1.5",
+            item.activo ? "bg-green-500" : "bg-red-500"
+          )} />
           {item.activo ? 'Activo' : 'Inactivo'}
         </span>
       ),
@@ -201,19 +208,21 @@ export default function GestionDocentesPage() {
 
   return (
     <div className="space-y-8 max-w-[1800px] mx-auto pb-20 animate-in fade-in duration-500">
-      {/* Header Estilo Classroom */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-10 py-12 text-white shadow-2xl">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-        <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+      {/* Header Institucional */}
+      <div className="relative overflow-hidden rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240]">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
+          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+        </div>
         
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest text-white/90">
-              <Users className="w-3.5 h-3.5" />
+          <div className="space-y-5">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 backdrop-blur-md rounded-full border border-[#D4AF37]/30 text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
+              <Users className="w-4 h-4" />
               Gestión de Personal
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Gestión de Docentes</h1>
-            <p className="text-lg text-white/70 max-w-2xl">
+            <h1 className="text-4xl font-serif font-extrabold tracking-wide text-white">Gestión de Docentes</h1>
+            <p className="text-lg text-gray-400 font-light max-w-2xl">
               Registro de plana docente y configuración de límites de carga lectiva por periodo académico.
             </p>
           </div>
@@ -223,22 +232,25 @@ export default function GestionDocentesPage() {
       {/* Barra de Acciones y Búsqueda */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
         <div className="relative flex-1 w-full lg:w-auto">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
           <input
             type="text"
             placeholder="Buscar docente por nombre, apellido o correo..."
             value={buscar}
             onChange={(e) => setBuscar(e.target.value)}
-            className="w-full pl-11 pr-4 py-4 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-unt-primary/5 focus:border-unt-primary transition-all bg-white shadow-sm"
+            className="w-full pl-12 pr-4 py-4 bg-white dark:bg-[#0A192F] border border-gray-200 dark:border-white/10 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-[#003366] dark:focus:ring-[#D4AF37] text-gray-900 dark:text-white placeholder:text-gray-400 transition-all shadow-sm"
           />
         </div>
-        <Boton onClick={() => { resetForm(); setModalAbierto(true); }} className="rounded-2xl px-8 py-4 shadow-lg shadow-unt-primary/20">
+        <Boton 
+          onClick={() => { resetForm(); setModalAbierto(true); }} 
+          className="rounded-2xl px-8 py-4 shadow-lg shadow-[#003366]/20 dark:shadow-[#D4AF37]/10 bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] font-bold transition-all"
+        >
           <UserPlus className="w-5 h-5 mr-2" />
           Nuevo Docente
         </Boton>
       </div>
 
-      <Card className="border-none shadow-xl shadow-slate-200/50 rounded-[2.5rem] overflow-hidden">
+      <Card className="border-none shadow-xl shadow-gray-200/50 dark:shadow-none bg-white dark:bg-[#0A192F] rounded-[2.5rem] overflow-hidden border dark:border-white/5">
         <CardContent className="p-0">
           <TablaDatos
             columnas={columnas}
@@ -356,77 +368,56 @@ export default function GestionDocentesPage() {
             {/* CONFIGURACIÓN DOCENTE */}
             <div className="grid grid-cols-2 gap-4">
 
-              <Selector
+              <SelectorInstitucional
                 label="Modalidad"
                 value={formData.modalidad}
-                onChange={(e: any) =>
+                onChange={(val: any) =>
                   setFormData({
                     ...formData,
-                    modalidad: e.target.value
+                    modalidad: val
                   })
                 }
                 opciones={[
-                  { valor: 'NOMBRADO', etiqueta: 'Nombrado' },
-                  { valor: 'CONTRATADO', etiqueta: 'Contratado' },
+                  { value: 'NOMBRADO', label: 'Nombrado' },
+                  { value: 'CONTRATADO', label: 'Contratado' },
                 ]}
               />
 
-              <Selector
+              <SelectorInstitucional
                 label="Categoría"
                 value={formData.categoria}
-                onChange={(e: any) =>
+                onChange={(val: any) =>
                   setFormData({
                     ...formData,
-                    categoria: e.target.value
+                    categoria: val
                   })
                 }
                 opciones={[
-                  { valor: 'PRINCIPAL', etiqueta: 'Principal' },
-                  { valor: 'ASOCIADO', etiqueta: 'Asociado' },
-                  { valor: 'AUXILIAR', etiqueta: 'Auxiliar' },
-                  { valor: 'JEFE_PRACTICA', etiqueta: 'Jefe de Práctica' },
+                  { value: 'PRINCIPAL', label: 'Principal' },
+                  { value: 'ASOCIADO', label: 'Asociado' },
+                  { value: 'AUXILIAR', label: 'Auxiliar' },
+                  { value: 'JEFE_PRACTICA', label: 'Jefe de Práctica' },
                 ]}
               />
             </div>
 
-            <Selector
+            <SelectorInstitucional
               label="Dedicación"
               value={formData.dedicacion}
-              onChange={(e: any) =>
+              onChange={(val: any) =>
                 setFormData({
                   ...formData,
-                  dedicacion: e.target.value
+                  dedicacion: val
                 })
               }
               opciones={[
-                {
-                  valor: 'TIEMPO_COMPLETO_40H',
-                  etiqueta: 'Tiempo Completo 40H'
-                },
-                {
-                  valor: 'DEDICACION_EXCLUSIVA_40H',
-                  etiqueta: 'Dedicación Exclusiva 40H'
-                },
-                {
-                  valor: 'TIEMPO_PARCIAL_20H',
-                  etiqueta: 'Tiempo Parcial 20H'
-                },
-                {
-                  valor: 'TIEMPO_PARCIAL_16H',
-                  etiqueta: 'Tiempo Parcial 16H'
-                },
-                {
-                  valor: 'TIEMPO_PARCIAL_12H',
-                  etiqueta: 'Tiempo Parcial 12H'
-                },
-                {
-                  valor: 'TIEMPO_PARCIAL_10H',
-                  etiqueta: 'Tiempo Parcial 10H'
-                },
-                {
-                  valor: 'TIEMPO_PARCIAL_8H',
-                  etiqueta: 'Tiempo Parcial 8H'
-                }
+                { value: 'TIEMPO_COMPLETO_40H', label: 'Tiempo Completo 40H' },
+                { value: 'DEDICACION_EXCLUSIVA_40H', label: 'Dedicación Exclusiva 40H' },
+                { value: 'TIEMPO_PARCIAL_20H', label: 'Tiempo Parcial 20H' },
+                { value: 'TIEMPO_PARCIAL_16H', label: 'Tiempo Parcial 16H' },
+                { value: 'TIEMPO_PARCIAL_12H', label: 'Tiempo Parcial 12H' },
+                { value: 'TIEMPO_PARCIAL_10H', label: 'Tiempo Parcial 10H' },
+                { value: 'TIEMPO_PARCIAL_8H', label: 'Tiempo Parcial 8H' }
               ]}
             />
 
@@ -460,7 +451,7 @@ export default function GestionDocentesPage() {
 
             {/* USUARIO */}
             {!docenteSeleccionado && (
-              <div className="flex items-center gap-2 py-2">
+              <div className="flex items-center gap-3 py-3 px-4 rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 transition-colors">
                 <input
                   type="checkbox"
                   id="crear_usuario"
@@ -471,28 +462,28 @@ export default function GestionDocentesPage() {
                       crear_usuario: e.target.checked
                     })
                   }
-                  className="w-4 h-4 text-unt-primary border-slate-300 rounded focus:ring-unt-primary"
+                  className="w-5 h-5 text-[#003366] dark:text-[#D4AF37] bg-white dark:bg-[#020C1B] border-gray-300 dark:border-white/20 rounded focus:ring-[#003366] dark:focus:ring-[#D4AF37] focus:ring-offset-0 transition-all cursor-pointer"
                 />
 
                 <label
                   htmlFor="crear_usuario"
-                  className="text-sm font-medium text-slate-600 cursor-pointer"
+                  className="flex flex-col cursor-pointer"
                 >
-                  Crear cuenta de acceso automáticamente
-                  <span className="block text-xs text-slate-400">
-                    Se generará una contraseña temporal automáticamente
+                  <span className="text-sm font-bold text-gray-900 dark:text-white">Crear cuenta de acceso automáticamente</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    Se generará una contraseña temporal para este docente
                   </span>
                 </label>
               </div>
             )}
 
-            <div className="flex justify-end gap-3 pt-6 border-t border-slate-100">
+            <div className="flex justify-end gap-3 pt-6 border-t border-gray-100 dark:border-white/10">
 
               <Boton
                 variante="secundario"
                 type="button"
                 onClick={() => setModalAbierto(false)}
-                className="rounded-xl"
+                className="rounded-xl px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-white/10 dark:hover:bg-white/20 dark:text-white border-transparent"
               >
                 Cancelar
               </Boton>
@@ -500,12 +491,12 @@ export default function GestionDocentesPage() {
               <Boton
                 type="submit"
                 disabled={mutationCrear.isPending || mutationEditar.isPending}
-                className="rounded-xl px-8"
+                className="rounded-xl px-8 bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F] font-bold border-transparent"
               >
                 {mutationCrear.isPending || mutationEditar.isPending
                   ? 'Guardando...'
                   : docenteSeleccionado
-                    ? 'Actualizar'
+                    ? 'Actualizar Docente'
                     : 'Guardar Docente'}
               </Boton>
 
