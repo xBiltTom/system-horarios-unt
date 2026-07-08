@@ -207,9 +207,11 @@ export default function DashboardDocentePage() {
   return (
     <div className="space-y-10 pb-20 animate-in fade-in duration-700">
       {/* PANEL DE BIENVENIDA (Comando Docente) */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-[#0A192F] px-8 py-12 md:px-12 md:py-16 text-white shadow-2xl border border-[#112240]">
-        <div className="absolute top-0 right-0 h-96 w-96 rounded-full bg-[#D4AF37]/5 blur-3xl pointer-events-none" />
-        <div className="absolute -left-20 -bottom-20 h-64 w-64 bg-white/5 blur-3xl pointer-events-none" />
+      <div className="relative rounded-[3rem] bg-[#0A192F] px-8 py-12 md:px-12 md:py-16 text-white shadow-2xl border border-[#112240]">
+        <div className="absolute inset-0 overflow-hidden rounded-[3rem] pointer-events-none">
+          <div className="absolute top-0 right-0 h-96 w-96 rounded-full bg-[#D4AF37]/5 blur-3xl" />
+          <div className="absolute -left-20 -bottom-20 h-64 w-64 bg-white/5 blur-3xl" />
+        </div>
 
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
           <div className="max-w-3xl space-y-5">
