@@ -77,18 +77,18 @@ export function CalendarioGeneralConNoLectivos({ idPeriodo, idDocente, exportOpt
     );
 
   return (
-    <div className="flex gap-4 p-4 items-start bg-slate-50 relative">
-      <div className="flex-1 overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="flex gap-4 p-2 sm:p-4 items-start bg-slate-50 dark:bg-transparent relative w-full">
+      <div className="flex-1 overflow-x-auto bg-white dark:bg-[#0A192F] rounded-2xl shadow-sm border border-gray-200 dark:border-white/10 custom-scrollbar">
         <table className="w-full min-w-[800px] border-collapse table-fixed">
           <thead>
-            <tr className="bg-slate-50 border-b border-gray-200">
-              <th className="w-32 p-3 text-xs font-semibold text-gray-500 text-center border-r border-gray-200">
+            <tr className="bg-slate-50 dark:bg-[#112240] border-b border-gray-200 dark:border-white/10">
+              <th className="w-32 p-4 text-xs font-bold text-gray-500 dark:text-gray-400 text-center border-r border-gray-200 dark:border-white/10 uppercase tracking-wider">
                 Hora
               </th>
               {DIAS.map((dia) => (
                 <th
                   key={dia}
-                  className="p-3 text-xs font-semibold text-gray-700 text-center border-r border-gray-200"
+                  className="p-4 text-xs font-bold text-gray-700 dark:text-gray-300 text-center border-r border-gray-200 dark:border-white/10 uppercase tracking-wider"
                 >
                   {dia}
                 </th>
@@ -98,8 +98,8 @@ export function CalendarioGeneralConNoLectivos({ idPeriodo, idDocente, exportOpt
           <tbody>
             {HORAS.map((hora) => {
               return (
-                <tr key={hora} className="group hover:bg-slate-50 transition-colors">
-                  <td className="p-2 text-[11px] font-bold text-gray-600 text-center border-r border-b border-gray-100 align-middle w-32 bg-slate-50/30">
+                <tr key={hora} className="group hover:bg-slate-50 dark:hover:bg-[#112240]/50 transition-colors">
+                  <td className="p-2 text-[11px] font-black tracking-widest text-gray-600 dark:text-gray-400 text-center border-r border-b border-gray-100 dark:border-white/5 align-middle w-32 bg-slate-50/30 dark:bg-white/5">
                     {formatearFranjaHora(hora)}
                   </td>
                   {DIAS.map((dia) => {
@@ -109,7 +109,7 @@ export function CalendarioGeneralConNoLectivos({ idPeriodo, idDocente, exportOpt
                     return (
                       <td
                         key={`${dia}-${hora}`}
-                        className="p-1 border-r border-b border-gray-100 relative min-h-[80px] align-top transition-all duration-200 bg-white hover:bg-unt-primary/5"
+                        className="p-1.5 border-r border-b border-gray-100 dark:border-white/5 relative min-h-[80px] align-top transition-all duration-200 bg-white dark:bg-transparent hover:bg-unt-primary/5 dark:hover:bg-white/5"
                       >
                         <div className="grid gap-1 min-h-[60px] p-1">
                           {(exportOption === 'completo' || exportOption === 'carga-lectiva') && clasesEnCelda.map((clase: any, idx: number) => {
@@ -130,19 +130,19 @@ export function CalendarioGeneralConNoLectivos({ idPeriodo, idDocente, exportOpt
                             return (
                               <div
                                 key={idx}
-                                className="p-2.5 rounded-xl text-xs border shadow-sm transition-all flex flex-col justify-between min-h-[55px] bg-blue-50/80 border-blue-200 text-blue-800"
+                                className="p-2.5 rounded-xl text-xs border shadow-sm transition-all flex flex-col justify-between min-h-[55px] bg-blue-50/80 border-blue-200 text-blue-800 dark:bg-blue-900/20 dark:border-blue-500/30 dark:text-blue-300"
                               >
-                                <div className="font-bold text-[10.5px] leading-tight text-slate-800 break-words" title={cursoNombre}>
+                                <div className="font-bold text-[10.5px] leading-tight text-slate-800 dark:text-blue-100 break-words" title={cursoNombre}>
                                   {cursoNombre}
                                 </div>
-                                <div className="text-[8.5px] font-semibold text-slate-500 mt-1 leading-none">
+                                <div className="text-[8.5px] font-bold tracking-wide text-slate-500 dark:text-blue-300/80 mt-1.5 leading-none">
                                   {tipoComponente} {tipoComponente && '•'} Gr. {grupoCodigo}
                                 </div>
-                                <div className="flex justify-between items-center mt-2 pt-1.5 border-t border-black/5 text-[9px] opacity-80 font-medium">
-                                  <span className="font-semibold bg-white/60 px-1.5 py-0.5 rounded border border-black/5 text-[8.5px] text-slate-700">
+                                <div className="flex justify-between items-center mt-2 pt-2 border-t border-black/5 dark:border-white/10 text-[9px] font-bold">
+                                  <span className="bg-white/60 dark:bg-white/10 px-1.5 py-0.5 rounded border border-black/5 dark:border-white/10 text-[8.5px] text-slate-700 dark:text-blue-200">
                                     Aula: {clase.ambiente?.codigo || 'Pendiente'}
                                   </span>
-                                  <span className="font-bold uppercase text-[7px] px-1 rounded bg-black/5 leading-normal text-slate-700">
+                                  <span className="uppercase text-[7.5px] px-1.5 py-0.5 rounded bg-black/5 dark:bg-black/30 leading-normal text-slate-700 dark:text-blue-200 tracking-wider">
                                     {clase.estado}
                                   </span>
                                 </div>
@@ -150,11 +150,11 @@ export function CalendarioGeneralConNoLectivos({ idPeriodo, idDocente, exportOpt
                             );
                           })}
                           {(exportOption === 'completo' || exportOption === 'carga-no-lectiva') && noLectivoEnCelda && (
-                            <div className="p-2.5 rounded-xl text-xs border shadow-sm transition-all flex flex-col justify-between min-h-[55px] bg-indigo-50 border-indigo-200">
-                              <div className="font-bold text-[10px] text-indigo-600 uppercase tracking-tighter">
+                            <div className="p-2.5 rounded-xl text-xs border shadow-sm transition-all flex flex-col justify-between min-h-[55px] bg-indigo-50 border-indigo-200 dark:bg-indigo-900/20 dark:border-indigo-500/30">
+                              <div className="font-black text-[9px] text-indigo-600 dark:text-indigo-400 uppercase tracking-widest">
                                 No Lectivo
                               </div>
-                              <div className="text-[9px] font-bold text-indigo-900 leading-tight mt-1">
+                              <div className="text-[10px] font-bold text-indigo-900 dark:text-indigo-200 leading-tight mt-1.5">
                                 {getLabelSeccion(noLectivoEnCelda.seccion)}
                               </div>
                             </div>
