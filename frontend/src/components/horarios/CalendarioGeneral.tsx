@@ -163,7 +163,7 @@ export function CalendarioGeneral({ idPeriodo, filtroTipo, filtroId, ambienteAsi
   if (isLoading) return <div className="p-10 flex justify-center"><SpinnerCarga /></div>;
 
   return (
-    <div className="flex gap-4 p-4 items-start bg-slate-50 relative">
+    <div className="flex gap-4 p-4 items-start bg-transparent relative">
       {errorToast && (
         <div className="fixed top-20 right-10 z-50">
           <NotificacionToast mensaje={errorToast.mensaje} tipo="error" />
@@ -208,13 +208,13 @@ export function CalendarioGeneral({ idPeriodo, filtroTipo, filtroId, ambienteAsi
         </div>
       )}
 
-      <div className="flex-1 overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="flex-1 overflow-x-auto bg-transparent rounded-xl shadow-sm border border-gray-200 dark:border-[#112240]">
         <table className="w-full min-w-[800px] border-collapse table-fixed">
           <thead>
-            <tr className="bg-slate-50 border-b border-gray-200">
-              <th className="w-20 p-3 text-xs font-semibold text-gray-500 text-center border-r border-gray-200">Hora</th>
+            <tr className="bg-gray-50 dark:bg-[#020C1B] border-b border-gray-200 dark:border-[#112240]">
+              <th className="w-20 p-3 text-xs font-bold text-gray-500 dark:text-gray-400 text-center border-r border-gray-200 dark:border-[#112240]">Hora</th>
               {DIAS.map((dia) => (
-                <th key={dia} className="p-3 text-xs font-semibold text-gray-700 text-center border-r border-gray-200">
+                <th key={dia} className="p-3 text-xs font-bold text-gray-700 dark:text-gray-300 text-center border-r border-gray-200 dark:border-[#112240]">
                   {dia}
                 </th>
               ))}
@@ -224,105 +224,97 @@ export function CalendarioGeneral({ idPeriodo, filtroTipo, filtroId, ambienteAsi
             {HORAS.map((hora) => {
               const horaFin = `${(parseInt(hora, 10) + 1).toString().padStart(2, '0')}:00`;
               return (
-                <tr key={hora} className="group hover:bg-slate-50 transition-colors">
-                  <td className="p-2 text-[11px] font-bold text-gray-600 text-center border-r border-b border-gray-100 align-middle w-32 bg-slate-50/30">
+                <tr key={hora} className="group hover:bg-gray-50 dark:hover:bg-[#112240]/50 transition-colors">
+                  <td className="p-2 text-[11px] font-bold text-gray-600 dark:text-gray-500 text-center border-r border-b border-gray-200 dark:border-[#112240] align-middle w-32 bg-gray-50/30 dark:bg-[#020C1B]/30">
                     {formatearFranjaHora(hora)}
                   </td>
                   {DIAS.map((dia) => {
                     const clasesEnCelda = getCelda(dia, hora);
                     let isAlmuerzo = false;
-                    /* (DESACTIVADO según requerimiento)
-                    if (configuracion) {
-                      const horaInt = parseInt(hora.split(':')[0], 10);
-                      const inicioInt = parseInt(configuracion.almuerzoInicio.split(':')[0], 10);
-                      const finInt = parseInt(configuracion.almuerzoFin.split(':')[0], 10);
-                      isAlmuerzo = horaInt >= inicioInt && horaInt < finInt;
-                    }
-                    */
 
                     const isShaking = dragErrorShake?.dia === dia && dragErrorShake?.hora === hora;
-                  let isSmartHighlighted = false;
-                  if (draggedItem && !isAlmuerzo) {
-                    if (clasesEnCelda.length > 0) isSmartHighlighted = true;
-                  }
+                    let isSmartHighlighted = false;
+                    if (draggedItem && !isAlmuerzo) {
+                      if (clasesEnCelda.length > 0) isSmartHighlighted = true;
+                    }
 
-                  return (
+                    return (
                       <td
                         key={`${dia}-${hora}`}
                         onDragOver={(e) => handleDragOver(e, dia, hora)}
                         onDrop={(e) => handleDrop(e, dia, hora)}
-                        className={`p-1 border-r border-b border-gray-100 relative min-h-[80px] align-top transition-all duration-200
-                          ${isAlmuerzo ? 'bg-slate-50/50 crosshatch-pattern' : 'bg-white hover:bg-unt-primary/5'}
+                        className={`p-1 border-r border-b border-gray-200 dark:border-[#112240] relative min-h-[80px] align-top transition-all duration-200
+                          ${isAlmuerzo ? 'bg-gray-50/50 dark:bg-[#020C1B]/50 crosshatch-pattern' : 'bg-white dark:bg-transparent hover:bg-unt-primary/5 dark:hover:bg-unt-primary/10'}
                           ${isSmartHighlighted ? 'bg-red-50/50 ring-1 ring-inset ring-red-200' : ''}
                           ${draggedItem && !isAlmuerzo && !isSmartHighlighted ? 'bg-emerald-50/20' : ''}
                         `}
                       >
                         <div className={`grid ${clasesEnCelda.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} gap-1 min-h-[60px] p-1 ${isShaking ? 'animate-shake' : ''}`}>
                           {clasesEnCelda.map((clase: any, idx: number) => {
-                          const cursoNombre =
-                            clase.componente?.oferta?.curso?.nombre ||
-                            clase.grupo?.componente?.oferta?.curso?.nombre ||
-                            clase.curso?.nombre ||
-                            'Curso';
-                          const tipoComponente =
-                            clase.componente?.tipo ||
-                            clase.grupo?.componente?.tipo ||
-                            '';
-                          const grupoCodigo =
-                            clase.grupo?.codigo ||
-                            clase.grupo?.codigo_grupo ||
-                            'G';
+                            const cursoNombre =
+                              clase.componente?.oferta?.curso?.nombre ||
+                              clase.grupo?.componente?.oferta?.curso?.nombre ||
+                              clase.curso?.nombre ||
+                              'Curso';
+                            const tipoComponente =
+                              clase.componente?.tipo ||
+                              clase.grupo?.componente?.tipo ||
+                              '';
+                            const grupoCodigo =
+                              clase.grupo?.codigo ||
+                              clase.grupo?.codigo_grupo ||
+                              'G';
 
-                          return (
-                            <div
-                              key={idx}
-                              draggable={modo === 'EDICION'}
-                              onDragStart={(e) => modo === 'EDICION' && handleDragStart(e, clase, true)}
-                              className={`p-2.5 rounded-xl text-xs border shadow-sm transition-all hover:shadow-md flex flex-col justify-between min-h-[55px]
-                                ${modo === 'EDICION' ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'}
-                                ${clase.estado === 'PUBLICADO' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' :
-                                  clase.estado === 'CONFIRMADO' ? 'bg-blue-50/80 border-blue-200 text-blue-800' :
-                                  'bg-amber-50 border-amber-200 text-amber-800'}
-                              `}
-                            >
-                              <div className="font-bold text-[10.5px] leading-tight text-slate-800 break-words" title={cursoNombre}>
-                                {cursoNombre}
-                              </div>
-                              <div className="text-[8.5px] font-semibold text-slate-500 mt-1 leading-none">
-                                {tipoComponente} {tipoComponente && '•'} Gr. {grupoCodigo}
-                              </div>
-                              <div className="flex justify-between items-center mt-2 pt-1.5 border-t border-black/5 text-[9px] opacity-80 font-medium">
-                                {filtroTipo === 'AULA' ? (
-                                  <span className="truncate max-w-[110px] text-slate-600">
-                                    {clase.docente ? `${clase.docente.nombres?.[0] || ''}. ${clase.docente.apellidos}` : 'Docente'}
+                            return (
+                              <div
+                                key={idx}
+                                draggable={modo === 'EDICION'}
+                                onDragStart={(e) => modo === 'EDICION' && handleDragStart(e, clase, true)}
+                                className={`p-2.5 rounded-xl text-xs border shadow-sm transition-all hover:shadow-md flex flex-col justify-between min-h-[55px]
+                                  ${modo === 'EDICION' ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'}
+                                  ${clase.estado === 'PUBLICADO' ? 'bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-400' :
+                                    clase.estado === 'CONFIRMADO' ? 'bg-blue-50/80 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/30 text-blue-800 dark:text-blue-400' :
+                                    'bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/30 text-amber-800 dark:text-amber-400'}
+                                `}
+                              >
+                                <div className="font-bold text-[10.5px] leading-tight text-gray-800 dark:text-gray-100 break-words" title={cursoNombre}>
+                                  {cursoNombre}
+                                </div>
+                                <div className="text-[8.5px] font-semibold text-gray-500 dark:text-gray-400 mt-1 leading-none">
+                                  {tipoComponente} {tipoComponente && '•'} Gr. {grupoCodigo}
+                                </div>
+                                <div className="flex justify-between items-center mt-2 pt-1.5 border-t border-black/5 dark:border-white/10 text-[9px] opacity-80 font-medium">
+                                  {filtroTipo === 'AULA' ? (
+                                    <span className="truncate max-w-[110px] text-gray-600 dark:text-gray-300">
+                                      {clase.docente ? `${clase.docente.nombres?.[0] || ''}. ${clase.docente.apellidos}` : 'Docente'}
+                                    </span>
+                                  ) : (
+                                    <span className="font-semibold bg-white/60 dark:bg-black/20 px-1.5 py-0.5 rounded border border-black/5 dark:border-white/10 text-[8.5px] text-gray-700 dark:text-gray-300">
+                                      Aula: {clase.ambiente?.codigo || 'Pendiente'}
+                                    </span>
+                                  )}
+                                  <span className="font-bold uppercase text-[7px] px-1 rounded bg-black/5 dark:bg-white/10 leading-normal text-gray-700 dark:text-gray-300">
+                                    {clase.estado}
                                   </span>
-                                ) : (
-                                  <span className="font-semibold bg-white/60 px-1.5 py-0.5 rounded border border-black/5 text-[8.5px] text-slate-700">
-                                    Aula: {clase.ambiente?.codigo || 'Pendiente'}
-                                  </span>
-                                )}
-                                <span className="font-bold uppercase text-[7px] px-1 rounded bg-black/5 leading-normal text-slate-700">
-                                  {clase.estado}
-                                </span>
+                                </div>
                               </div>
+                            );
+                          })}
+
+                          {modo === 'EDICION' && clasesEnCelda.length === 0 && !isAlmuerzo && (
+                            <div className={`w-full h-full min-h-[40px] border-2 border-transparent border-dashed rounded-lg transition-colors flex items-center justify-center
+                              ${draggedItem ? 'border-unt-primary/40 bg-unt-primary/5' : 'opacity-0 group-hover:opacity-100 group-hover:border-unt-primary/20'}
+                            `}>
+                              <span className={`text-[10px] font-medium ${draggedItem ? 'text-unt-primary' : 'text-unt-primary/50'}`}>
+                                {draggedItem ? 'Soltar aquí' : '+ Asignar'}
+                              </span>
                             </div>
-                          );
-                        })}
-
-                        {modo === 'EDICION' && clasesEnCelda.length === 0 && !isAlmuerzo && (
-                          <div className={`w-full h-full min-h-[40px] border-2 border-transparent border-dashed rounded-lg transition-colors flex items-center justify-center
-                            ${draggedItem ? 'border-unt-primary/40 bg-unt-primary/5' : 'opacity-0 group-hover:opacity-100 group-hover:border-unt-primary/20'}
-                          `}>
-                            <span className={`text-[10px] font-medium ${draggedItem ? 'text-unt-primary' : 'text-unt-primary/50'}`}>
-                              {draggedItem ? 'Soltar aquí' : '+ Asignar'}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                  );
-                })}
-              </tr>
+                          )}
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
               );
             })}
           </tbody>

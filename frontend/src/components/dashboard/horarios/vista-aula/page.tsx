@@ -212,7 +212,7 @@ export default function VistaHorarioAulaPage() {
 
       {/* CUADRÍCULA OPERATIVA (CALENDARIO) */}
       {!ambienteSeleccionado ? (
-        <div className="flex flex-col items-center justify-center py-24 bg-gray-50/50 dark:bg-[#0A192F]/50 backdrop-blur-sm rounded-[2.5rem] border-2 border-dashed border-gray-200 dark:border-[#112240] animate-in fade-in duration-700">
+        <div className="flex flex-col items-center justify-center py-24 bg-gray-50/50 dark:bg-[#0A192F]/50 backdrop-blur-sm rounded-[2.5rem] border-2 border-dashed border-gray-200 dark:border-[#112240] animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
           <div className="p-6 bg-gray-100/80 dark:bg-[#020C1B] rounded-full mb-6 border border-gray-200 dark:border-[#112240] shadow-sm">
             <School className="w-10 h-10 text-gray-400 dark:text-gray-500" />
           </div>
@@ -222,7 +222,7 @@ export default function VistaHorarioAulaPage() {
           </p>
         </div>
       ) : (
-        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] overflow-hidden animate-in zoom-in-95 duration-500">
+        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] overflow-hidden animate-in zoom-in-95 fade-in duration-500 ease-out">
           {periodoActivo ? (
             <div className="p-6 md:p-8">
               <CalendarioGeneral 
