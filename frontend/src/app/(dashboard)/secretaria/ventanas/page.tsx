@@ -7,52 +7,35 @@ import { periodosService } from '@/services/periodos.service';
 import { ventanasService } from '@/services/ventanas.service';
 import { horariosService } from '@/services/horarios.service';
 import { Boton } from '@/components/ui/Boton';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
 import { Modal } from '@/components/ui/Modal';
 import { cn } from '@/lib/utilidades';
-import { Edit2, Check, Clock, Calendar as CalendarIcon, X, AlertCircle, Trash2, RotateCcw, Send, Power } from 'lucide-react';
+import { Edit2, Check, Clock, Calendar as CalendarIcon, X, AlertCircle, Trash2, RotateCcw, Send, Power, CalendarClock } from 'lucide-react';
 import { ModalConfirmacion } from '@/components/ui/ModalConfirmacion';
 
 const formatearFecha = (fecha?: string | Date) => {
   if (!fecha) return '';
   const f = new Date(fecha);
-  // Usamos métodos UTC para evitar desfases de zona horaria en fechas de solo día
   const y = f.getUTCFullYear();
   const m = String(f.getUTCMonth() + 1).padStart(2, '0');
   const d = String(f.getUTCDate()).padStart(2, '0');
   return `${y}-${m}-${d}`;
 };
 
-const ESTADO_LABELS: Record<string, { label: string; cls: string }> = {
-  PENDIENTE:   { label: 'Pendiente',   cls: 'bg-amber-50 text-amber-700 border border-amber-200' },
-  EN_PROCESO:  { label: 'En turno',    cls: 'bg-emerald-50 text-emerald-700 border border-emerald-200' },
-  COMPLETADO:  { label: 'Completado',  cls: 'bg-slate-100 text-slate-500 border border-slate-200' },
-  CANCELADO:   { label: 'Cancelado',   cls: 'bg-rose-50 text-rose-600 border border-rose-200' },
-};
-
-function Badge({ estado }: { estado: string }) {
-  const conf = ESTADO_LABELS[estado] || { label: estado, cls: 'bg-slate-100 text-slate-500 border border-slate-200' };
-  return (
-    <span className={cn('text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide', conf.cls)}>
-      {conf.label}
-    </span>
-  );
-}
-
 function EstadoBadge({ razon }: { razon: string }) {
   const map: Record<string, { icon: string; label: string; cls: string }> = {
-    EN_TURNO:            { icon: '🟢', label: 'En turno ahora',      cls: 'bg-emerald-50 border-emerald-200 text-emerald-800' },
-    AUN_NO_ES_SU_TURNO:  { icon: '⏰', label: 'Aún no es su turno',  cls: 'bg-amber-50  border-amber-200  text-amber-800' },
-    TURNO_VENCIDO:       { icon: '⌛', label: 'Turno vencido',        cls: 'bg-slate-50  border-slate-200  text-slate-600' },
-    SIN_ASIGNACION:      { icon: '❓', label: 'Sin asignación',       cls: 'bg-slate-50  border-slate-200  text-slate-500' },
-    CANCELADO:           { icon: '✖', label: 'Cancelado',             cls: 'bg-rose-50   border-rose-200   text-rose-700' },
-    SIN_RESTRICCION:     { icon: '✓', label: 'Sin restricción',       cls: 'bg-slate-50  border-slate-200  text-slate-600' },
+    EN_TURNO:            { icon: '🟢', label: 'En turno ahora',      cls: 'bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 shadow-sm' },
+    AUN_NO_ES_SU_TURNO:  { icon: '⏳', label: 'Próximo turno',       cls: 'bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400' },
+    TURNO_VENCIDO:       { icon: '⌛', label: 'Turno vencido',       cls: 'bg-gray-100 dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400' },
+    SIN_ASIGNACION:      { icon: '❓', label: 'Sin asignación',      cls: 'bg-gray-100 dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400' },
+    CANCELADO:           { icon: '✖', label: 'Cancelado',            cls: 'bg-rose-50 dark:bg-rose-900/30 border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-400' },
+    SIN_RESTRICCION:     { icon: '✓', label: 'Sin restricción',      cls: 'bg-gray-100 dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400' },
   };
-  const c = map[razon] || { icon: '?', label: razon, cls: 'bg-slate-50 border-slate-200 text-slate-500' };
+  const c = map[razon] || { icon: '?', label: razon, cls: 'bg-gray-50 border-gray-200 text-gray-500' };
   return (
-    <span className={cn('flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full border whitespace-nowrap', c.cls)}>
+    <span className={cn('flex items-center gap-1.5 text-[10px] font-black px-2.5 py-1 rounded-md border whitespace-nowrap uppercase tracking-wider', c.cls)}>
       <span>{c.icon}</span>{c.label}
     </span>
   );
@@ -278,34 +261,41 @@ export default function VentanasSecretariaPage() {
   if (periodosLoading) return <SpinnerCarga />;
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-8 py-8 text-white shadow-xl relative">
-        <div className="absolute -right-8 -top-8 h-36 w-36 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-        <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-white/80 mb-3">
-              Gestión de turnos
-            </span>
-            <h1 className="text-3xl font-extrabold tracking-tight">Ventanas de Atención</h1>
-            <p className="text-sm text-white/70 mt-1">
-              Control de acceso por tiempo — los docentes solo pueden asignar horarios durante su turno.
+    <div className="space-y-8 max-w-[1600px] mx-auto pb-20">
+      {/* Header Institucional UNT */}
+      <div className="relative rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240] z-20">
+        <div className="absolute inset-0 overflow-hidden rounded-[3rem] pointer-events-none">
+          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
+          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+        </div>
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
+              <CalendarClock className="w-3.5 h-3.5" />
+              Gestión de Accesos
+            </div>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-white drop-shadow-sm">
+              Ventanas de <span className="text-[#D4AF37]">Atención</span>
+            </h1>
+            <p className="text-lg text-white/70 max-w-2xl font-medium leading-relaxed">
+              Controla y organiza los turnos de registro de horarios para garantizar un acceso ordenado y jerárquico al sistema.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="w-64">
-              <Selector
-                label=""
+          
+          <div className="flex flex-col sm:flex-row gap-4 items-end">
+            <div className="w-full sm:w-80 bg-[#020C1B]/50 backdrop-blur-xl p-6 rounded-[2rem] border border-white/10 shadow-2xl dark">
+              <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3 ml-1">Periodo Lectivo</p>
+              <SelectorInstitucional
                 opciones={[
-                  { valor: '', etiqueta: 'Seleccionar periodo' },
-                  ...(periodos || []).map((p: any) => ({ valor: String(p.id), etiqueta: p.nombre })),
+                  { value: '', label: 'Seleccionar periodo...' },
+                  ...(periodos || []).map((p: any) => ({ value: String(p.id), label: p.nombre })),
                 ]}
                 value={idPeriodo?.toString() || ''}
-                onChange={(e) => setIdPeriodo(e.target.value ? parseInt(e.target.value, 10) : null)}
-                className="border-white/20 bg-white/90 text-slate-900"
+                onChange={(val) => setIdPeriodo(val ? parseInt(val as string, 10) : null)}
+                className="w-full"
               />
             </div>
-            <Boton onClick={() => router.push('/secretaria/ventanas/crear')} className="whitespace-nowrap">
+            <Boton onClick={() => router.push('/secretaria/ventanas/crear')} className="whitespace-nowrap h-[52px] px-8 rounded-2xl bg-[#D4AF37] hover:bg-[#b08d28] text-[#0A192F] font-bold shadow-lg mb-6">
               + Crear ventana
             </Boton>
           </div>
@@ -314,16 +304,17 @@ export default function VentanasSecretariaPage() {
 
       {/* Stats row */}
       {totalVentanas > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { label: 'Ventanas configuradas', value: totalVentanas, color: 'text-slate-800' },
-            { label: 'Docentes con turno',    value: totalDocentes, color: 'text-slate-800' },
-            { label: 'En turno ahora',        value: enTurnoAhora,  color: 'text-emerald-700' },
-            { label: 'Completados',           value: completados,   color: 'text-slate-500' },
+            { label: 'Ventanas configuradas', value: totalVentanas, color: 'text-gray-800 dark:text-white' },
+            { label: 'Docentes con turno',    value: totalDocentes, color: 'text-gray-800 dark:text-white' },
+            { label: 'En turno ahora',        value: enTurnoAhora,  color: 'text-emerald-600 dark:text-emerald-400' },
+            { label: 'Turnos Completados',    value: completados,   color: 'text-gray-500 dark:text-gray-400' },
           ].map(({ label, value, color }) => (
-            <div key={label} className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm text-center">
-              <p className={cn('text-3xl font-extrabold', color)}>{value}</p>
-              <p className="text-xs text-slate-500 mt-1 font-medium">{label}</p>
+            <div key={label} className="bg-white dark:bg-[#0A192F] rounded-3xl border border-gray-100 dark:border-[#112240] p-6 shadow-xl relative overflow-hidden group hover:shadow-2xl transition-all">
+              <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-[#003366]/5 dark:bg-white/5 rounded-full transition-transform group-hover:scale-150 duration-700" />
+              <p className={cn('text-4xl font-extrabold relative z-10', color)}>{value}</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mt-2 relative z-10">{label}</p>
             </div>
           ))}
         </div>
@@ -331,18 +322,19 @@ export default function VentanasSecretariaPage() {
 
       {/* Ventana actual config */}
       {totalVentanas > 0 && rangoVentana && (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-            <h2 className="font-bold text-slate-800 flex items-center gap-2">
-              <span className="w-1.5 h-5 rounded-full bg-blue-500 inline-block" />
-              Configuración actual de ventanas
+        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] border border-gray-100 dark:border-[#112240] shadow-xl overflow-hidden">
+          <div className="px-8 py-6 border-b border-gray-100 dark:border-[#112240] flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <h2 className="font-black text-gray-800 dark:text-white flex items-center gap-3">
+              <span className="w-1.5 h-6 rounded-full bg-[#003366] dark:bg-[#D4AF37] inline-block shadow-sm" />
+              Parámetros Globales de Acceso
             </h2>
-            <div className="flex gap-2">
-              <Boton variante="secundario" onClick={() => setMostrarEdicion((prev) => !prev)}>
-                {mostrarEdicion ? 'Cancelar' : 'Editar parámetros'}
+            <div className="flex flex-wrap gap-2">
+              <Boton variante="secundario" className="rounded-xl font-bold" onClick={() => setMostrarEdicion((prev) => !prev)}>
+                {mostrarEdicion ? 'Ocultar Edición' : 'Editar Horario General'}
               </Boton>
               <Boton
                 variante="secundario"
+                className="rounded-xl font-bold text-[#003366] dark:text-[#D4AF37] border-[#003366]/20 dark:border-white/10"
                 onClick={() => {
                   if (!idPeriodo || totalVentanas === 0) return;
                   setConfirmacion({
@@ -356,10 +348,11 @@ export default function VentanasSecretariaPage() {
                 disabled={!idPeriodo || totalVentanas === 0 || enviarCorreosMutation.isPending}
               >
                 <Send className="w-4 h-4 mr-2" />
-                {enviarCorreosMutation.isPending ? 'Enviando...' : 'Enviar correos'}
+                {enviarCorreosMutation.isPending ? 'Enviando...' : 'Notificar Docentes'}
               </Boton>
               <Boton
                 variante="peligro"
+                className="rounded-xl font-bold"
                 onClick={() => {
                   if (!idPeriodo) return;
                   setConfirmacion({
@@ -373,7 +366,7 @@ export default function VentanasSecretariaPage() {
                 disabled={!idPeriodo || desactivarMutation.isPending}
               >
                 <Power className="w-4 h-4 mr-2" />
-                {desactivarMutation.isPending ? 'Desactivando...' : 'Desactivar todo'}
+                {desactivarMutation.isPending ? 'Desactivando...' : 'Desactivar Accesos'}
               </Boton>
               <Boton
                 variante="peligro"
@@ -388,57 +381,57 @@ export default function VentanasSecretariaPage() {
                   });
                 }}
                 disabled={!idPeriodo || resetearHorariosMutation.isPending}
-                className="bg-rose-600 hover:bg-rose-700"
+                className="rounded-xl font-bold bg-rose-600 hover:bg-rose-700"
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
-                {resetearHorariosMutation.isPending ? 'Reseteando...' : 'Resetear Horarios'}
+                {resetearHorariosMutation.isPending ? 'Reseteando...' : 'Reset Total'}
               </Boton>
             </div>
           </div>
-          <div className="px-6 py-5">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div className="px-8 py-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-gray-50 dark:bg-[#020C1B] p-6 rounded-2xl border border-gray-100 dark:border-[#112240]">
               <div>
-                <p className="text-xs text-slate-400 uppercase tracking-widest font-semibold mb-1">Fecha inicio</p>
-                <p className="font-bold text-slate-800">{rangoVentana.fechaInicio}</p>
+                <p className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest mb-1.5">Inicio del Proceso</p>
+                <p className="font-bold text-gray-800 dark:text-white text-lg">{rangoVentana.fechaInicio}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-400 uppercase tracking-widest font-semibold mb-1">Fecha fin</p>
-                <p className="font-bold text-slate-800">{rangoVentana.fechaFin}</p>
+                <p className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest mb-1.5">Fin del Proceso</p>
+                <p className="font-bold text-gray-800 dark:text-white text-lg">{rangoVentana.fechaFin}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-400 uppercase tracking-widest font-semibold mb-1">Hora inicio diaria</p>
-                <p className="font-bold text-slate-800">{rangoVentana.horaInicio}</p>
+                <p className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest mb-1.5">Apertura Diaria</p>
+                <p className="font-bold text-gray-800 dark:text-white text-lg">{rangoVentana.horaInicio}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-400 uppercase tracking-widest font-semibold mb-1">Hora fin diaria</p>
-                <p className="font-bold text-slate-800">{rangoVentana.horaFin}</p>
+                <p className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest mb-1.5">Cierre Diario</p>
+                <p className="font-bold text-gray-800 dark:text-white text-lg">{rangoVentana.horaFin}</p>
               </div>
             </div>
 
             {mostrarEdicion && (
-              <div className="mt-5 pt-5 border-t border-slate-100 grid grid-cols-2 md:grid-cols-5 gap-4 items-end">
-                <label className="flex flex-col gap-1 text-xs font-semibold text-slate-600">
-                  Fecha inicio
+              <div className="mt-8 pt-8 border-t border-gray-100 dark:border-[#112240] grid grid-cols-1 md:grid-cols-5 gap-6 items-end animate-in fade-in slide-in-from-top-4 duration-300">
+                <label className="flex flex-col gap-2 text-[10px] font-black uppercase tracking-widest text-gray-500">
+                  Nueva Fecha Inicio
                   <input type="date" value={fechaInicio} onChange={(e) => setFechaInicio(e.target.value)}
-                    className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-normal text-slate-900" />
+                    className="rounded-xl border border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] px-4 py-3 text-sm font-bold text-gray-800 dark:text-white outline-none focus:border-[#003366] dark:focus:border-[#D4AF37] transition-all" />
                 </label>
-                <label className="flex flex-col gap-1 text-xs font-semibold text-slate-600">
-                  Fecha fin
+                <label className="flex flex-col gap-2 text-[10px] font-black uppercase tracking-widest text-gray-500">
+                  Nueva Fecha Fin
                   <input type="date" value={fechaFin} onChange={(e) => setFechaFin(e.target.value)}
-                    className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-normal text-slate-900" />
+                    className="rounded-xl border border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] px-4 py-3 text-sm font-bold text-gray-800 dark:text-white outline-none focus:border-[#003366] dark:focus:border-[#D4AF37] transition-all" />
                 </label>
-                <label className="flex flex-col gap-1 text-xs font-semibold text-slate-600">
-                  Hora inicio
+                <label className="flex flex-col gap-2 text-[10px] font-black uppercase tracking-widest text-gray-500">
+                  Hora Apertura
                   <input type="time" value={horaInicio} onChange={(e) => setHoraInicio(e.target.value)}
-                    className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-normal text-slate-900" />
+                    className="rounded-xl border border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] px-4 py-3 text-sm font-bold text-gray-800 dark:text-white outline-none focus:border-[#003366] dark:focus:border-[#D4AF37] transition-all" />
                 </label>
-                <label className="flex flex-col gap-1 text-xs font-semibold text-slate-600">
-                  Hora fin
+                <label className="flex flex-col gap-2 text-[10px] font-black uppercase tracking-widest text-gray-500">
+                  Hora Cierre
                   <input type="time" value={horaFin} onChange={(e) => setHoraFin(e.target.value)}
-                    className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-normal text-slate-900" />
+                    className="rounded-xl border border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] px-4 py-3 text-sm font-bold text-gray-800 dark:text-white outline-none focus:border-[#003366] dark:focus:border-[#D4AF37] transition-all" />
                 </label>
-                <Boton onClick={() => actualizarMutation.mutate()} disabled={actualizarMutation.isPending}>
-                  {actualizarMutation.isPending ? 'Guardando...' : 'Guardar cambios'}
+                <Boton className="h-[52px] rounded-xl font-bold bg-[#003366] hover:bg-[#002244] dark:bg-[#D4AF37] dark:hover:bg-[#b08d28] dark:text-[#0A192F]" onClick={() => actualizarMutation.mutate()} disabled={actualizarMutation.isPending}>
+                  {actualizarMutation.isPending ? 'Procesando...' : 'Aplicar Cambios'}
                 </Boton>
               </div>
             )}
@@ -447,78 +440,80 @@ export default function VentanasSecretariaPage() {
       )}
 
       {/* Tabla de turnos */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-100">
-          <h2 className="font-bold text-slate-800 flex items-center gap-2">
-            <span className="w-1.5 h-5 rounded-full bg-emerald-500 inline-block" />
-            Turnos de docentes
-            <span className="ml-1 text-xs text-slate-400 font-normal">ordenado por modalidad → categoría → antigüedad</span>
+      <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] border border-gray-100 dark:border-[#112240] shadow-xl overflow-hidden">
+        <div className="px-8 py-6 border-b border-gray-100 dark:border-[#112240]">
+          <h2 className="font-black text-gray-800 dark:text-white flex items-center gap-3">
+            <span className="w-1.5 h-6 rounded-full bg-[#D4AF37] inline-block shadow-sm" />
+            Padrón de Turnos
+            <span className="ml-2 px-3 py-1 bg-gray-100 dark:bg-white/10 rounded-full text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">Jerarquía: Modalidad → Categoría → Antigüedad</span>
           </h2>
         </div>
 
         {ventanasLoading ? (
-          <div className="p-8 flex justify-center"><SpinnerCarga /></div>
+          <div className="p-12 flex justify-center"><SpinnerCarga /></div>
         ) : filas.length === 0 ? (
-          <div className="px-6 py-14 text-center">
-            <div className="mx-auto w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl mb-4">📅</div>
-            <p className="text-slate-600 font-semibold">No hay ventanas configuradas</p>
-            <p className="text-sm text-slate-400 mt-1 mb-6">Crea una nueva ventana para asignar turnos automáticamente.</p>
-            <Boton onClick={() => router.push('/secretaria/ventanas/crear')}>
-              Crear primera ventana
+          <div className="px-8 py-20 text-center">
+            <div className="mx-auto w-20 h-20 rounded-full bg-gray-50 dark:bg-white/5 flex items-center justify-center text-3xl mb-6 shadow-inner">📅</div>
+            <p className="text-xl text-gray-800 dark:text-white font-black mb-2">No hay ventanas configuradas</p>
+            <p className="text-gray-500 dark:text-gray-400 font-medium mb-8">Debes crear una ventana base para comenzar a asignar los accesos al sistema.</p>
+            <Boton onClick={() => router.push('/secretaria/ventanas/crear')} className="px-8 rounded-xl font-bold">
+              Configurar Primera Ventana
             </Boton>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
+            <table className="min-w-full text-left">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-100">
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">#</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Docente</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Modalidad</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Categoría</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Fecha</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Horario de turno</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Estado tiempo</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Estado Horario</th>
-                  <th className="px-4 py-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wide">Acciones</th>
+                <tr className="bg-gray-50/80 dark:bg-[#020C1B] border-b border-gray-200 dark:border-[#112240]">
+                  <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">#</th>
+                  <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Docente</th>
+                  <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Condición</th>
+                  <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Asignación Temporal</th>
+                  <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Estado Acceso</th>
+                  <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Progreso</th>
+                  <th className="px-8 py-5 text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest text-center">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-gray-100 dark:divide-[#112240]">
                 {filas.map((fila) => (
                   <tr key={fila.id} className={cn(
-                    'transition-colors',
-                    fila.razonTiempo === 'EN_TURNO' ? 'bg-emerald-50/40 hover:bg-emerald-50/70' : 'hover:bg-slate-50/60'
+                    'transition-colors group',
+                    fila.razonTiempo === 'EN_TURNO' ? 'bg-emerald-50/50 dark:bg-emerald-900/10 hover:bg-emerald-50 dark:hover:bg-emerald-900/20' : 'hover:bg-gray-50/50 dark:hover:bg-white/5'
                   )}>
-                    <td className="px-4 py-3 text-slate-400 text-xs font-mono">{fila.orden}</td>
-                    <td className="px-4 py-3 font-semibold text-slate-800">{fila.docente}</td>
-                    <td className="px-4 py-3">
-                      <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">
-                        {fila.modalidad}
-                      </span>
+                    <td className="px-8 py-5 text-gray-400 dark:text-gray-500 text-xs font-black">{fila.orden}</td>
+                    <td className="px-8 py-5 font-black text-gray-700 dark:text-white">{fila.docente}</td>
+                    <td className="px-8 py-5">
+                      <div className="flex flex-col gap-1 items-start">
+                        <span className="text-[9px] font-bold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-white/10 px-2 py-0.5 rounded uppercase tracking-wider">
+                          {fila.modalidad}
+                        </span>
+                        <span className="text-[9px] font-bold text-[#003366] dark:text-[#D4AF37] bg-[#003366]/10 dark:bg-white/5 border border-[#003366]/20 dark:border-white/10 px-2 py-0.5 rounded uppercase tracking-wider">
+                          {fila.categoria}
+                        </span>
+                      </div>
                     </td>
-                    <td className="px-4 py-3">
-                      <span className="text-xs font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full">
-                        {fila.categoria}
-                      </span>
+                    <td className="px-8 py-5">
+                      <div className="flex flex-col gap-0.5">
+                        <span className="text-sm font-bold text-gray-700 dark:text-gray-300">{fila.fecha}</span>
+                        <span className="text-[10px] font-black text-gray-400 dark:text-gray-500 tracking-widest">{fila.hora}</span>
+                      </div>
                     </td>
-                    <td className="px-4 py-3 text-slate-600 text-xs">{fila.fecha}</td>
-                    <td className="px-4 py-3 text-slate-700 font-mono text-xs">{fila.hora}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-8 py-5">
                       <EstadoBadge razon={fila.razonTiempo} />
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-8 py-5">
                       {fila.cargoHorario ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
+                        <span className="inline-flex items-center gap-1.5 text-[10px] font-black text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2.5 py-1 rounded-md border border-emerald-100 dark:border-emerald-800 uppercase tracking-widest">
                           <Check className="w-3 h-3" /> CARGADO
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">
+                        <span className="inline-flex items-center gap-1.5 text-[10px] font-black text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 px-2.5 py-1 rounded-md border border-amber-100 dark:border-amber-800 uppercase tracking-widest">
                           <Clock className="w-3 h-3" /> PENDIENTE
                         </span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-center">
-                      <div className="flex items-center justify-center gap-1">
+                    <td className="px-8 py-5 text-center">
+                      <div className="flex items-center justify-center gap-2">
                         <button
                           onClick={() => {
                             setTurnoAEditar(fila);
@@ -528,8 +523,8 @@ export default function VentanasSecretariaPage() {
                               horaFin: fila.horaFin,
                             });
                           }}
-                          className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                          title="Editar turno"
+                          className="p-2 text-gray-400 hover:text-[#003366] hover:bg-gray-100 dark:hover:text-[#D4AF37] dark:hover:bg-white/10 rounded-xl transition-all"
+                          title="Reprogramar Turno"
                         >
                           <Edit2 className="w-4 h-4" />
                         </button>
@@ -539,15 +534,15 @@ export default function VentanasSecretariaPage() {
                               titulo: '¿Desactivar turno individual?',
                               mensaje: `Se cancelará el turno asignado a ${fila.docente}.`,
                               tipo: 'peligro',
-                              textoConfirmar: 'Confirmar',
+                              textoConfirmar: 'Confirmar Cancelación',
                               onConfirm: () => desactivarTurnoMutation.mutate({
                                 idVentana: fila.idVentana,
                                 idDocente: fila.idDocente,
                               }),
                             });
                           }}
-                          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                          title="Desactivar turno"
+                          className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:text-rose-400 dark:hover:bg-rose-900/30 rounded-xl transition-all"
+                          title="Anular Turno"
                           disabled={desactivarTurnoMutation.isPending}
                         >
                           <Trash2 className="w-4 h-4" />
@@ -583,16 +578,18 @@ export default function VentanasSecretariaPage() {
       <Modal
         isOpen={!!turnoAEditar}
         onClose={() => setTurnoAEditar(null)}
-        titulo="Reasignar Turno de Docente"
-        className="max-w-md"
+        titulo="Reprogramación de Turno"
+        className="max-w-md bg-white dark:bg-[#0A192F] border-gray-100 dark:border-[#112240]"
       >
         {turnoAEditar && (
           <div className="space-y-6">
-            <div className="p-4 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-indigo-500 mt-0.5 flex-shrink-0" />
+            <div className="p-4 rounded-2xl bg-gray-50 dark:bg-[#020C1B] border border-gray-200 dark:border-[#112240] flex items-start gap-4">
+              <div className="p-2 bg-white dark:bg-[#0A192F] rounded-xl shadow-sm border border-gray-100 dark:border-[#112240]">
+                <CalendarClock className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" />
+              </div>
               <div>
-                <p className="text-sm font-bold text-indigo-900">{turnoAEditar.docente}</p>
-                <p className="text-xs text-indigo-700">
+                <p className="text-sm font-black text-gray-800 dark:text-white">{turnoAEditar.docente}</p>
+                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">
                   {turnoAEditar.modalidad} — {turnoAEditar.categoria}
                 </p>
               </div>
@@ -600,66 +597,66 @@ export default function VentanasSecretariaPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">
-                  Nueva Fecha
+                <label className="block text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2 ml-1">
+                  Nueva Fecha Asignada
                 </label>
                 <div className="relative">
-                  <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <CalendarIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
                     type="date"
                     value={edicionTurno.fecha}
                     onChange={(e) => setEdicionTurno({ ...edicionTurno, fecha: e.target.value })}
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none"
+                    className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-[#020C1B] border border-gray-200 dark:border-[#112240] rounded-xl text-sm font-bold text-gray-700 dark:text-white focus:ring-4 focus:ring-[#003366]/10 dark:focus:ring-[#D4AF37]/10 focus:border-[#003366] dark:focus:border-[#D4AF37] transition-all outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">
-                    Hora Inicio
+                  <label className="block text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2 ml-1">
+                    Hora Apertura
                   </label>
                   <div className="relative">
-                    <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                       type="time"
                       value={edicionTurno.horaInicio}
                       onChange={(e) => setEdicionTurno({ ...edicionTurno, horaInicio: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none"
+                      className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-[#020C1B] border border-gray-200 dark:border-[#112240] rounded-xl text-sm font-bold text-gray-700 dark:text-white focus:ring-4 focus:ring-[#003366]/10 dark:focus:ring-[#D4AF37]/10 focus:border-[#003366] dark:focus:border-[#D4AF37] transition-all outline-none"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">
-                    Hora Fin
+                  <label className="block text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2 ml-1">
+                    Hora Cierre
                   </label>
                   <div className="relative">
-                    <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                       type="time"
                       value={edicionTurno.horaFin}
                       onChange={(e) => setEdicionTurno({ ...edicionTurno, horaFin: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none"
+                      className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-[#020C1B] border border-gray-200 dark:border-[#112240] rounded-xl text-sm font-bold text-gray-700 dark:text-white focus:ring-4 focus:ring-[#003366]/10 dark:focus:ring-[#D4AF37]/10 focus:border-[#003366] dark:focus:border-[#D4AF37] transition-all outline-none"
                     />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="flex gap-3 pt-2">
+            <div className="flex gap-3 pt-4">
               <Boton
                 variante="borde"
                 onClick={() => setTurnoAEditar(null)}
-                className="flex-1 rounded-xl"
+                className="flex-1 rounded-xl font-bold"
               >
-                Cancelar
+                Cancelar Operación
               </Boton>
               <Boton
                 onClick={() => actualizarTurnoMutation.mutate()}
                 disabled={actualizarTurnoMutation.isPending}
-                className="flex-1 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-200"
+                className="flex-1 rounded-xl font-bold bg-[#003366] hover:bg-[#002244] dark:bg-[#D4AF37] dark:hover:bg-[#b08d28] dark:text-[#0A192F]"
               >
-                {actualizarTurnoMutation.isPending ? 'Guardando...' : 'Confirmar'}
+                {actualizarTurnoMutation.isPending ? 'Procesando...' : 'Guardar Turno'}
               </Boton>
             </div>
           </div>
