@@ -7,7 +7,7 @@ import { useKPIsSecretaria } from '@/hooks/useEstadisticas';
 import { reportesService, descargarBlob } from '@/services/reportes.service';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { Boton } from '@/components/ui/Boton';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Modal } from '@/components/ui/Modal';
 import { useAuthStore } from '@/stores/auth.store';
@@ -120,35 +120,38 @@ export default function SecretariaDashboard() {
     .slice(0, 10); // Mostrar top 10 o los que tengan menos avance
 
   return (
-    <div className="space-y-10 max-w-[1800px] mx-auto pb-20 px-4 md:px-8">
-      {/* Header Estilo Classroom */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-10 py-12 text-white shadow-2xl">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-        <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+    <div className="space-y-10 max-w-[1800px] mx-auto pb-20 animate-in fade-in duration-500">
+      {/* Header Institucional UNT */}
+      <div className="relative rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240] z-20">
+        <div className="absolute inset-0 overflow-hidden rounded-[3rem] pointer-events-none">
+          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
+          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+        </div>
         
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest text-white/90">
+          <div className="space-y-5">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
               <LayoutDashboard className="w-3.5 h-3.5" />
-              Panel de Control Administrativo
+              Panel de Control
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Bienvenida, Secretaria</h1>
-            <p className="text-lg text-white/70 max-w-2xl">
-              Monitorea el avance de la programación académica, gestiona ambientes y publica horarios oficiales para toda la Escuela.
+            <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-white drop-shadow-sm">
+              Bienvenida, <span className="text-[#D4AF37]">Secretaria</span>
+            </h1>
+            <p className="text-lg text-white/70 max-w-2xl font-medium leading-relaxed">
+              Supervisa el progreso de la asignación docente, administra la infraestructura física y oficializa la programación académica de la Escuela.
             </p>
           </div>
           
-          <div className="w-full lg:w-96 bg-white/10 backdrop-blur-xl p-6 rounded-[2.5rem] border border-white/20 shadow-inner">
+          <div className="w-full lg:w-96 bg-[#020C1B]/50 backdrop-blur-xl p-6 rounded-[2rem] border border-white/10 shadow-2xl dark">
             <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3 ml-1">Periodo de Gestión Actual</p>
-            <Selector
-              label=""
+            <SelectorInstitucional
               opciones={[
-                { valor: '', etiqueta: 'Seleccionar Periodo...' },
-                ...(periodos || []).map((p: any) => ({ valor: String(p.id), etiqueta: p.nombre })),
+                { value: '', label: 'Seleccionar Periodo...' },
+                ...(periodos || []).map((p: any) => ({ value: String(p.id), label: p.nombre })),
               ]}
               value={idPeriodo?.toString() || ''}
-              onChange={(e) => setIdPeriodo(e.target.value ? parseInt(e.target.value) : 0)}
-              className="w-full bg-white border-none rounded-2xl text-slate-900 font-bold py-3"
+              onChange={(val) => setIdPeriodo(val ? parseInt(val as string) : 0)}
+              className="w-full"
             />
           </div>
         </div>
@@ -158,68 +161,68 @@ export default function SecretariaDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in slide-in-from-bottom-4 duration-700 delay-100">
         
         {/* KPI: Docentes */}
-        <div className="bg-white rounded-[2.5rem] p-8 shadow-xl border border-slate-100 group hover:scale-[1.02] transition-all duration-300">
+        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 shadow-xl border border-gray-100 dark:border-[#112240] group hover:scale-[1.02] transition-all duration-300">
           <div className="flex items-center justify-between mb-6">
-            <div className="p-4 bg-indigo-50 rounded-2xl text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+            <div className="p-4 bg-[#003366]/5 dark:bg-[#003366]/20 rounded-2xl text-[#003366] dark:text-blue-400 group-hover:bg-[#003366] group-hover:text-white transition-colors duration-300">
               <Users className="w-6 h-6" />
             </div>
             <div className="text-right">
-              <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Participación</span>
-              <p className="text-2xl font-black text-slate-800">{porcentajeDocentes}%</p>
+              <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Participación</span>
+              <p className="text-2xl font-black text-gray-900 dark:text-white">{porcentajeDocentes}%</p>
             </div>
           </div>
-          <h3 className="text-slate-500 font-bold text-sm uppercase tracking-tight mb-1">Docentes Activos</h3>
-          <p className="text-slate-400 text-xs font-medium mb-4">{kpisData?.docentes.elegidos} de {kpisData?.docentes.total} ya eligieron horario</p>
-          <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full bg-indigo-500 rounded-full" style={{ width: `${porcentajeDocentes}%` }} />
+          <h3 className="text-gray-500 dark:text-gray-400 font-bold text-sm uppercase tracking-tight mb-1">Docentes Activos</h3>
+          <p className="text-gray-400 dark:text-gray-500 text-xs font-medium mb-4">{kpisData?.docentes.elegidos} de {kpisData?.docentes.total} ya eligieron horario</p>
+          <div className="h-2 w-full bg-gray-100 dark:bg-[#112240] rounded-full overflow-hidden">
+            <div className="h-full bg-[#003366] dark:bg-blue-500 rounded-full" style={{ width: `${porcentajeDocentes}%` }} />
           </div>
         </div>
 
         {/* KPI: Cursos */}
-        <div className="bg-white rounded-[2.5rem] p-8 shadow-xl border border-slate-100 group hover:scale-[1.02] transition-all duration-300">
+        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 shadow-xl border border-gray-100 dark:border-[#112240] group hover:scale-[1.02] transition-all duration-300">
           <div className="flex items-center justify-between mb-6">
-            <div className="p-4 bg-emerald-50 rounded-2xl text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+            <div className="p-4 bg-emerald-50 dark:bg-emerald-500/10 rounded-2xl text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
               <BookOpen className="w-6 h-6" />
             </div>
             <div className="text-right">
-              <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Completitud</span>
-              <p className="text-2xl font-black text-slate-800">{porcentajeCursos}%</p>
+              <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Completitud</span>
+              <p className="text-2xl font-black text-gray-900 dark:text-white">{porcentajeCursos}%</p>
             </div>
           </div>
-          <h3 className="text-slate-500 font-bold text-sm uppercase tracking-tight mb-1">Cursos Programados</h3>
-          <p className="text-slate-400 text-xs font-medium mb-4">{kpisData?.cursos.completos} de {kpisData?.cursos.total} con carga completa</p>
-          <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+          <h3 className="text-gray-500 dark:text-gray-400 font-bold text-sm uppercase tracking-tight mb-1">Cursos Programados</h3>
+          <p className="text-gray-400 dark:text-gray-500 text-xs font-medium mb-4">{kpisData?.cursos.completos} de {kpisData?.cursos.total} con carga completa</p>
+          <div className="h-2 w-full bg-gray-100 dark:bg-[#112240] rounded-full overflow-hidden">
             <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${porcentajeCursos}%` }} />
           </div>
         </div>
 
         {/* KPI: Ambientes */}
-        <div className="bg-white rounded-[2.5rem] p-8 shadow-xl border border-slate-100 group hover:scale-[1.02] transition-all duration-300">
+        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 shadow-xl border border-gray-100 dark:border-[#112240] group hover:scale-[1.02] transition-all duration-300">
           <div className="flex items-center justify-between mb-6">
-            <div className="p-4 bg-amber-50 rounded-2xl text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-colors duration-300">
+            <div className="p-4 bg-amber-50 dark:bg-[#D4AF37]/10 rounded-2xl text-amber-600 dark:text-[#D4AF37] group-hover:bg-amber-600 dark:group-hover:bg-[#D4AF37] group-hover:text-white transition-colors duration-300">
               <School className="w-6 h-6" />
             </div>
             <div className="text-right">
-              <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Ocupación</span>
-              <p className="text-2xl font-black text-slate-800">{porcentajeOcupacion}%</p>
+              <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Ocupación</span>
+              <p className="text-2xl font-black text-gray-900 dark:text-white">{porcentajeOcupacion}%</p>
             </div>
           </div>
-          <h3 className="text-slate-500 font-bold text-sm uppercase tracking-tight mb-1">Uso de Ambientes</h3>
-          <p className="text-slate-400 text-xs font-medium mb-4">{kpisData?.ocupacion.horasOcupadas}h de {kpisData?.ocupacion.horasDisponibles}h semanales</p>
-          <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full bg-amber-500 rounded-full" style={{ width: `${porcentajeOcupacion}%` }} />
+          <h3 className="text-gray-500 dark:text-gray-400 font-bold text-sm uppercase tracking-tight mb-1">Uso de Ambientes</h3>
+          <p className="text-gray-400 dark:text-gray-500 text-xs font-medium mb-4">{kpisData?.ocupacion.horasOcupadas}h de {kpisData?.ocupacion.horasDisponibles}h semanales</p>
+          <div className="h-2 w-full bg-gray-100 dark:bg-[#112240] rounded-full overflow-hidden">
+            <div className="h-full bg-amber-500 dark:bg-[#D4AF37] rounded-full" style={{ width: `${porcentajeOcupacion}%` }} />
           </div>
         </div>
 
         {/* KPI: Ventana / Tiempo */}
-        <div className="bg-[#0b1f3a] rounded-[2.5rem] p-8 shadow-2xl text-white group hover:scale-[1.02] transition-all duration-300">
+        <div className="bg-[#0A192F] dark:bg-[#020C1B] rounded-[2.5rem] p-8 shadow-2xl text-white group hover:scale-[1.02] transition-all duration-300 border border-[#112240]">
           <div className="flex items-center justify-between mb-6">
-            <div className="p-4 bg-white/10 rounded-2xl text-white group-hover:bg-white group-hover:text-[#0b1f3a] transition-all duration-300">
+            <div className="p-4 bg-white/10 rounded-2xl text-white group-hover:bg-[#D4AF37] group-hover:text-white transition-all duration-300">
               <Clock className="w-6 h-6" />
             </div>
             {kpisData?.ventana && (
               <div className={cn(
-                "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter",
+                "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter shadow-sm",
                 kpisData.ventana.semaforo === 'ROJO' ? 'bg-rose-500' : 
                 kpisData.ventana.semaforo === 'AMARILLO' ? 'bg-amber-500' : 'bg-emerald-500'
               )}>
@@ -227,7 +230,7 @@ export default function SecretariaDashboard() {
               </div>
             )}
           </div>
-          <h3 className="text-white/50 font-bold text-sm uppercase tracking-tight mb-1">Tiempo de Ventana</h3>
+          <h3 className="text-[#D4AF37] font-bold text-sm uppercase tracking-tight mb-1">Tiempo de Ventana</h3>
           {kpisData?.ventana ? (
             <>
               <p className="text-2xl font-black mb-4">
@@ -249,17 +252,17 @@ export default function SecretariaDashboard() {
           
           {/* Card: Registro Manual */}
           <Link href="/secretaria/registro-horarios" className="group">
-            <div className="h-full bg-white rounded-[3rem] p-8 shadow-xl border border-slate-100 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
-              <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-50/50 rounded-full group-hover:scale-150 transition-transform duration-700" />
+            <div className="h-full bg-white dark:bg-[#0A192F] rounded-[3rem] p-8 shadow-xl border border-gray-100 dark:border-[#112240] hover:border-[#003366]/30 dark:hover:border-[#D4AF37]/50 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
+              <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-[#003366]/5 dark:bg-white/5 rounded-full group-hover:scale-150 transition-transform duration-700" />
               <div className="relative z-10 space-y-6">
-                <div className="p-4 bg-indigo-50 rounded-2xl text-indigo-600 w-fit">
+                <div className="p-4 bg-[#003366]/10 dark:bg-white/10 rounded-2xl text-[#003366] dark:text-[#D4AF37] w-fit">
                   <CheckSquare className="w-8 h-8" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black text-slate-800 mb-2">Registro Manual</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">Asigna horarios directamente para docentes con dificultades de acceso.</p>
+                  <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-2">Asignación Excepcional</h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Gestiona directamente la carga horaria para casos especiales o docentes que requieran asistencia administrativa.</p>
                 </div>
-                <div className="flex items-center text-indigo-600 font-black text-xs uppercase tracking-widest gap-2">
+                <div className="flex items-center text-[#003366] dark:text-[#D4AF37] font-black text-xs uppercase tracking-widest gap-2">
                   Ir al Formulario <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -268,17 +271,17 @@ export default function SecretariaDashboard() {
 
           {/* Card: Ambientes */}
           <Link href="/secretaria/ambientes" className="group">
-            <div className="h-full bg-white rounded-[3rem] p-8 shadow-xl border border-slate-100 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
-              <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-50/50 rounded-full group-hover:scale-150 transition-transform duration-700" />
+            <div className="h-full bg-white dark:bg-[#0A192F] rounded-[3rem] p-8 shadow-xl border border-gray-100 dark:border-[#112240] hover:border-[#003366]/30 dark:hover:border-[#D4AF37]/50 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
+              <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-[#003366]/5 dark:bg-white/5 rounded-full group-hover:scale-150 transition-transform duration-700" />
               <div className="relative z-10 space-y-6">
-                <div className="p-4 bg-emerald-50 rounded-2xl text-emerald-600 w-fit">
+                <div className="p-4 bg-[#003366]/10 dark:bg-white/10 rounded-2xl text-[#003366] dark:text-[#D4AF37] w-fit">
                   <School className="w-8 h-8" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black text-slate-800 mb-2">Infraestructura</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">Gestiona aulas, laboratorios y verifica disponibilidad física en tiempo real.</p>
+                  <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-2">Control de Infraestructura</h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">Administra la disponibilidad de aulas y laboratorios garantizando una distribución óptima del espacio físico.</p>
                 </div>
-                <div className="flex items-center text-emerald-600 font-black text-xs uppercase tracking-widest gap-2">
+                <div className="flex items-center text-[#003366] dark:text-[#D4AF37] font-black text-xs uppercase tracking-widest gap-2">
                   Ver Ambientes <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -286,21 +289,21 @@ export default function SecretariaDashboard() {
           </Link>
 
           {/* Card: Reportes Consolidados */}
-          <div className="md:col-span-2 bg-white rounded-[3rem] p-6 sm:p-8 shadow-xl border border-slate-100 overflow-hidden relative">
+          <div className="md:col-span-2 bg-white dark:bg-[#0A192F] rounded-[3rem] p-6 sm:p-8 shadow-xl border border-gray-100 dark:border-[#112240] overflow-hidden relative">
             <div className="flex flex-col xl:flex-row items-center justify-between gap-6 xl:gap-8">
               <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
-                <div className="p-4 sm:p-5 bg-blue-50 rounded-[2rem] text-blue-600 flex-shrink-0">
+                <div className="p-4 sm:p-5 bg-blue-50 dark:bg-[#D4AF37]/10 rounded-[2rem] text-blue-600 dark:text-[#D4AF37] flex-shrink-0">
                   <FileDown className="w-8 h-8 sm:w-10 sm:h-10" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-xl sm:text-2xl font-black text-slate-800 mb-1 truncate sm:whitespace-normal">Reportes Institucionales</h3>
-                  <p className="text-slate-500 text-xs sm:text-sm max-w-md">Descarga consolidados globales de todo el periodo académico.</p>
+                  <h3 className="text-xl sm:text-2xl font-black text-gray-900 dark:text-white mb-1 truncate sm:whitespace-normal">Consolidados Académicos</h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-xs sm:text-sm max-w-md">Genera y exporta los padrones oficiales de la programación académica para su validación y archivo.</p>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full xl:w-auto">
                 <Boton
                   variante="borde"
-                  className="flex-1 xl:flex-none px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold border-slate-200 text-sm sm:text-base whitespace-nowrap"
+                  className="flex-1 xl:flex-none px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold border-gray-200 dark:border-[#112240] text-sm sm:text-base whitespace-nowrap hover:bg-[#003366] hover:text-white hover:border-[#003366] dark:hover:bg-[#D4AF37] dark:hover:text-[#0A192F] dark:hover:border-[#D4AF37] transition-all"
                   onClick={() => handleDescargarGlobal('pdf')}
                   disabled={!!descargando}
                 >
@@ -308,7 +311,7 @@ export default function SecretariaDashboard() {
                 </Boton>
                 <Boton
                   variante="borde"
-                  className="flex-1 xl:flex-none px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold border-slate-200 text-sm sm:text-base whitespace-nowrap"
+                  className="flex-1 xl:flex-none px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold border-gray-200 dark:border-[#112240] text-sm sm:text-base whitespace-nowrap hover:bg-[#003366] hover:text-white hover:border-[#003366] dark:hover:bg-[#D4AF37] dark:hover:text-[#0A192F] dark:hover:border-[#D4AF37] transition-all"
                   onClick={() => handleDescargarGlobal('excel')}
                   disabled={!!descargando}
                 >
@@ -321,33 +324,34 @@ export default function SecretariaDashboard() {
 
         {/* Lado Derecho: Publicación y Notificación (4/12) */}
         <div className="lg:col-span-4 animate-in slide-in-from-right-4 duration-700 delay-300">
-          <div className="bg-[#0b1f3a] h-full rounded-[3rem] p-10 shadow-2xl text-white flex flex-col justify-between relative overflow-hidden group">
+          <div className="bg-[#0A192F] h-full rounded-[3rem] p-10 shadow-2xl text-white flex flex-col justify-between relative overflow-hidden group border border-[#112240]">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#D4AF37]/10 rounded-full -ml-10 -mb-10 blur-2xl" />
             
             <div className="relative z-10 space-y-8">
-              <div className="p-5 bg-white/10 rounded-[2rem] text-white w-fit">
+              <div className="p-5 bg-[#D4AF37]/20 rounded-[2rem] text-[#D4AF37] w-fit">
                 <CheckSquare className="w-10 h-10" />
               </div>
               <div>
-                <h3 className="text-3xl font-black tracking-tight mb-4">Publicación Oficial</h3>
+                <h3 className="text-3xl font-black tracking-tight mb-4">Emisión Oficial de Horarios</h3>
                 <p className="text-white/60 leading-relaxed mb-6">
-                  Publica todos los horarios del periodo, cambiando su estado de borrador a publicado.
+                  Aprueba y emite de forma definitiva la programación académica. Esta acción hará visibles los horarios para toda la comunidad estudiantil.
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 text-sm font-bold text-white/80">
                     <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                    Actualiza estado de horarios a PUBLICADO
+                    Transición a estado 'Publicado Oficialmente'
                   </div>
                   <div className="flex items-center gap-3 text-sm font-bold text-white/80">
                     <ShieldCheck className="w-5 h-5 text-emerald-400" />
-                    Marca el periodo como publicado
+                    Cierre de modificaciones regulares del periodo
                   </div>
                 </div>
               </div>
             </div>
 
             <Boton
-              className="relative z-10 w-full py-8 rounded-[2rem] bg-white text-[#0b1f3a] hover:bg-indigo-50 transition-all duration-500 font-black text-xl flex items-center justify-center gap-3 mt-12 shadow-2xl shadow-black/20"
+              className="relative z-10 w-full py-8 rounded-[2rem] bg-white text-[#0A192F] hover:bg-[#D4AF37] transition-all duration-500 font-black text-xl flex items-center justify-center gap-3 mt-12 shadow-2xl shadow-black/20"
               onClick={() => setModalPublicarOpen(true)}
               disabled={publicarPeriodoMutation.isPending}
             >
@@ -360,15 +364,15 @@ export default function SecretariaDashboard() {
 
       {/* Sección de Gráficos de Avance */}
       <div className="animate-in slide-in-from-bottom-4 duration-700 delay-400">
-        <div className="bg-white rounded-[3rem] shadow-xl border border-slate-100 p-10">
+        <div className="bg-white dark:bg-[#0A192F] rounded-[3rem] shadow-xl border border-gray-100 dark:border-[#112240] p-10">
           <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-4">
-              <div className="p-4 bg-indigo-50 rounded-2xl text-indigo-600">
+              <div className="p-4 bg-[#003366]/5 dark:bg-white/5 rounded-2xl text-[#003366] dark:text-[#D4AF37]">
                 <TrendingUp className="w-6 h-6" />
               </div>
               <div>
-                <h2 className="text-2xl font-black text-slate-800 tracking-tight">Avance de Programación</h2>
-                <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Top 10 Cursos por Periodo</p>
+                <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Avance de Programación</h2>
+                <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">Top 10 Cursos por Periodo</p>
               </div>
             </div>
           </div>
@@ -380,7 +384,7 @@ export default function SecretariaDashboard() {
                 layout="vertical"
                 margin={{ top: 5, right: 80, left: 40, bottom: 5 }}
               >
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" className="dark:opacity-10" />
                 <XAxis type="number" domain={[0, 100]} hide />
                 <YAxis
                   dataKey="curso"
@@ -391,19 +395,19 @@ export default function SecretariaDashboard() {
                   tickLine={false}
                 />
                 <Tooltip
-                  cursor={{ fill: '#f8fafc' }}
+                  cursor={{ fill: '#f8fafc', opacity: 0.1 }}
                   contentStyle={{ borderRadius: '24px', border: 'none', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', padding: '16px' }}
                   itemStyle={{ fontWeight: 800, fontSize: '14px' }}
                 />
                 <Bar dataKey="porcentaje" radius={[0, 20, 20, 0]} barSize={32}>
                   {chartData.map((entry: any, index: number) => (
-                    <Cell key={`cell-${index}`} fill={entry.porcentaje === 100 ? '#10b981' : '#6366f1'} />
+                    <Cell key={`cell-${index}`} fill={entry.porcentaje === 100 ? '#10b981' : '#D4AF37'} />
                   ))}
                   <LabelList 
                     dataKey="porcentaje" 
                     position="right" 
                     formatter={(value: number) => `${value}%`} 
-                    style={{ fontWeight: 900, fontSize: '14px', fill: '#1e293b' }} 
+                    style={{ fontWeight: 900, fontSize: '14px', fill: '#64748b' }} 
                     offset={15}
                   />
                 </Bar>
@@ -421,18 +425,18 @@ export default function SecretariaDashboard() {
       >
         <div className="p-6 space-y-6">
           <div className="flex flex-col items-center text-center space-y-4">
-            <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center ring-8 ring-indigo-50/50">
-              <CheckSquare className="w-10 h-10 text-indigo-600" />
+            <div className="w-20 h-20 bg-emerald-50 dark:bg-emerald-500/10 rounded-full flex items-center justify-center ring-8 ring-emerald-50/50 dark:ring-emerald-500/5">
+              <CheckSquare className="w-10 h-10 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <h2 className="text-2xl font-black text-slate-900">Publicación de Horarios</h2>
-            <p className="text-slate-500 font-medium leading-relaxed">
-              Esta acción marcará todos los horarios como PUBLICADOS, incluyendo el periodo académico, cursos, y bloques de horario.
+            <h2 className="text-2xl font-black text-gray-900 dark:text-white">Emisión de Horarios</h2>
+            <p className="text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+              Esta acción emitirá oficialmente la programación académica, cerrando la edición regular del periodo y notificando la publicación.
             </p>
           </div>
 
-          <div className="bg-blue-50 border border-blue-100 rounded-3xl p-5 flex gap-4">
+          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/30 rounded-3xl p-5 flex gap-4">
             <AlertCircle className="w-6 h-6 text-blue-500 flex-shrink-0" />
-            <p className="text-xs text-blue-800 font-bold leading-relaxed">
+            <p className="text-xs text-blue-800 dark:text-blue-300 font-bold leading-relaxed">
               Después de publicar, los horarios dejarán de estar en estado borrador (amarillo).
             </p>
           </div>
@@ -441,14 +445,14 @@ export default function SecretariaDashboard() {
             <Boton
               variante="secundario"
               onClick={() => setModalPublicarOpen(false)}
-              className="flex-1 py-4 rounded-2xl font-bold"
+              className="flex-1 py-4 rounded-2xl font-bold border-gray-200 dark:border-[#112240]"
             >
               Cancelar
             </Boton>
             <Boton
               onClick={() => publicarPeriodoMutation.mutate()}
               disabled={publicarPeriodoMutation.isPending}
-              className="flex-1 py-4 rounded-2xl font-black shadow-lg"
+              className="flex-1 py-4 rounded-2xl font-black shadow-lg bg-[#003366] text-white hover:bg-[#002244] dark:bg-[#D4AF37] dark:text-[#0A192F] dark:hover:bg-[#B8962E]"
             >
               {publicarPeriodoMutation.isPending ? 'Publicando...' : 'Confirmar Publicación'}
             </Boton>
