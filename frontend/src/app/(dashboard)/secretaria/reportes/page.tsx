@@ -6,7 +6,7 @@ import { periodosService } from '@/services/periodos.service';
 import { reportesService, descargarBlob } from '@/services/reportes.service';
 import { estadisticasService } from '@/services/estadisticas.service';
 import { Boton } from '@/components/ui/Boton';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
 import { cn } from '@/lib/utilidades';
@@ -153,223 +153,253 @@ export default function ReportesSecretariaPage() {
 
   return (
     <div className="space-y-10 max-w-[1400px] mx-auto pb-20">
-      {/* Header Estilo Classroom */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-10 py-12 text-white shadow-2xl">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-        <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+      {/* PANEL CENTRAL DE EXPORTACIÓN Y AUDITORÍA */}
+      <div className="bg-[#0A192F] rounded-3xl shadow-2xl border border-[#112240] relative transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-8 p-8 lg:p-10">
+        {/* Capa de fondo con overflow hidden para los difuminados decorativos */}
+        <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+        </div>
         
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest text-white/90">
-              <BarChart3 className="w-3.5 h-3.5" />
-              Centro de Reportes y Auditoría
-            </div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Reportes Institucionales</h1>
-            <p className="text-lg text-white/70 max-w-2xl">
-              Genera reportes profesionales para docentes, auditorías diarias o consolidados globales en formatos Excel y PDF.
-            </p>
+        <div className="relative z-10 space-y-4 max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
+            <BarChart3 className="w-3.5 h-3.5" />
+            Central de Exportación y Auditoría
           </div>
-          
-          <div className="w-full lg:w-80 bg-white/10 backdrop-blur-xl p-4 rounded-[2rem] border border-white/20 shadow-inner">
-            <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2 ml-1 text-center">Seleccionar Periodo Académico</p>
-            <Selector
-              label=""
-              opciones={[
-                { valor: '', etiqueta: 'Elegir Periodo...' },
-                ...(periodos || []).map((p: any) => ({ valor: String(p.id), etiqueta: p.nombre })),
-              ]}
-              value={idPeriodo?.toString() || ''}
-              onChange={(e) => setIdPeriodo(e.target.value ? parseInt(e.target.value) : null)}
-              className="w-full bg-white border-none rounded-2xl text-slate-900 font-bold py-3"
-            />
-          </div>
+          <h1 className="text-3xl font-serif font-bold text-white tracking-tight">Reportes Institucionales</h1>
+          <p className="text-sm text-gray-400 font-medium leading-relaxed">
+            Emite documentos oficiales para el padrón docente, actas de auditoría física y consolidados operativos del semestre académico.
+          </p>
+        </div>
+        
+        <div className="relative z-10 w-full lg:w-[350px] bg-[#020C1B]/80 backdrop-blur-xl p-6 rounded-2xl border border-white/10 shadow-xl shrink-0">
+          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center justify-between">
+            <span>Periodo Auditado</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+          </p>
+          <SelectorInstitucional
+            opciones={[
+              { value: '', label: 'Seleccionar periodo...' },
+              ...(periodos || []).map((p: any) => ({ value: String(p.id), label: p.nombre })),
+            ]}
+            value={idPeriodo?.toString() || ''}
+            onChange={(val) => setIdPeriodo(val ? parseInt(val as string, 10) : null)}
+          />
         </div>
       </div>
 
       {!idPeriodo ? (
-        <div className="flex flex-col items-center justify-center py-32 bg-white/50 backdrop-blur-sm rounded-[3rem] border-2 border-dashed border-slate-200 animate-in fade-in duration-700">
-          <div className="p-8 bg-slate-100/50 rounded-full mb-6 ring-8 ring-slate-50">
-            <LayoutDashboard className="w-16 h-12 text-slate-300" />
+        <div className="flex flex-col items-center justify-center py-24 bg-gray-50/50 dark:bg-[#0A192F]/50 backdrop-blur-sm rounded-[2.5rem] border-2 border-dashed border-gray-200 dark:border-[#112240] animate-in fade-in duration-700">
+          <div className="p-6 bg-gray-100/80 dark:bg-[#020C1B] rounded-full mb-6 border border-gray-200 dark:border-[#112240] shadow-sm">
+            <LayoutDashboard className="w-10 h-10 text-gray-400 dark:text-gray-500" />
           </div>
-          <h4 className="text-xl font-bold text-slate-800">Módulo de Reportes</h4>
-          <p className="text-slate-400 font-medium mt-2 text-center max-w-sm">
-            Por favor, seleccione un periodo académico para habilitar las herramientas de exportación y auditoría.
+          <h4 className="text-lg font-black text-gray-800 dark:text-white">Módulo Suspendido</h4>
+          <p className="text-sm text-gray-500 dark:text-gray-400 font-medium mt-2 text-center max-w-sm leading-relaxed">
+            Es requisito indispensable identificar el periodo académico antes de acceder a la emisión de documentos oficiales.
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-in slide-in-from-bottom-4 duration-700">
           
-          {/* SECCIÓN 1: REPORTES POR DOCENTE */}
+          {/* SECCIÓN 1: EMISIÓN INDIVIDUAL (7/12) */}
           <div className="lg:col-span-7 space-y-8">
-            <div className="bg-white rounded-[3rem] shadow-xl border border-slate-200/60 p-8 space-y-8">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-indigo-50 rounded-2xl text-indigo-600">
-                    <User className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-bold text-slate-800 tracking-tight">Reporte por Docente</h2>
-                    <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Horarios Individuales</p>
-                  </div>
+            
+            {/* Padrón Docente */}
+            <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col gap-6">
+              <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-5">
+                <div className="p-3 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400">
+                  <User className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-gray-800 dark:text-white tracking-tight">Padrón Individual</h3>
+                  <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-0.5">Emisión de Carga por Docente</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
-                <div className="sm:col-span-8 overflow-visible">
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-end">
+                <div className="sm:col-span-7">
                   <SelectorFiltrable
-                    label="Buscar Docente"
+                    label="Docente a consultar"
                     value={idDocente}
                     onChange={(val) => setIdDocente(Number(val))}
                     opciones={(cargaDocentes || []).map((d: any) => ({
                       valor: d.id,
                       etiqueta: `${d.apellidos}, ${d.nombres}`
                     }))}
-                    placeholder="Escriba el apellido del docente..."
+                    placeholder="Buscar docente..."
                   />
                 </div>
-                <div className="sm:col-span-4 flex gap-2">
-                  <Boton 
-                    className="flex-1 py-4 rounded-2xl shadow-sm"
+                <div className="sm:col-span-5 flex gap-3">
+                  <button 
                     disabled={!idDocente || !!descargando}
                     onClick={() => handleDescargar('pdf', idDocente)}
+                    className="flex-1 py-3 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/30 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-colors disabled:opacity-50 shadow-sm"
                   >
-                    {descargando === `pdf-${idDocente}` ? <SpinnerCarga /> : <FileText className="w-5 h-5" />}
-                  </Boton>
-                  <Boton 
-                    className="flex-1 py-4 rounded-2xl shadow-sm bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-600 hover:text-white"
+                    {descargando === `pdf-${idDocente}` ? <SpinnerCarga /> : <FileText className="w-4 h-4" />}
+                    PDF
+                  </button>
+                  <button 
                     disabled={!idDocente || !!descargando}
                     onClick={() => handleDescargar('excel', idDocente)}
+                    className="flex-1 py-3 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/30 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors disabled:opacity-50 shadow-sm"
                   >
-                    {descargando === `excel-${idDocente}` ? <SpinnerCarga /> : <FileSpreadsheet className="w-5 h-5" />}
-                  </Boton>
+                    {descargando === `excel-${idDocente}` ? <SpinnerCarga /> : <FileSpreadsheet className="w-4 h-4" />}
+                    Excel
+                  </button>
                 </div>
               </div>
 
               {idDocente > 0 && (
-                <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 animate-in fade-in zoom-in duration-300">
-                  <p className="text-sm font-bold text-slate-600 flex-1">Enviar reporte oficial al docente:</p>
-                  <div className="flex gap-2">
+                <div className="mt-2 flex items-center gap-4 p-4 bg-gray-50 dark:bg-[#020C1B]/50 rounded-2xl border border-gray-200 dark:border-[#112240] animate-in fade-in zoom-in-95 duration-300">
+                  <div className="flex-1">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-0.5">Distribución Digital</p>
+                    <p className="text-xs font-bold text-gray-800 dark:text-gray-300">Enviar documento oficial</p>
+                  </div>
+                  <div className="flex gap-2 shrink-0">
                     <button 
                       onClick={() => handleEnviarCorreo(idDocente)}
-                      className="p-3 bg-white border border-slate-200 rounded-xl text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm"
+                      className="p-2.5 bg-white dark:bg-[#0A192F] border border-gray-200 dark:border-gray-700 rounded-xl text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-800 transition-all shadow-sm"
+                      title="Enviar por Correo Institucional"
                     >
-                      <Mail className="w-5 h-5" />
+                      <Mail className="w-4 h-4" />
                     </button>
                     <button 
                       onClick={() => handleEnviarWhatsApp((cargaDocentes || []).find((d:any) => d.id === idDocente))}
-                      className="p-3 bg-white border border-slate-200 rounded-xl text-emerald-600 hover:bg-emerald-600 hover:text-white transition-all shadow-sm"
+                      className="p-2.5 bg-white dark:bg-[#0A192F] border border-gray-200 dark:border-gray-700 rounded-xl text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 dark:hover:border-emerald-800 transition-all shadow-sm"
+                      title="Enviar por WhatsApp"
                     >
-                      <MessageCircle className="w-5 h-5" />
+                      <MessageCircle className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* SECCIÓN 2: AUDITORÍA POR DÍA */}
-            <div className="bg-white rounded-[3rem] shadow-xl border border-slate-200/60 p-8 space-y-8">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-amber-50 rounded-2xl text-amber-600">
-                  <ShieldCheck className="w-6 h-6" />
+            {/* Auditoría por Día */}
+            <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col gap-6">
+              <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-5">
+                <div className="p-3 bg-amber-50 dark:bg-amber-500/10 rounded-xl border border-amber-100 dark:border-amber-500/20 text-amber-600 dark:text-amber-400">
+                  <Calendar className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-slate-800 tracking-tight">Control de Auditoría por Día</h2>
-                  <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Seguimiento de Asistencia</p>
+                  <h3 className="text-lg font-black text-gray-800 dark:text-white tracking-tight">Actas Diarias</h3>
+                  <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-0.5">Control de Infraestructura</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
-                <div className="sm:col-span-8">
-                  <Selector
-                    label="Seleccionar Día de la Semana"
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-end">
+                <div className="sm:col-span-7 space-y-2">
+                  <p className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">Día Hábil</p>
+                  <SelectorInstitucional
                     opciones={[
-                      { valor: '', etiqueta: 'Elegir Día...' },
-                      ...dias.map(d => ({ valor: d, etiqueta: d }))
+                      { value: '', label: 'Seleccionar día...' },
+                      ...dias.map(d => ({ value: d, label: d }))
                     ]}
                     value={diaSeleccionado}
-                    onChange={(e) => setDiaSeleccionado(e.target.value)}
-                    className="w-full py-4 rounded-2xl border-slate-200 bg-slate-50/50"
+                    onChange={(val) => setDiaSeleccionado(val as string)}
                   />
                 </div>
-                <div className="sm:col-span-4 flex gap-2">
-                  <Boton 
-                    className="flex-1 py-4 rounded-2xl shadow-sm bg-rose-50 text-rose-600 border-rose-100 hover:bg-rose-600 hover:text-white"
+                <div className="sm:col-span-5 flex gap-3">
+                  <button 
                     disabled={!diaSeleccionado || !!descargando}
                     onClick={() => handleDescargarDia('pdf')}
+                    className="flex-1 py-3 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/30 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-colors disabled:opacity-50 shadow-sm"
                   >
-                    {descargando === 'dia-pdf' ? <SpinnerCarga /> : <FileText className="w-5 h-5" />}
-                  </Boton>
-                  <Boton 
-                    className="flex-1 py-4 rounded-2xl shadow-sm bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-600 hover:text-white"
+                    {descargando === 'dia-pdf' ? <SpinnerCarga /> : <FileText className="w-4 h-4" />}
+                    PDF
+                  </button>
+                  <button 
                     disabled={!diaSeleccionado || !!descargando}
                     onClick={() => handleDescargarDia('excel')}
+                    className="flex-1 py-3 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/30 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors disabled:opacity-50 shadow-sm"
                   >
-                    {descargando === 'dia-excel' ? <SpinnerCarga /> : <FileSpreadsheet className="w-5 h-5" />}
-                  </Boton>
+                    {descargando === 'dia-excel' ? <SpinnerCarga /> : <FileSpreadsheet className="w-4 h-4" />}
+                    Excel
+                  </button>
                 </div>
               </div>
               
-              <p className="text-sm text-slate-400 italic bg-slate-50 p-4 rounded-2xl border border-slate-100 text-center">
-                Este reporte detalla: Docente, Asignatura, Aula y Horario para el día seleccionado.
-              </p>
+              <div className="mt-2 bg-[#003366]/5 dark:bg-[#020C1B]/50 p-4 rounded-2xl border border-[#003366]/10 dark:border-white/5 border-l-4 border-l-[#003366] dark:border-l-[#D4AF37]">
+                <p className="text-xs text-[#003366]/80 dark:text-gray-400 font-medium leading-relaxed">
+                  El acta de auditoría detalla las ocupaciones de infraestructura asignadas para el día, ideal para la supervisión de asistencia en pabellones.
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* SECCIÓN 3: REPORTES GLOBALES */}
+          {/* SECCIÓN 2: OPERACIONES GLOBALES (5/12) */}
           <div className="lg:col-span-5 space-y-8">
-            <div className="bg-[#0b1f3a] rounded-[3rem] shadow-2xl p-8 text-white space-y-8">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-white/10 rounded-2xl">
-                  <LayoutDashboard className="w-6 h-6 text-white" />
+            <div className="bg-[#020C1B] rounded-[2.5rem] shadow-2xl p-8 text-white space-y-8 border border-[#112240] relative overflow-hidden flex flex-col">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+              
+              <div className="flex items-center gap-4 border-b border-white/10 pb-5 relative z-10">
+                <div className="p-3 bg-white/10 rounded-xl border border-white/10 text-white shadow-inner">
+                  <LayoutDashboard className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold tracking-tight">Consolidados Globales</h2>
-                  <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">Reportes de Periodo Completo</p>
+                  <h2 className="text-lg font-black tracking-tight text-white">Consolidados Globales</h2>
+                  <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-0.5">Operaciones del Periodo</p>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <Boton 
-                  className="w-full py-6 rounded-2xl bg-white/10 hover:bg-white/20 border-white/10 text-white font-bold text-lg flex justify-between px-8"
+              <div className="space-y-4 relative z-10">
+                <button 
+                  className="w-full p-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all flex items-center justify-between group disabled:opacity-50"
                   onClick={() => handleDescargar('pdf')}
                   disabled={!!descargando}
                 >
-                  <span className="flex items-center gap-3"><FileText className="w-6 h-6 text-rose-400" /> PDF Global</span>
-                  <ArrowRight className="w-5 h-5 opacity-50" />
-                </Boton>
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 bg-rose-500/20 rounded-lg border border-rose-500/30 text-rose-400">
+                      <FileText className="w-5 h-5" />
+                    </div>
+                    <div className="text-left">
+                      <p className="text-sm font-bold text-white group-hover:text-rose-100">Libro Maestro (PDF)</p>
+                      <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">Todos los horarios</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+                </button>
                 
-                <Boton 
-                  className="w-full py-6 rounded-2xl bg-white/10 hover:bg-white/20 border-white/10 text-white font-bold text-lg flex justify-between px-8"
+                <button 
+                  className="w-full p-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all flex items-center justify-between group disabled:opacity-50"
                   onClick={() => handleDescargar('excel')}
                   disabled={!!descargando}
                 >
-                  <span className="flex items-center gap-3"><FileSpreadsheet className="w-6 h-6 text-emerald-400" /> Excel Global</span>
-                  <ArrowRight className="w-5 h-5 opacity-50" />
-                </Boton>
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 bg-emerald-500/20 rounded-lg border border-emerald-500/30 text-emerald-400">
+                      <FileSpreadsheet className="w-5 h-5" />
+                    </div>
+                    <div className="text-left">
+                      <p className="text-sm font-bold text-white group-hover:text-emerald-100">Matriz de Datos (Excel)</p>
+                      <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">Data procesable</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+                </button>
               </div>
 
-              <div className="pt-6 border-t border-white/10">
-                <Boton 
-                  variante="borde"
-                  className="w-full py-8 rounded-[2rem] border-2 border-dashed border-white/20 text-white hover:bg-white hover:text-[#0b1f3a] transition-all duration-500 font-black text-xl flex flex-col items-center gap-2"
+              <div className="pt-6 border-t border-white/10 relative z-10">
+                <p className="text-[9px] font-black uppercase tracking-widest text-rose-500/80 mb-3 text-center">Acción Masiva Irreversible</p>
+                <button 
+                  className="w-full p-6 rounded-2xl border border-dashed border-rose-500/50 text-rose-400 hover:bg-rose-500/10 hover:border-rose-400 transition-all duration-300 flex flex-col items-center justify-center gap-2 group"
                   onClick={() => setModalEnviarTodos(true)}
                 >
-                  <Mail className="w-8 h-8 mb-2" />
-                  ENVIAR A TODOS LOS DOCENTES
-                  <span className="text-[10px] font-bold opacity-50 uppercase tracking-[0.2em]">Sincronización masiva</span>
-                </Boton>
+                  <Mail className="w-6 h-6 mb-1 group-hover:-translate-y-1 transition-transform" />
+                  <span className="text-sm font-black tracking-wide">DIFUNDIR A TODO EL PADRÓN</span>
+                  <span className="text-[10px] font-medium text-rose-500/70">Enviar correos con horarios adjuntos</span>
+                </button>
               </div>
             </div>
 
-            {/* Tarjeta Informativa */}
-            <div className="bg-white rounded-[3rem] shadow-lg border border-slate-200/60 p-8 flex items-center gap-4">
-              <div className="p-4 bg-indigo-50 rounded-2xl text-indigo-500">
-                <ShieldCheck className="w-8 h-8" />
+            {/* Tarjeta Informativa Institucional */}
+            <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-lg border border-gray-100 dark:border-[#112240] p-6 flex items-start gap-4">
+              <div className="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800/30 text-emerald-600 dark:text-emerald-400 shrink-0">
+                <ShieldCheck className="w-6 h-6" />
               </div>
-              <div>
-                <h4 className="font-bold text-slate-800 leading-tight">Garantía de Formato</h4>
-                <p className="text-xs text-slate-500 mt-1">
-                  Todos los reportes cumplen con el formato institucional A4 y codificación por colores/docente.
+              <div className="pt-1">
+                <h4 className="text-sm font-bold text-gray-800 dark:text-gray-200 leading-tight">Validez Institucional</h4>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                  Los documentos generados cumplen con el estándar A4 e incluyen codificación unificada de la EIS.
                 </p>
               </div>
             </div>
@@ -379,32 +409,31 @@ export default function ReportesSecretariaPage() {
 
       {/* Modal enviar a todos */}
       {modalEnviarTodos && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
-          <div className="bg-white rounded-[3rem] shadow-2xl p-10 max-w-md w-full mx-4 border border-slate-100">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-2xl p-10 max-w-md w-full mx-4 border border-gray-100 dark:border-[#112240]">
             <div className="text-center mb-8">
-              <div className="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6 ring-8 ring-indigo-50/50">
-                <Mail className="w-10 h-10 text-indigo-600" />
+              <div className="w-20 h-20 bg-rose-50 dark:bg-rose-900/20 rounded-full flex items-center justify-center mx-auto mb-6 ring-8 ring-rose-50/50 dark:ring-rose-900/10 border border-rose-100 dark:border-rose-800/30">
+                <Mail className="w-10 h-10 text-rose-600 dark:text-rose-400" />
               </div>
-              <h2 className="text-2xl font-black text-slate-900 tracking-tight">¿Confirmar envío masivo?</h2>
-              <p className="text-slate-500 font-medium mt-4 leading-relaxed">
-                Esta acción enviará automáticamente los horarios personalizados (PDF + Excel) a los correos institucionales de todos los docentes activos.
+              <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Difusión Masiva</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium mt-4 leading-relaxed">
+                Esta operación procesará y enviará un correo electrónico oficial a <strong className="text-gray-800 dark:text-gray-200">cada docente del padrón activo</strong> adjuntando su horario respectivo en PDF y Excel.
               </p>
             </div>
             <div className="flex gap-4">
-              <Boton 
-                variante="secundario" 
+              <button 
                 onClick={() => setModalEnviarTodos(false)} 
-                className="flex-1 py-4 rounded-2xl font-bold border-slate-200"
+                className="flex-1 py-4 rounded-xl font-bold border border-gray-200 dark:border-gray-700 bg-white dark:bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
                 Cancelar
-              </Boton>
-              <Boton
+              </button>
+              <button
                 onClick={() => enviarTodosMutation.mutate()}
                 disabled={enviarTodosMutation.isPending}
-                className="flex-1 py-4 rounded-2xl font-black shadow-lg shadow-unt-primary/20"
+                className="flex-1 py-4 rounded-xl font-black bg-rose-600 text-white shadow-lg shadow-rose-600/20 hover:bg-rose-700 transition-colors disabled:opacity-50"
               >
-                {enviarTodosMutation.isPending ? 'Enviando...' : 'Confirmar Envío'}
-              </Boton>
+                {enviarTodosMutation.isPending ? 'Procesando...' : 'Confirmar Envío'}
+              </button>
             </div>
           </div>
         </div>
