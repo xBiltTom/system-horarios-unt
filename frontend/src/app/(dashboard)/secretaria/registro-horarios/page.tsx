@@ -482,11 +482,11 @@ export default function RegistroManualHorariosPage() {
                   <LayoutDashboard className="w-8 h-8" />
                 </div>
                 <div>
-                  <h2 className="text-3xl font-black text-gray-800 dark:text-white tracking-tight">Matriz Operativa</h2>
+                  <h2 className="text-3xl font-black text-gray-800 dark:text-white tracking-tight">Ocupación de Infraestructura</h2>
                   <p className="text-sm text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest mt-1">
                     {ambienteId ? (
                       <span className="flex items-center gap-2">
-                        Infraestructura Asignada: <span className="text-[#003366] dark:text-[#D4AF37] font-black">{matriz?.ambienteCodigo || 'Cargando...'}</span>
+                        Analizando el espacio: <span className="text-[#003366] dark:text-[#D4AF37] font-black">{matriz?.ambienteCodigo || 'Cargando...'}</span>
                       </span>
                     ) : 'Seleccione una configuración física para proceder'}
                   </p>
