@@ -9,7 +9,7 @@ import { cargaHorariaService } from '@/services/carga-horaria.service';
 import { docentesService } from '@/services/docentes.service';
 import { cursosService } from '@/services/cursos.service';
 import { Card, CardContent } from '@/components/ui/Card';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { Boton } from '@/components/ui/Boton';
 import { CampoTexto } from '@/components/ui/CampoTexto';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
@@ -179,99 +179,103 @@ export default function CargaHorariaPage() {
 
   return (
     <div className="space-y-8 max-w-[1800px] mx-auto pb-20 animate-in fade-in duration-500">
-      {/* Header Estilo Classroom */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-10 py-12 text-white shadow-2xl">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-        <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+      {/* Header Institucional */}
+      <div className="relative overflow-hidden rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240]">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
+          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+        </div>
         
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest text-white/90">
-              <Clock className="w-3.5 h-3.5" />
-              Asignación de Carga
+          <div className="space-y-5">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 backdrop-blur-md rounded-full border border-[#D4AF37]/30 text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
+              <Clock className="w-4 h-4" />
+              Gestión Académica
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Carga Horaria</h1>
-            <p className="text-lg text-white/70 max-w-2xl">
+            <h1 className="text-4xl font-serif font-extrabold tracking-wide text-white">Carga Horaria Docente</h1>
+            <p className="text-lg text-gray-400 font-light max-w-2xl">
               Asigna docentes a los componentes de cada curso y gestiona la distribución de horas por periodo.
             </p>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-            <div className="w-full sm:w-64">
-              <Selector
-                label="Período Lectivo"
-                value={idPeriodo}
-                onChange={(e: any) => setIdPeriodo(Number(e.target.value))}
-                className="bg-white/20 border-white/20 text-white"
-              >
-                <option value={0}>-- Seleccionar Periodo --</option>
-                {periodos?.map((p: any) => (
-                  <option key={p.id} value={p.id}>{p.nombre}</option>
-                ))}
-              </Selector>
-            </div>
-
-            <div className="w-full sm:w-48">
-              <Selector
-                label="Filtrar por Ciclo"
-                value={idCiclo}
-                onChange={(e: any) => setIdCiclo(Number(e.target.value))}
-                disabled={!idPeriodo}
-                className="bg-white/20 border-white/20 text-white"
-              >
-                <option value={0}>-- Todos los Ciclos --</option>
-                {ciclos?.map((c: any) => (
-                  <option key={c.id} value={c.id}>Ciclo {c.numero}</option>
-                ))}
-              </Selector>
-            </div>
-
-            <div className="w-full sm:w-64">
-              <Selector
-                label="Filtrar por Currícula"
-                value={idCurricula?.toString() || ''}
-                onChange={(e) => setIdCurricula(e.target.value ? parseInt(e.target.value) : null)}
-                opciones={(curricula || []).map((c: any) => ({
-                  valor: String(c.id),
-                  etiqueta: `${c.codigo} - ${c.nombre}${c.vigente ? ' (Vigente)' : ''}`
-                }))}
-                className="bg-white/20 border-white/20 text-white"
-              />
-            </div>
           </div>
         </div>
       </div>
 
+      <Card className="bg-white dark:bg-[#0A192F] border-none shadow-xl rounded-[2.5rem] overflow-visible relative z-20">
+        <CardContent className="p-6">
+          <div className="flex flex-col sm:flex-row gap-4 w-full">
+            <div className="w-full sm:w-64">
+              <SelectorInstitucional
+                label="Período Lectivo"
+                value={idPeriodo}
+                onChange={(val: any) => setIdPeriodo(Number(val))}
+                opciones={[
+                  { value: 0, label: '-- Seleccionar Periodo --' },
+                  ...(periodos?.map((p: any) => ({ value: p.id, label: p.nombre })) || [])
+                ]}
+              />
+            </div>
+
+            <div className="w-full sm:w-64">
+              <SelectorInstitucional
+                label="Filtrar por Ciclo"
+                value={idCiclo}
+                onChange={(val: any) => setIdCiclo(Number(val))}
+                disabled={!idPeriodo}
+                opciones={[
+                  { value: 0, label: '-- Todos los Ciclos --' },
+                  ...(ciclos?.map((c: any) => ({ value: c.id, label: `Ciclo ${c.numero}` })) || [])
+                ]}
+              />
+            </div>
+
+            <div className="w-full sm:w-80">
+              <SelectorInstitucional
+                label="Filtrar por Currícula"
+                value={idCurricula?.toString() || ''}
+                onChange={(val: any) => setIdCurricula(val ? parseInt(val) : null)}
+                opciones={(curricula || []).map((c: any) => ({
+                  value: String(c.id),
+                  label: `${c.codigo} - ${c.nombre}${c.vigente ? ' (Vigente)' : ''}`
+                }))}
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {!idPeriodo ? (
-        <div className="flex flex-col items-center justify-center py-24 bg-white rounded-[2.5rem] border-2 border-dashed border-slate-200 text-center">
-          <Clock className="w-12 h-12 text-slate-400 mb-4" />
-          <h2 className="text-xl font-bold text-slate-800">No se ha seleccionado un período</h2>
+        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#0A192F] rounded-[2.5rem] border border-dashed border-gray-200 dark:border-white/10 shadow-sm text-center">
+          <div className="p-4 bg-gray-50 dark:bg-white/5 rounded-full mb-4">
+            <Clock className="w-12 h-12 text-gray-400 dark:text-gray-500" />
+          </div>
+          <h2 className="text-xl font-bold text-gray-800 dark:text-white">No se ha seleccionado un período</h2>
+          <p className="text-gray-500 dark:text-gray-400 mt-2">Selecciona un periodo lectivo en los filtros superiores para comenzar.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-6 relative z-10">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-unt-primary" /> Oferta Académica
+              <h2 className="text-xl font-serif font-bold text-[#003366] dark:text-white flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" /> Oferta Académica y Asignaciones
               </h2>
               
               {idCiclo > 0 && (
-                <div className="flex items-center gap-4 bg-white px-4 py-2 rounded-2xl border border-slate-100 shadow-sm animate-in fade-in zoom-in duration-300">
-                  <div className="flex flex-col">
-                    <div className="flex items-center justify-between gap-8 mb-1">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Progreso del Ciclo</span>
-                      <span className="text-[10px] font-bold text-unt-primary">{progresoCiclo.porcentaje}%</span>
+                <div className="flex items-center gap-4 bg-white dark:bg-[#0A192F] px-4 py-3 rounded-2xl border border-gray-100 dark:border-white/10 shadow-sm animate-in fade-in zoom-in duration-300">
+                  <div className="flex flex-col w-40">
+                    <div className="flex items-center justify-between gap-4 mb-1.5">
+                      <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Carga del Ciclo</span>
+                      <span className="text-[10px] font-bold text-[#003366] dark:text-[#D4AF37]">{progresoCiclo.porcentaje}%</span>
                     </div>
-                    <div className="w-32 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="w-full h-1.5 bg-gray-100 dark:bg-white/5 rounded-full overflow-hidden">
                       <div 
-                        className="h-full bg-unt-primary transition-all duration-1000"
+                        className="h-full bg-[#003366] dark:bg-[#D4AF37] transition-all duration-1000"
                         style={{ width: `${progresoCiclo.porcentaje}%` }}
                       />
                     </div>
                   </div>
-                  <div className="pl-4 border-l border-slate-100">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Asignadas</p>
-                    <p className="text-xs font-extrabold text-slate-700">{progresoCiclo.asignadas}h / {progresoCiclo.requeridas}h</p>
+                  <div className="pl-4 border-l border-gray-100 dark:border-white/10">
+                    <p className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Horas Cubiertas</p>
+                    <p className="text-xs font-extrabold text-gray-900 dark:text-white">{progresoCiclo.asignadas}h / {progresoCiclo.requeridas}h</p>
                   </div>
                 </div>
               )}
@@ -279,139 +283,150 @@ export default function CargaHorariaPage() {
 
             {loadingOferta ? (
               <div className="space-y-4">
-                {[1, 2, 3].map(i => <div key={i} className="h-32 bg-slate-100 animate-pulse rounded-[2rem]" />)}
+                {[1, 2, 3].map(i => <div key={i} className="h-24 bg-gray-100 dark:bg-white/5 animate-pulse rounded-[2rem]" />)}
               </div>
             ) : (
-              cursosConOferta?.map((oferta: any) => {
-                const color = getCardColor(oferta.id);
-                return (
-                  <Card key={oferta.id} className="border-none shadow-lg rounded-[2.5rem] overflow-hidden group hover:shadow-xl transition-all duration-300">
-                    <div className={cn("px-8 py-5 border-b border-slate-100 flex items-center justify-between", color.bg)}>
-                      <div className="flex items-center gap-3">
-                        <div className={cn("p-2.5 rounded-2xl shadow-sm group-hover:scale-110 transition-transform", color.icon)}>
-                          <GraduationCap className="w-5 h-5" />
+              <div className="space-y-4 max-h-[800px] overflow-y-auto custom-scrollbar pr-2">
+                {cursosConOferta?.map((oferta: any) => {
+                  return (
+                    <Card key={oferta.id} className="border border-gray-100 dark:border-white/5 shadow-sm rounded-3xl overflow-hidden bg-white dark:bg-[#0A192F] transition-all duration-300 relative z-10 shrink-0">
+                      <div className="px-6 py-4 border-b border-gray-50 dark:border-white/5 flex items-center justify-between bg-gray-50/50 dark:bg-white/[0.02]">
+                        <div className="flex items-center gap-4">
+                          <div className="px-3 py-1 bg-[#003366]/5 dark:bg-white/5 border border-[#003366]/10 dark:border-white/10 rounded-xl text-xs font-mono font-bold text-[#003366] dark:text-gray-300">
+                            {oferta.curso?.codigo}
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-gray-900 dark:text-white text-sm">{oferta.curso?.nombre}</h3>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="font-bold text-slate-900 leading-tight">{oferta.curso?.nombre}</h3>
-                          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.1em] mt-0.5">{oferta.curso?.codigo}</p>
+                        <div className="hidden sm:block">
+                          <span className="px-3 py-1 bg-white dark:bg-[#020C1B] border border-gray-200 dark:border-white/10 rounded-xl text-[10px] font-bold text-gray-500 dark:text-gray-400 shadow-sm uppercase tracking-wider">
+                            {oferta.ciclo?.nombre || `Ciclo ${oferta.id_ciclo}`}
+                          </span>
                         </div>
                       </div>
-                      <div className="hidden sm:block">
-                        <span className="px-3 py-1 bg-white border border-slate-200 rounded-xl text-[10px] font-bold text-slate-500 shadow-sm">
-                          {oferta.ciclo?.nombre || `Ciclo ${oferta.id_ciclo}`}
-                        </span>
-                      </div>
-                    </div>
-                    <CardContent className="p-8">
-                    <div className="space-y-4">
-                      {oferta.componentes.map((comp: any) => {
-                        const horasAsignadasActual = comp.asignaciones.reduce((acc: number, a: any) => acc + a.horas_asignadas, 0);
-                        const totalRequerido = comp.horas_requeridas;
-                        const faltan = totalRequerido - horasAsignadasActual;
-                        const nGrupos = comp.grupos?.length || 1;
-                        const hPorGrupo = totalRequerido / nGrupos;
-                        
-                        const gruposAsignados = horasAsignadasActual / hPorGrupo;
-                        const gruposFaltantes = nGrupos - gruposAsignados;
-                        
-                        return (
-                          <div key={comp.id} className="flex flex-col lg:flex-row lg:items-center justify-between p-5 rounded-[1.5rem] border border-slate-100 gap-6 hover:bg-slate-50/50 transition-colors">
-                            <div className="flex-1 space-y-3">
-                              <div className="flex items-center flex-wrap gap-3">
-                                <span className={`px-2.5 py-1 rounded-xl text-[10px] font-bold uppercase tracking-wider ${
-                                  comp.tipo === 'TEORIA' ? 'bg-indigo-50 text-indigo-700' : 'bg-purple-50 text-purple-700'
-                                }`}>
-                                  {comp.tipo === 'TEORIA' ? 'Teoría-Práctica' : 'Laboratorio'}
-                                </span>
-                                <div className="flex items-center gap-2 text-sm font-bold text-slate-600">
-                                  <Clock className="w-4 h-4 text-slate-400" />
-                                  <span>{totalRequerido}h totales</span>
-                                  <span className="text-slate-300 font-normal">|</span>
-                                  <span className="text-slate-400 font-medium">{nGrupos} {nGrupos === 1 ? 'grupo' : 'grupos'}</span>
+                      
+                      <CardContent className="p-0">
+                        <div className="divide-y divide-gray-50 dark:divide-white/5">
+                          {oferta.componentes.map((comp: any) => {
+                            const horasAsignadasActual = comp.asignaciones.reduce((acc: number, a: any) => acc + a.horas_asignadas, 0);
+                            const totalRequerido = comp.horas_requeridas;
+                            const faltan = totalRequerido - horasAsignadasActual;
+                            
+                            return (
+                              <div key={comp.id} className="p-6 flex flex-col xl:flex-row gap-6 hover:bg-gray-50/30 dark:hover:bg-white/[0.01] transition-colors group/row relative z-10">
+                                {/* Info Componente */}
+                                <div className="w-full xl:w-1/3 flex flex-col gap-2">
+                                  <div className="flex items-center gap-2">
+                                    <Clock className={cn("w-4 h-4", comp.tipo === 'TEORIA' ? 'text-blue-500' : 'text-purple-500')} />
+                                    <span className="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                                      {comp.tipo === 'TEORIA' ? 'Teoría-Práctica' : 'Laboratorio'}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 font-medium">
+                                    <span className="bg-gray-100 dark:bg-white/10 px-2 py-0.5 rounded-md text-gray-700 dark:text-gray-300 font-bold">{totalRequerido}h</span> totales requeridas
+                                  </div>
+                                </div>
+
+                                {/* Asignaciones & Actions */}
+                                <div className="flex-1 flex flex-col gap-3">
+                                  <div className="flex flex-wrap gap-2">
+                                    {comp.asignaciones.map((asig: any) => (
+                                      <div key={asig.id} className="inline-flex items-center gap-2.5 px-3 py-1.5 bg-white dark:bg-[#020C1B] border border-gray-200 dark:border-white/10 rounded-2xl text-xs shadow-sm group/asig transition-all hover:border-[#003366]/30 dark:hover:border-[#D4AF37]/30">
+                                        <div className="w-6 h-6 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center text-[10px] font-bold text-gray-600 dark:text-gray-300">
+                                          {asig.docente.apellidos[0]}
+                                        </div>
+                                        <div className="flex flex-col">
+                                          <span className="font-bold text-gray-700 dark:text-gray-200 leading-tight">{asig.docente.apellidos}</span>
+                                          <span className="text-[9px] text-gray-500 uppercase tracking-widest">{asig.horas_asignadas} horas</span>
+                                        </div>
+                                        <div className="flex gap-1 pl-2 border-l border-gray-100 dark:border-white/10 opacity-0 group-hover/asig:opacity-100 transition-opacity">
+                                          <button onClick={() => abrirModalAsignacion(comp, oferta, asig)} className="p-1 text-gray-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 rounded-md transition-colors" title="Editar asignación"><Edit2 className="w-3.5 h-3.5"/></button>
+                                          <button onClick={() => manejarEliminarAsignacion(asig.id)} className="p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-md transition-colors" title="Eliminar asignación"><Trash2 className="w-3.5 h-3.5"/></button>
+                                        </div>
+                                      </div>
+                                    ))}
+                                    
+                                    {faltan > 0 && (
+                                      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 rounded-2xl text-xs font-bold border border-red-100 dark:border-red-900/20">
+                                        <div className="animate-pulse w-1.5 h-1.5 bg-red-500 rounded-full" />
+                                        Faltan {faltan}h
+                                      </div>
+                                    )}
+                                    {faltan <= 0 && (
+                                      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 dark:bg-green-900/10 text-green-700 dark:text-green-400 rounded-2xl text-xs font-bold border border-green-200 dark:border-green-900/20">
+                                        <CheckCircle2 className="w-4 h-4" />
+                                        Completo
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {faltan > 0 && (
+                                    <div className="flex justify-start">
+                                      <button 
+                                        onClick={() => abrirModalAsignacion(comp, oferta)}
+                                        className="inline-flex items-center gap-2 text-xs font-bold text-[#003366] dark:text-[#D4AF37] hover:text-[#002244] dark:hover:text-[#F3E5AB] bg-[#003366]/5 dark:bg-[#D4AF37]/10 hover:bg-[#003366]/10 dark:hover:bg-[#D4AF37]/20 px-3 py-1.5 rounded-xl transition-colors"
+                                      >
+                                        <Plus className="w-3.5 h-3.5" /> Nueva Asignación
+                                      </button>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
-                              
-                              <div className="flex flex-wrap gap-2">
-                                {comp.asignaciones.map((asig: any) => (
-                                  <div key={asig.id} className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-100 rounded-2xl text-xs shadow-sm hover:border-unt-primary/30 transition-colors group/asig">
-                                    <div className="w-5 h-5 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500">
-                                      {asig.docente.apellidos[0]}
-                                    </div>
-                                    <span className="font-bold text-slate-700">{asig.docente.apellidos}</span>
-                                    <span className="text-unt-primary font-extrabold">{asig.horas_asignadas}h</span>
-                                    <div className="flex gap-1 ml-1 pl-2 border-l border-slate-100">
-                                      <button onClick={() => abrirModalAsignacion(comp, oferta, asig)} className="text-slate-300 hover:text-blue-500 transition-colors"><Edit2 className="w-3.5 h-3.5"/></button>
-                                      <button onClick={() => manejarEliminarAsignacion(asig.id)} className="text-slate-300 hover:text-red-500 transition-colors"><Trash2 className="w-3.5 h-3.5"/></button>
-                                    </div>
-                                  </div>
-                                ))}
-                                {faltan > 0 && (
-                                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50/50 text-red-600 rounded-2xl text-[11px] font-bold border border-red-100/50">
-                                    <div className="animate-pulse w-1.5 h-1.5 bg-red-500 rounded-full" />
-                                    Faltan {faltan}h {comp.tipo === 'LABORATORIO' ? `(${gruposFaltantes.toFixed(1)} grp)` : ''}
-                                  </div>
-                                )}
-                                {faltan <= 0 && (
-                                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-2xl text-[11px] font-bold border border-emerald-100">
-                                    <CheckCircle2 className="w-3.5 h-3.5" />
-                                    Carga Completa
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            <Boton size="sm" variant="outline" onClick={() => abrirModalAsignacion(comp, oferta)} className="rounded-2xl border-slate-200 hover:bg-unt-primary hover:text-white hover:border-unt-primary transition-all h-12 px-6 font-bold shadow-sm">
-                              <Plus className="w-4 h-4 mr-2" /> Asignar
-                            </Boton>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </CardContent>
-                </Card>
-                );
-              })
+                            );
+                          })}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
             )}
           </div>
 
           <div className="space-y-6">
-            <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-              <Users className="w-5 h-5 text-unt-primary" /> Carga Docente
+            <h2 className="text-xl font-serif font-bold text-[#003366] dark:text-white flex items-center gap-2">
+              <Users className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" /> Carga Docente General
             </h2>
-            {[...resumenCarga]
-              .sort((a: any, b: any) => {
-                const totalA = a.asignaciones.reduce((acc: number, as: any) => acc + as.horas_asignadas, 0);
-                const totalB = b.asignaciones.reduce((acc: number, as: any) => acc + as.horas_asignadas, 0);
-                const maxA = a.horas_max_semana || 40;
-                const maxB = b.horas_max_semana || 40;
-                return (totalB / maxB) - (totalA / maxA); // Orden descendente por porcentaje
-              })
-              .map((docente: any) => {
-                const total = docente.asignaciones.reduce((acc: number, a: any) => acc + a.horas_asignadas, 0);
-                const max = docente.horas_max_semana || 40;
-                const porcentaje = Math.min((total / max) * 100, 100);
-                
-                return (
-                  <div key={docente.id} className="p-4 bg-white rounded-2xl shadow-sm border border-slate-100 space-y-2">
-                    <div className="flex justify-between items-start">
-                      <p className="font-bold text-sm text-slate-800 leading-tight">{docente.apellidos}, {docente.nombres}</p>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        porcentaje >= 100 ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-500'
-                      }`}>
-                        {total}h
-                      </span>
+            <div className="flex flex-col gap-3 max-h-[800px] overflow-y-auto custom-scrollbar pr-2">
+              {[...resumenCarga]
+                .sort((a: any, b: any) => {
+                  const totalA = a.asignaciones.reduce((acc: number, as: any) => acc + as.horas_asignadas, 0);
+                  const totalB = b.asignaciones.reduce((acc: number, as: any) => acc + as.horas_asignadas, 0);
+                  const maxA = a.horas_max_semana || 40;
+                  const maxB = b.horas_max_semana || 40;
+                  return (totalB / maxB) - (totalA / maxA); // Orden descendente por porcentaje
+                })
+                .map((docente: any) => {
+                  const total = docente.asignaciones.reduce((acc: number, a: any) => acc + a.horas_asignadas, 0);
+                  const max = docente.horas_max_semana || 40;
+                  const porcentaje = Math.min((total / max) * 100, 100);
+                  const isSaturated = porcentaje >= 100;
+                  
+                  return (
+                    <div key={docente.id} className="p-4 bg-white dark:bg-[#0A192F] rounded-2xl shadow-sm border border-gray-100 dark:border-white/10 hover:border-gray-200 dark:hover:border-white/20 transition-colors">
+                      <div className="flex justify-between items-start mb-3">
+                        <p className="font-bold text-sm text-gray-900 dark:text-white leading-tight">{docente.apellidos}, <span className="font-medium text-gray-500 dark:text-gray-400">{docente.nombres}</span></p>
+                        <span className={cn(
+                          "text-[10px] font-bold px-2 py-0.5 rounded-md border",
+                          isSaturated ? "bg-red-50 text-red-600 border-red-100 dark:bg-red-900/20 dark:text-red-400 dark:border-red-900/30" : "bg-gray-50 text-gray-600 border-gray-200 dark:bg-white/5 dark:text-gray-300 dark:border-white/10"
+                        )}>
+                          {total}h / {max}h
+                        </span>
+                      </div>
+                      <div className="w-full h-1.5 bg-gray-100 dark:bg-white/5 rounded-full overflow-hidden">
+                        <div 
+                          className={cn(
+                            "h-full transition-all duration-500",
+                            isSaturated ? "bg-red-500" : porcentaje > 80 ? "bg-amber-500" : "bg-[#003366] dark:bg-[#D4AF37]"
+                          )}
+                          style={{ width: `${porcentaje}%` }}
+                        />
+                      </div>
                     </div>
-                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div 
-                        className={`h-full transition-all duration-500 ${
-                          porcentaje >= 100 ? 'bg-red-500' : porcentaje > 80 ? 'bg-amber-500' : 'bg-unt-primary'
-                        }`}
-                        style={{ width: `${porcentaje}%` }}
-                      />
-                    </div>
-                    <p className="text-[10px] text-slate-400 font-medium text-right">Máximo: {max}h</p>
-                  </div>
-                );
-              })}
+                  );
+                })}
+            </div>
           </div>
         </div>
       )}
@@ -424,20 +439,20 @@ export default function CargaHorariaPage() {
         overflowVisible={true}
       >
         <div className="space-y-8 min-h-[400px]">
-          {/* Cabecera del Curso Estilo Classroom */}
-          <div className="bg-slate-50 rounded-3xl p-6 border border-slate-100 flex items-start gap-4">
-            <div className="p-3 bg-unt-primary/10 rounded-2xl text-unt-primary">
+          {/* Cabecera del Curso Institucional */}
+          <div className="bg-gray-50 dark:bg-white/5 rounded-2xl p-6 border border-gray-100 dark:border-white/10 flex items-start gap-4">
+            <div className="p-3 bg-[#003366]/10 dark:bg-[#D4AF37]/10 rounded-xl text-[#003366] dark:text-[#D4AF37]">
               <BookOpen className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="font-bold text-slate-900 text-lg">
+              <h4 className="font-bold text-gray-900 dark:text-white text-lg">
                 {ofertaSeleccionada?.curso?.nombre}
               </h4>
-              <p className="text-slate-500 text-sm flex items-center gap-2 mt-1">
-                <span className="font-semibold text-slate-700">{ofertaSeleccionada?.curso?.codigo}</span>
-                <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
+              <p className="text-gray-500 dark:text-gray-400 text-sm flex items-center gap-2 mt-1">
+                <span className="font-bold text-gray-700 dark:text-gray-300">{ofertaSeleccionada?.curso?.codigo}</span>
+                <span className="w-1 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></span>
                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                  componenteSeleccionado?.tipo === 'TEORIA' ? 'bg-indigo-100 text-indigo-700' : 'bg-purple-100 text-purple-700'
+                  componenteSeleccionado?.tipo === 'TEORIA' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
                 }`}>
                   {componenteSeleccionado?.tipo === 'TEORIA' ? 'Teoría-Práctica' : 'Laboratorio'}
                 </span>
@@ -452,20 +467,20 @@ export default function CargaHorariaPage() {
                 value={idDocente}
                 onChange={(valor) => setIdDocente(Number(valor))}
                 opciones={docentes.map((d: any) => ({
-                  valor: d.id,
-                  etiqueta: `${d.apellidos}, ${d.nombres}`
+                  value: d.id,
+                  label: `${d.apellidos}, ${d.nombres}`
                 }))}
                 placeholder="Buscar docente..."
               />
             </div>
             <div className="md:col-span-4">
               <div className="space-y-1.5">
-                <label className="block text-sm font-bold text-gray-700 ml-1">Horas a Asignar</label>
+                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Horas a Asignar</label>
                 <div className="relative">
-                  <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
                   <input 
                     type="number" 
-                    className="block w-full rounded-2xl border border-gray-200 pl-12 pr-4 py-4 text-gray-900 shadow-sm transition-all duration-200 focus:border-unt-primary focus:ring-4 focus:ring-unt-primary/5 focus:outline-none bg-slate-50/50 hover:bg-white"
+                    className="block w-full rounded-2xl border px-4 pl-12 py-4 shadow-sm transition-all duration-200 outline-none bg-slate-50/50 hover:bg-white border-gray-200 text-gray-900 focus:border-[#003366] focus:ring-4 focus:ring-[#003366]/5 dark:bg-white/5 dark:hover:bg-[#020C1B] dark:border-white/10 dark:text-white dark:focus:border-[#D4AF37] dark:focus:ring-[#D4AF37]/10"
                     value={horasAsignadas} 
                     onChange={(e) => setHorasAsignadas(Number(e.target.value))} 
                     placeholder="0"
@@ -488,10 +503,10 @@ export default function CargaHorariaPage() {
           <div className="pt-2">
             <Boton 
               onClick={manejarAsignar} 
-              cargando={mutationAsignar.isPending} 
-              className="w-full py-4 text-lg font-bold rounded-2xl shadow-lg shadow-unt-primary/20"
+              disabled={mutationAsignar.isPending} 
+              className="w-full py-4 text-lg font-bold rounded-2xl shadow-lg shadow-[#003366]/20 dark:shadow-[#D4AF37]/10 bg-[#003366] hover:bg-[#002244] text-white dark:bg-[#D4AF37] dark:hover:bg-[#B8962E] dark:text-[#0A192F]"
             >
-              {asignacionEditando ? 'Actualizar Carga Horaria' : 'Confirmar Asignación'}
+              {mutationAsignar.isPending ? 'Procesando...' : (asignacionEditando ? 'Actualizar Carga Horaria' : 'Confirmar Asignación')}
             </Boton>
           </div>
         </div>
