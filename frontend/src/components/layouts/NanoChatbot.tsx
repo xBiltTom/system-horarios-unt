@@ -44,7 +44,7 @@ export const NanoChatbot = () => {
     {
       id: '1',
       role: 'assistant',
-      content: 'Hola. Soy Nano, tu asistente virtual del sistema de horarios. ¿En qué puedo ayudarte?',
+      content: 'Bienvenido. Soy el Asistente UNT, unidad de soporte del Sistema de Horarios. Ingrese su requerimiento.',
     },
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -174,21 +174,21 @@ export const NanoChatbot = () => {
   const handleDocenteQuery = async (text: string): Promise<string> => {
     const idDocente = usuario?.idDocente;
     if (!idDocente) {
-      return 'No puedo encontrar tu información como docente en el sistema.';
+      return 'Error: Registro docente no hallado en la base de datos.';
     }
 
     // Handle horario-related queries (hoy, semana, dia especifico)
     if (matchesKeywords(text, ['horario', 'mi horario', 'ver horario', 'cual es mi horario', 'ver mi horario', 'que clases', 'mis clases', 'clases hoy', 'clases mañana', 'horario completo', 'horario semana'])) {
       try {
         const periodoActivo = await getPeriodoActivo();
-        if (!periodoActivo) return 'No hay un periodo académico activo actualmente.';
+        if (!periodoActivo) return 'Advertencia: No existe un periodo académico configurado como activo.';
 
         const res = await horariosService.obtenerSeleccionesTemporales(idDocente);
         let bloques = res.data || res;
         if (!Array.isArray(bloques)) bloques = [];
 
         if (bloques.length === 0) {
-          return 'No tienes horario cargado en el periodo activo.';
+          return 'Información: No registra carga horaria en el periodo vigente.';
         }
 
         // Check if querying a specific day
@@ -219,20 +219,20 @@ export const NanoChatbot = () => {
         return `Tu horario completo de la semana es:\n${textoBloques}`;
       } catch (err) {
         console.error('Error loading docente horario:', err);
-        return 'No pude cargar tu horario. Por favor, verifica más tarde.';
+        return 'Error de conexión al procesar su horario. Reintente en unos minutos.';
       }
     }
 
     if (matchesKeywords(text, ['curso', 'cursos', 'asignado', 'asignados', 'mis curso', 'mis cursos', 'que cursos', 'cuales son mis cursos', 'dame mis cursos'])) {
       try {
         const periodoActivo = await getPeriodoActivo();
-        if (!periodoActivo) return 'No hay un periodo académico activo actualmente.';
+        if (!periodoActivo) return 'Advertencia: No existe un periodo académico configurado como activo.';
 
         const resumen = await estadisticasService.resumenDocente(idDocente, periodoActivo.id);
         const componentes = resumen.data?.componentes || [];
 
         if (componentes.length === 0) {
-          return 'Actualmente no tienes cursos asignados en el periodo activo.';
+          return 'Información: No se encontraron cursos asignados a su perfil en el periodo actual.';
         }
 
         const cursos = componentes.map((c: any) => {
@@ -242,31 +242,31 @@ export const NanoChatbot = () => {
           return `- ${cursoCodigo ? cursoCodigo + ': ' : ''}${cursoNombre} (${componente}) - ${c.horasAsignadas}h/sem`;
         }).join('\n');
 
-        return `Tus cursos asignados en el periodo activo son:\n${cursos}`;
+        return `Reporte de cursos asignados (Periodo Vigente):\n${cursos}`;
       } catch (err) {
         console.error('Error loading courses:', err);
-        return 'No pude cargar tus cursos asignados. Por favor, verifica más tarde.';
+        return 'Error de conexión al cargar los cursos. Reintente en unos minutos.';
       }
     }
 
     if (matchesKeywords(text, ['hora', 'horas', 'lectiva', 'lectivas', 'cuantas horas', 'cuantas hora', 'total horas', 'horas totales', 'carga horaria', 'mi carga'])) {
       try {
         const periodoActivo = await getPeriodoActivo();
-        if (!periodoActivo) return 'No hay un periodo académico activo actualmente.';
+        if (!periodoActivo) return 'Advertencia: No existe un periodo académico configurado como activo.';
 
         const resumen = await estadisticasService.resumenDocente(idDocente, periodoActivo.id);
         const totalHoras = resumen.data?.horasLectivas || 0;
         const horasMax = resumen.data?.horasMaximas || 40;
         const porcentaje = Math.round((totalHoras / horasMax) * 100);
 
-        return `En el periodo activo tienes asignadas ${totalHoras} horas lectivas de ${horasMax} horas máximas (${porcentaje}% de tu carga).`;
+        return `Resumen de carga lectiva: ${totalHoras} horas asignadas de un máximo de ${horasMax} horas (${porcentaje}% de su capacidad).`;
       } catch (err) {
         console.error('Error loading hours:', err);
-        return 'No pude cargar tu información de horas lectivas.';
+        return 'Error al procesar la información de horas lectivas.';
       }
     }
 
-    return '__GENERIC_FALLBACK__Como docente, puedo ayudarte a consultar tus cursos asignados, tus horas lectivas y cómo acceder a tu horario personal. ¿Qué necesitas saber?';
+    return '__GENERIC_FALLBACK__Módulo de consulta docente. Puede verificar cursos asignados, carga lectiva o revisar su horario personal. Indique qué información requiere.';
   };
 
   // ============ SECRETARIA QUERY HANDLERS ============
@@ -285,12 +285,12 @@ export const NanoChatbot = () => {
       const res = await horariosService.obtenerSeleccionesTemporales(docente.id);
       const bloques = res.data || res;
       if (!Array.isArray(bloques) || bloques.length === 0) {
-        return `El docente ${docente.apellidos}, ${docente.nombres} no tiene horario cargado actualmente.`;
+        return `Información: El docente ${docente.apellidos}, ${docente.nombres} no registra horario en el sistema.`;
       }
       const bloquesTexto = formatBloquesHorario(bloques);
       return `Horario de ${docente.apellidos}, ${docente.nombres}:\n${bloquesTexto}`;
     } catch {
-      return `No se pudo obtener el horario del docente ${docente.apellidos}, ${docente.nombres}.`;
+      return `Error al consultar el horario del docente ${docente.apellidos}, ${docente.nombres}.`;
     }
   };
 
@@ -332,7 +332,7 @@ export const NanoChatbot = () => {
     if (!name && !text.includes('todos') && !text.includes('global')) return null;
 
     const periodoActivo = await getPeriodoActivo();
-    if (!periodoActivo) return 'No hay un periodo activo.';
+    if (!periodoActivo) return 'Advertencia: No existe un periodo académico configurado como activo.';
 
     if (text.includes('todos') || text.includes('global')) {
       try {
@@ -359,7 +359,7 @@ export const NanoChatbot = () => {
 
   const handleAmbientesDisponibles = async (): Promise<string> => {
     const periodoActivo = await getPeriodoActivo();
-    if (!periodoActivo) return 'No hay un periodo activo.';
+    if (!periodoActivo) return 'Advertencia: No existe un periodo académico configurado como activo.';
 
     try {
       const res = await ambientesService.disponibilidadGeneral(periodoActivo.id);
@@ -382,7 +382,7 @@ export const NanoChatbot = () => {
   const handleCursosPorCiclo = async (text: string): Promise<string | null> => {
     try {
       const periodoActivo = await getPeriodoActivo();
-      if (!periodoActivo) return 'No hay un periodo académico activo actualmente.';
+      if (!periodoActivo) return 'Advertencia: No existe un periodo académico configurado como activo.';
 
       const ciclos = await periodosService.obtenerCiclosActivo();
       const ciclosList = ciclos.data || ciclos;
@@ -427,7 +427,7 @@ export const NanoChatbot = () => {
   const handleResumenGeneral = async (): Promise<string> => {
     try {
       const periodoActivo = await getPeriodoActivo();
-      if (!periodoActivo) return 'No hay un periodo académico activo actualmente.';
+      if (!periodoActivo) return 'Advertencia: No existe un periodo académico configurado como activo.';
 
       const ciclos = await periodosService.obtenerCiclosActivo();
       const ciclosList = ciclos.data || ciclos;
@@ -480,7 +480,7 @@ export const NanoChatbot = () => {
         const pendientes = ventanasList.filter((v: any) => v.estado !== 'COMPLETADA');
 
         if (pendientes.length === 0) {
-          return 'Excelente. Todos los docentes han completado su carga horaria en las ventanas de atención.';
+          return 'Estado óptimo: El 100% de la plana docente ha completado el registro de su carga horaria.';
         }
 
         const nombresPendientes = pendientes.flatMap((v: any) =>
@@ -500,7 +500,7 @@ export const NanoChatbot = () => {
     if (matchesKeywords(text, ['ventana', 'ventanas', 'ventana de atencion', 'ventanas de atencion', 'estado de las ventanas'])) {
       try {
         const periodoActivo = await getPeriodoActivo();
-        if (!periodoActivo) return 'No hay un periodo académico activo actualmente.';
+        if (!periodoActivo) return 'Advertencia: No existe un periodo académico configurado como activo.';
 
         const ventanas = await ventanasService.listar(periodoActivo.id);
         const ventanasList = Array.isArray(ventanas) ? ventanas : ventanas.data || [];
@@ -522,7 +522,7 @@ export const NanoChatbot = () => {
       }
     }
 
-    return '__GENERIC_FALLBACK__Como secretaria, puedo ayudarte a consultar los docentes pendientes de cargar horario, el estado de las ventanas de atención, el horario de un docente específico y los ambientes disponibles. ¿Qué necesitas?';
+    return '__GENERIC_FALLBACK__Módulo de gestión administrativa. Puede consultar docentes pendientes, estado de ventanas, horarios o disponibilidad de ambientes. Ingrese su requerimiento.';
   };
 
   // ============ DIRECTOR QUERY HANDLERS ============
@@ -540,7 +540,7 @@ export const NanoChatbot = () => {
     if (matchesKeywords(text, ['cuantos docentes', 'total docentes', 'numero de docentes', 'docentes registrados'])) {
       try {
         const periodoActivo = await getPeriodoActivo();
-        if (!periodoActivo) return 'No hay un periodo académico activo actualmente.';
+        if (!periodoActivo) return 'Advertencia: No existe un periodo académico configurado como activo.';
         const resumen = await estadisticasService.resumen(periodoActivo.id);
         const totalDocentes = resumen.data?.totalDocentes || 0;
         return `Hay ${totalDocentes} docentes registrados en el sistema.`;
@@ -552,7 +552,7 @@ export const NanoChatbot = () => {
     if (matchesKeywords(text, ['cuantos cursos', 'total cursos', 'numero de cursos', 'cursos dictados'])) {
       try {
         const periodoActivo = await getPeriodoActivo();
-        if (!periodoActivo) return 'No hay un periodo académico activo actualmente.';
+        if (!periodoActivo) return 'Advertencia: No existe un periodo académico configurado como activo.';
         const resumen = await estadisticasService.resumen(periodoActivo.id);
         const totalCursos = resumen.data?.totalCursos || 0;
         return `Hay ${totalCursos} cursos dictados en el periodo activo.`;
@@ -561,7 +561,7 @@ export const NanoChatbot = () => {
       }
     }
 
-    return '__GENERIC_FALLBACK__Como director, puedo ayudarte a consultar los cursos por ciclo y el resumen general del periodo académico. ¿Qué necesitas?';
+    return '__GENERIC_FALLBACK__Módulo de dirección académica. Puede solicitar los cursos por ciclo o un resumen consolidado del periodo vigente. Indique su requerimiento.';
   };
 
   // ============ MAIN PROCESSING ============
@@ -672,10 +672,10 @@ export const NanoChatbot = () => {
               <Sparkles className="w-6 h-6 text-[#D4AF37]" />
             </div>
             <div className="relative z-10 flex-1">
-              <h3 className="font-black text-white text-lg tracking-tight">Nano <span className="text-[#D4AF37]">AI</span></h3>
+              <h3 className="font-black text-white text-lg tracking-tight">Asistente <span className="text-[#D4AF37]">UNT</span></h3>
               <p className="text-white/60 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2 mt-0.5">
                 <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-                Asistente Operativo
+                Soporte de Sistema
               </p>
             </div>
           </div>
@@ -751,7 +751,7 @@ export const NanoChatbot = () => {
                 type="text"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Pregúntale a Nano..."
+                placeholder="Consultar al asistente..."
                 className="flex-1 px-4 py-3 bg-transparent focus:outline-none text-sm text-gray-800 dark:text-white placeholder:text-gray-400 font-medium"
                 disabled={isProcessing}
               />
