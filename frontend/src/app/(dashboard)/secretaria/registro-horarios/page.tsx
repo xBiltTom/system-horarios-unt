@@ -312,104 +312,92 @@ export default function RegistroManualHorariosPage() {
 
       <div className="animate-in slide-in-from-bottom-4 duration-700 space-y-10">
         
-        {/* FILA SUPERIOR: SELECTORES Y CONFIGURACIÓN */}
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-stretch">
-          
-          {/* Tarjeta 1: Selección de Docente (3/12) */}
-          <div className="xl:col-span-3 bg-white dark:bg-[#0A192F] rounded-[3rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col justify-between min-h-[280px]">
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-[#003366]/5 dark:bg-[#003366]/30 rounded-2xl text-[#003366] dark:text-[#D4AF37] border border-[#003366]/10 dark:border-[#003366]/50 shadow-sm">
-                  <User className="w-6 h-6" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-black text-gray-800 dark:text-white tracking-tight">Docente</h2>
-                  <p className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest">Identificación</p>
-                </div>
+        {/* PANEL DE CONTEXTO PRINCIPAL: DOCENTE */}
+        <div className="bg-white dark:bg-[#0A192F] rounded-3xl shadow-lg border border-gray-100 dark:border-[#112240] p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6 transition-all">
+          <div className="flex-1 max-w-3xl">
+            <div className="flex items-center gap-4 mb-5">
+              <div className="p-3 bg-[#003366]/5 dark:bg-[#003366]/30 rounded-2xl text-[#003366] dark:text-[#D4AF37] border border-[#003366]/10 dark:border-[#003366]/50 shadow-sm">
+                <User className="w-5 h-5" />
               </div>
-
-              <div className="pt-2">
-                <SelectorFiltrable
-                  label=""
-                  value={docenteId || 0}
-                  onChange={(val) => {
-                    const id = Number(val);
-                    setDocenteId(id || null);
-                    setComponenteSeleccionado(null);
-                    setGrupoSeleccionado(null);
-                    setAmbienteId(null);
-                  }}
-                  opciones={(docentes || []).map((d: any) => ({
-                    valor: d.id,
-                    etiqueta: `${d.apellidos}, ${d.nombres}`
-                  }))}
-                  placeholder="Buscar docente..."
-                />
+              <div>
+                <h2 className="text-xl font-black text-gray-800 dark:text-white tracking-tight">Docente a Programar</h2>
+                <p className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest">Identificación en Padrón</p>
               </div>
             </div>
             
-            {docenteId && (
-              <div className="mt-6 p-4 bg-emerald-50 dark:bg-emerald-900/10 rounded-2xl border border-emerald-100 dark:border-emerald-800/30 flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <p className="text-[11px] font-black uppercase tracking-widest text-emerald-700 dark:text-emerald-400">Padrón Autorizado</p>
-              </div>
-            )}
+            <SelectorFiltrable
+              label=""
+              value={docenteId || 0}
+              onChange={(val) => {
+                const id = Number(val);
+                setDocenteId(id || null);
+                setComponenteSeleccionado(null);
+                setGrupoSeleccionado(null);
+                setAmbienteId(null);
+              }}
+              opciones={(docentes || []).map((d: any) => ({
+                valor: d.id,
+                etiqueta: `${d.apellidos}, ${d.nombres}`
+              }))}
+              placeholder="Buscar docente por nombre o apellidos..."
+            />
           </div>
-
-          {/* Tarjeta 2: Curso y Ambiente (5/12) */}
-          <div className="xl:col-span-5 bg-white dark:bg-[#0A192F] rounded-[3rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col min-h-[280px]">
-            {!docenteId ? (
-              <div className="flex-1 flex flex-col items-center justify-center space-y-4 opacity-50">
-                <div className="w-16 h-16 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center">
-                  <Search className="w-8 h-8 text-gray-300 dark:text-gray-500" />
-                </div>
-                <p className="text-gray-400 dark:text-gray-500 font-bold text-sm uppercase tracking-widest">Identifique al Docente</p>
+          
+          {docenteId ? (
+            <div className="lg:w-72 p-5 bg-emerald-50 dark:bg-emerald-900/10 rounded-2xl border border-emerald-100 dark:border-emerald-800/30 flex items-center gap-4 shrink-0 animate-in fade-in zoom-in-95 shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-white dark:bg-[#020C1B] shadow-sm flex items-center justify-center shrink-0 border border-emerald-100 dark:border-emerald-800/50">
+                <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
               </div>
-            ) : (
-              <div className="space-y-6 flex-1 flex flex-col">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-[#003366]/5 dark:bg-[#003366]/30 rounded-2xl text-[#003366] dark:text-[#D4AF37] border border-[#003366]/10 dark:border-[#003366]/50 shadow-sm">
-                    <BookOpen className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-black text-gray-800 dark:text-white tracking-tight">Espacio Académico</h2>
-                    <p className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest">Configuración Física</p>
+              <div>
+                <p className="text-[9px] font-black uppercase tracking-widest text-emerald-700 dark:text-emerald-500 mb-0.5">Estado de Padrón</p>
+                <p className="text-sm font-bold text-emerald-900 dark:text-emerald-400 leading-tight">Autorizado para carga académica</p>
+              </div>
+            </div>
+          ) : (
+            <div className="lg:w-72 p-5 bg-gray-50 dark:bg-[#020C1B] rounded-2xl border border-dashed border-gray-200 dark:border-[#112240] flex items-center justify-center gap-3 shrink-0 opacity-70">
+              <Search className="w-5 h-5 text-gray-400" />
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Esperando selección</p>
+            </div>
+          )}
+        </div>
+
+        {/* CONSOLA DE CONFIGURACIÓN Y AUDITORÍA */}
+        {docenteId && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-in slide-in-from-bottom-4 duration-500">
+            
+            {/* PANEL IZQUIERDO: CONFIGURACIÓN DE CARGA (7/12) */}
+            <div className="lg:col-span-7 bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 space-y-8 flex flex-col">
+              <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-5">
+                <div className="p-2.5 bg-gray-50 dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10">
+                  <BookOpen className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-gray-800 dark:text-white tracking-tight">Configuración de Carga</h3>
+                  <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-0.5">Asignación de componentes y espacios</p>
+                </div>
+              </div>
+              
+              <div className="flex-1 space-y-8">
+                {/* Lista de Cursos */}
+                <div className="space-y-3">
+                  <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">1. Seleccione la carga pendiente</p>
+                  <div className="bg-gray-50/50 dark:bg-[#020C1B] rounded-2xl border border-gray-100 dark:border-[#112240] p-1.5 max-h-[220px] overflow-y-auto custom-scrollbar">
+                    <PanelSeleccionCurso
+                      componentes={progreso || []}
+                      componenteSeleccionado={componenteSeleccionado}
+                      alCambiarComponente={(id) => setComponenteSeleccionado(id || null)}
+                    />
                   </div>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-11 gap-6 flex-1">
-                  <div className="md:col-span-6 space-y-2 flex flex-col">
-                    <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">Carga Asignada</p>
-                    <div className="flex-1 min-h-[140px] bg-gray-50/50 dark:bg-[#020C1B] rounded-2xl border border-gray-100 dark:border-[#112240] overflow-hidden">
-                      <div className="h-full overflow-y-auto custom-scrollbar p-1">
-                        <PanelSeleccionCurso
-                          componentes={progreso || []}
-                          componenteSeleccionado={componenteSeleccionado}
-                          alCambiarComponente={(id) => setComponenteSeleccionado(id || null)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="md:col-span-5 flex flex-col justify-between gap-4">
-                    <div className="space-y-2">
-                      <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">Infraestructura</p>
-                      <SelectorInstitucional
-                        opciones={[
-                          { value: '', label: 'Elegir ambiente...' },
-                          ...ambientesFiltrados.map((a: any) => ({
-                            value: String(a.id),
-                            label: `${a.codigo} (${a.tipo === 'AULA' ? 'Aula' : 'Lab'}, Cap: ${a.capacidad})`,
-                          })),
-                        ]}
-                        value={ambienteId?.toString() || ''}
-                        onChange={(val) => setAmbienteId(val ? parseInt(val as string, 10) : null)}
-                        className="w-full"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">Padrón de Grupo</p>
+                
+                {/* Entorno Físico y Grupo */}
+                <div className="bg-[#003366]/5 dark:bg-[#020C1B]/50 rounded-2xl p-6 border border-[#003366]/10 dark:border-white/5 relative">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-[#003366] dark:bg-[#D4AF37] rounded-l-2xl" />
+                  <p className="text-[10px] font-black text-[#003366]/70 dark:text-white/50 uppercase tracking-widest mb-5 ml-1">2. Configure el entorno físico</p>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                      <p className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">Grupo Académico</p>
                       <SelectorInstitucional
                         opciones={[
                           { value: '', label: 'Elegir grupo...' },
@@ -421,55 +409,67 @@ export default function RegistroManualHorariosPage() {
                         value={grupoSeleccionado?.toString() || ''}
                         onChange={(val) => setGrupoSeleccionado(val ? parseInt(val as string, 10) : null)}
                         disabled={!componenteSeleccionado || gruposLoading}
-                        className="w-full"
+                        className="w-full bg-white dark:bg-[#0A192F]"
+                      />
+                    </div>
+                    <div className="space-y-3">
+                      <p className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">Infraestructura Fija</p>
+                      <SelectorInstitucional
+                        opciones={[
+                          { value: '', label: 'Elegir ambiente...' },
+                          ...ambientesFiltrados.map((a: any) => ({
+                            value: String(a.id),
+                            label: `${a.codigo} (${a.tipo === 'AULA' ? 'Aula' : 'Lab'}, Cap: ${a.capacidad})`,
+                          })),
+                        ]}
+                        value={ambienteId?.toString() || ''}
+                        onChange={(val) => setAmbienteId(val ? parseInt(val as string, 10) : null)}
+                        className="w-full bg-white dark:bg-[#0A192F]"
                       />
                     </div>
                   </div>
                 </div>
               </div>
-            )}
-          </div>
-
-          {/* Tarjeta 3: Progreso y Reglas (4/12) */}
-          <div className="xl:col-span-4 bg-[#0A192F] rounded-[3rem] shadow-2xl p-8 text-white flex flex-col min-h-[280px] border border-[#112240] relative overflow-hidden group">
-            <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full transition-transform group-hover:scale-150 duration-700 pointer-events-none" />
-            {!docenteId ? (
-              <div className="relative z-10 flex-1 flex flex-col items-center justify-center space-y-4 opacity-30">
-                <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center">
-                  <ShieldCheck className="w-8 h-8 text-white" />
+            </div>
+            
+            {/* PANEL DERECHO: AUDITORÍA (5/12) */}
+            <div className="lg:col-span-5 bg-[#0A192F] rounded-[2.5rem] shadow-2xl p-8 text-white relative overflow-hidden border border-[#112240] flex flex-col">
+              <div className="absolute -right-20 -top-20 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="flex items-center gap-4 border-b border-white/10 pb-5 mb-6 relative z-10">
+                <div className="p-2.5 bg-[#D4AF37]/20 rounded-xl border border-[#D4AF37]/30 shadow-inner">
+                  <ShieldCheck className="w-5 h-5 text-[#D4AF37]" />
                 </div>
-                <p className="text-white font-bold text-sm uppercase tracking-widest">Validación Suspendida</p>
+                <div>
+                  <h3 className="text-xl font-black text-white tracking-tight">Auditoría en Tiempo Real</h3>
+                  <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mt-0.5">Control institucional estricto</p>
+                </div>
               </div>
-            ) : (
-              <div className="relative z-10 space-y-6 flex-1 flex flex-col">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-[#D4AF37]/20 border border-[#D4AF37]/30 rounded-2xl shadow-inner">
-                    <Activity className="w-6 h-6 text-[#D4AF37]" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-black tracking-tight text-white">Estado Consolidado</h2>
-                    <p className="text-[10px] text-[#D4AF37] font-black uppercase tracking-widest">Control Institucional</p>
+              
+              <div className="space-y-6 flex-1 relative z-10 flex flex-col">
+                {/* Reglas Vigentes (Panel Validaciones) */}
+                <div className="flex-1 bg-[#020C1B]/60 rounded-2xl border border-white/10 p-5 flex flex-col">
+                  <p className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-4 flex items-center justify-between">
+                    <span>Reglas y Conflictos</span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" title="Monitoreo Activo" />
+                  </p>
+                  <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 min-h-[120px]">
+                    <PanelValidaciones validacion={validacion || null} />
                   </div>
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
-                  <div className="bg-[#020C1B]/50 rounded-2xl p-4 border border-white/10 flex flex-col">
-                    <p className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-3">Auditoría Horaria</p>
-                    <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
-                      <IndicadorProgresoHoras progreso={progreso || []}/>
-                    </div>
-                  </div>
-                  <div className="bg-[#020C1B]/50 rounded-2xl p-4 border border-white/10 flex flex-col">
-                    <p className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-3">Reglas Vigentes</p>
-                    <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
-                      <PanelValidaciones validacion={validacion || null} />
-                    </div>
+                
+                {/* Progreso de Horas */}
+                <div className="bg-white/5 rounded-2xl border border-white/10 p-5">
+                  <p className="text-[10px] font-black text-[#D4AF37] uppercase tracking-widest mb-4">Progreso Consolidado</p>
+                  <div className="max-h-[160px] overflow-y-auto custom-scrollbar pr-2">
+                    <IndicadorProgresoHoras progreso={progreso || []} />
                   </div>
                 </div>
               </div>
-            )}
+            </div>
+            
           </div>
-        </div>
+        )}
 
         {/* FILA INFERIOR: MATRIZ Y VISTA PREVIA */}
         <div className="space-y-8">
