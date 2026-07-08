@@ -17,7 +17,7 @@ import { PanelSeleccionCurso } from '@/components/horarios/PanelSeleccionCurso';
 import { IndicadorProgresoHoras } from '@/components/horarios/IndicadorProgresoHoras';
 import { PanelValidaciones } from '@/components/horarios/PanelValidaciones';
 import { VistaHorarioDocente } from '@/components/horarios/VistaHorarioDocente';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { ConfirmacionHorario } from '@/components/horarios/ConfirmacionHorario';
 import { 
@@ -32,7 +32,8 @@ import {
   LayoutDashboard,
   Search,
   ArrowRight,
-  Activity
+  Activity,
+  CalendarClock
 } from 'lucide-react';
 import { SelectorFiltrable } from '@/components/ui/SelectorFiltrable';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
@@ -273,32 +274,36 @@ export default function RegistroManualHorariosPage() {
 
   return (
     <div className="space-y-10 max-w-[1600px] mx-auto pb-20 px-4">
-      {/* Header Estilo Classroom */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-10 py-12 text-white shadow-2xl">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-        <div className="absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+      {/* Header Institucional UNT */}
+      <div className="relative overflow-hidden rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240] z-20">
+        <div className="absolute inset-0 overflow-hidden rounded-[3rem] pointer-events-none">
+          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
+          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+        </div>
         
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs font-bold uppercase tracking-widest text-white/90">
-              <CheckSquare className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
+              <CalendarClock className="w-3.5 h-3.5" />
               Asistencia Administrativa
             </div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Registro Manual de Horarios</h1>
-            <p className="text-lg text-white/70 max-w-2xl">
-              Asigna horarios de forma directa para docentes que presentan dificultades técnicas o falta de acceso.
+            <h1 className="text-4xl font-serif font-bold tracking-tight text-white drop-shadow-sm">
+              Registro Manual de <span className="text-[#D4AF37]">Horarios</span>
+            </h1>
+            <p className="text-lg text-white/70 max-w-2xl font-medium leading-relaxed">
+              Asigna de manera excepcional la carga lectiva para docentes que requieren apoyo administrativo o técnico directo.
             </p>
           </div>
           
-          <div className="w-full lg:w-96 bg-white/10 backdrop-blur-xl p-6 rounded-[2.5rem] border border-white/20 shadow-inner">
+          <div className="w-full lg:w-96 bg-[#020C1B]/50 backdrop-blur-xl p-6 rounded-[2.5rem] border border-white/10 shadow-2xl dark">
             <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3 ml-1">Periodo Académico Activo</p>
-            <div className="flex items-center gap-4 bg-white/20 p-4 rounded-2xl border border-white/10">
-              <div className="p-3 bg-white/20 rounded-xl">
-                <Calendar className="w-6 h-6 text-white" />
+            <div className="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/10">
+              <div className="p-3 bg-[#D4AF37]/20 rounded-xl border border-[#D4AF37]/30">
+                <Calendar className="w-6 h-6 text-[#D4AF37]" />
               </div>
               <div>
                 <p className="text-sm font-black text-white">{periodoActivo?.nombre || 'No identificado'}</p>
-                <p className="text-[10px] text-white/60 font-bold uppercase">Esc. Ing. Sistemas</p>
+                <p className="text-[10px] text-white/60 font-bold uppercase tracking-widest mt-0.5">Escuela de Ing. de Sistemas</p>
               </div>
             </div>
           </div>
@@ -311,15 +316,15 @@ export default function RegistroManualHorariosPage() {
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-stretch">
           
           {/* Tarjeta 1: Selección de Docente (3/12) */}
-          <div className="xl:col-span-3 bg-white rounded-[2.5rem] shadow-xl border border-slate-200/60 p-8 flex flex-col justify-between overflow-visible min-h-[280px]">
+          <div className="xl:col-span-3 bg-white dark:bg-[#0A192F] rounded-[3rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col justify-between min-h-[280px]">
             <div className="space-y-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-indigo-50 rounded-2xl text-indigo-600 shadow-sm">
+                <div className="p-3 bg-[#003366]/5 dark:bg-[#003366]/30 rounded-2xl text-[#003366] dark:text-[#D4AF37] border border-[#003366]/10 dark:border-[#003366]/50 shadow-sm">
                   <User className="w-6 h-6" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-slate-800 tracking-tight">Docente</h2>
-                  <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Identificación</p>
+                  <h2 className="text-xl font-black text-gray-800 dark:text-white tracking-tight">Docente</h2>
+                  <p className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest">Identificación</p>
                 </div>
               </div>
 
@@ -344,38 +349,38 @@ export default function RegistroManualHorariosPage() {
             </div>
             
             {docenteId && (
-              <div className="mt-4 p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
-                <p className="text-xs font-bold text-indigo-700">Sesión activa para registro</p>
+              <div className="mt-6 p-4 bg-emerald-50 dark:bg-emerald-900/10 rounded-2xl border border-emerald-100 dark:border-emerald-800/30 flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <p className="text-[11px] font-black uppercase tracking-widest text-emerald-700 dark:text-emerald-400">Padrón Autorizado</p>
               </div>
             )}
           </div>
 
           {/* Tarjeta 2: Curso y Ambiente (5/12) */}
-          <div className="xl:col-span-5 bg-white rounded-[2.5rem] shadow-xl border border-slate-200/60 p-8 flex flex-col min-h-[280px]">
+          <div className="xl:col-span-5 bg-white dark:bg-[#0A192F] rounded-[3rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col min-h-[280px]">
             {!docenteId ? (
               <div className="flex-1 flex flex-col items-center justify-center space-y-4 opacity-50">
-                <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center">
-                  <Search className="w-8 h-8 text-slate-300" />
+                <div className="w-16 h-16 bg-gray-50 dark:bg-white/5 rounded-full flex items-center justify-center">
+                  <Search className="w-8 h-8 text-gray-300 dark:text-gray-500" />
                 </div>
-                <p className="text-slate-400 font-bold text-sm">Seleccione un docente primero</p>
+                <p className="text-gray-400 dark:text-gray-500 font-bold text-sm uppercase tracking-widest">Identifique al Docente</p>
               </div>
             ) : (
               <div className="space-y-6 flex-1 flex flex-col">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-600 shadow-sm">
+                  <div className="p-3 bg-[#003366]/5 dark:bg-[#003366]/30 rounded-2xl text-[#003366] dark:text-[#D4AF37] border border-[#003366]/10 dark:border-[#003366]/50 shadow-sm">
                     <BookOpen className="w-6 h-6" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-slate-800 tracking-tight">Curso y Ambiente</h2>
-                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Configuración</p>
+                    <h2 className="text-xl font-black text-gray-800 dark:text-white tracking-tight">Espacio Académico</h2>
+                    <p className="text-[10px] text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest">Configuración Física</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-11 gap-6 flex-1">
                   <div className="md:col-span-6 space-y-2 flex flex-col">
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Componente</p>
-                    <div className="flex-1 min-h-[140px] bg-slate-50/50 rounded-2xl border border-slate-100 overflow-hidden">
+                    <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">Carga Asignada</p>
+                    <div className="flex-1 min-h-[140px] bg-gray-50/50 dark:bg-[#020C1B] rounded-2xl border border-gray-100 dark:border-[#112240] overflow-hidden">
                       <div className="h-full overflow-y-auto custom-scrollbar p-1">
                         <PanelSeleccionCurso
                           componentes={progreso || []}
@@ -388,37 +393,35 @@ export default function RegistroManualHorariosPage() {
 
                   <div className="md:col-span-5 flex flex-col justify-between gap-4">
                     <div className="space-y-2">
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Ambiente</p>
-                      <Selector
-                        label=""
+                      <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">Infraestructura</p>
+                      <SelectorInstitucional
                         opciones={[
-                          { valor: '', etiqueta: 'Elegir ambiente' },
+                          { value: '', label: 'Elegir ambiente...' },
                           ...ambientesFiltrados.map((a: any) => ({
-                            valor: String(a.id),
-                            etiqueta: `${a.codigo} (${a.tipo === 'AULA' ? 'Aula' : 'Lab'}, Cap: ${a.capacidad})`,
+                            value: String(a.id),
+                            label: `${a.codigo} (${a.tipo === 'AULA' ? 'Aula' : 'Lab'}, Cap: ${a.capacidad})`,
                           })),
                         ]}
                         value={ambienteId?.toString() || ''}
-                        onChange={(e) => setAmbienteId(e.target.value ? parseInt(e.target.value, 10) : null)}
-                        className="rounded-xl border-slate-200 bg-white"
+                        onChange={(val) => setAmbienteId(val ? parseInt(val as string, 10) : null)}
+                        className="w-full"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Grupo</p>
-                      <Selector
-                        label=""
+                      <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">Padrón de Grupo</p>
+                      <SelectorInstitucional
                         opciones={[
-                          { valor: '', etiqueta: 'Elegir grupo' },
+                          { value: '', label: 'Elegir grupo...' },
                           ...((gruposDisponibles || []).map((g: any) => ({
-                            valor: String(g.id),
-                            etiqueta: `G${g.codigo} (Cap: ${g.capacidad_maxima})`,
+                            value: String(g.id),
+                            label: `G${g.codigo} (Cap: ${g.capacidad_maxima})`,
                           })) || []),
                         ]}
                         value={grupoSeleccionado?.toString() || ''}
-                        onChange={(e) => setGrupoSeleccionado(e.target.value ? parseInt(e.target.value, 10) : null)}
+                        onChange={(val) => setGrupoSeleccionado(val ? parseInt(val as string, 10) : null)}
                         disabled={!componenteSeleccionado || gruposLoading}
-                        className="rounded-xl border-slate-200 bg-white"
+                        className="w-full"
                       />
                     </div>
                   </div>
@@ -428,35 +431,36 @@ export default function RegistroManualHorariosPage() {
           </div>
 
           {/* Tarjeta 3: Progreso y Reglas (4/12) */}
-          <div className="xl:col-span-4 bg-[#0b1f3a] rounded-[2.5rem] shadow-2xl p-8 text-white flex flex-col min-h-[280px]">
+          <div className="xl:col-span-4 bg-[#0A192F] rounded-[3rem] shadow-2xl p-8 text-white flex flex-col min-h-[280px] border border-[#112240] relative overflow-hidden group">
+            <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full transition-transform group-hover:scale-150 duration-700 pointer-events-none" />
             {!docenteId ? (
-              <div className="flex-1 flex flex-col items-center justify-center space-y-4 opacity-30">
+              <div className="relative z-10 flex-1 flex flex-col items-center justify-center space-y-4 opacity-30">
                 <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center">
                   <ShieldCheck className="w-8 h-8 text-white" />
                 </div>
-                <p className="text-white font-bold text-sm">Validación en espera</p>
+                <p className="text-white font-bold text-sm uppercase tracking-widest">Validación Suspendida</p>
               </div>
             ) : (
-              <div className="space-y-6 flex-1 flex flex-col">
+              <div className="relative z-10 space-y-6 flex-1 flex flex-col">
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-white/10 rounded-2xl shadow-inner">
-                    <Activity className="w-6 h-6 text-white" />
+                  <div className="p-3 bg-[#D4AF37]/20 border border-[#D4AF37]/30 rounded-2xl shadow-inner">
+                    <Activity className="w-6 h-6 text-[#D4AF37]" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold tracking-tight text-white">Estado</h2>
-                    <p className="text-[10px] text-white/40 font-black uppercase tracking-widest">Reglas de Negocio</p>
+                    <h2 className="text-xl font-black tracking-tight text-white">Estado Consolidado</h2>
+                    <p className="text-[10px] text-[#D4AF37] font-black uppercase tracking-widest">Control Institucional</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
-                  <div className="bg-white/5 rounded-2xl p-4 border border-white/10 flex flex-col">
-                    <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-3">Progreso de Horas</p>
+                  <div className="bg-[#020C1B]/50 rounded-2xl p-4 border border-white/10 flex flex-col">
+                    <p className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-3">Auditoría Horaria</p>
                     <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
                       <IndicadorProgresoHoras progreso={progreso || []}/>
                     </div>
                   </div>
-                  <div className="bg-white/5 rounded-2xl p-4 border border-white/10 flex flex-col">
-                    <p className="text-[9px] font-black text-white/30 uppercase tracking-widest mb-3">Alertas y Cruces</p>
+                  <div className="bg-[#020C1B]/50 rounded-2xl p-4 border border-white/10 flex flex-col">
+                    <p className="text-[9px] font-black text-white/40 uppercase tracking-widest mb-3">Reglas Vigentes</p>
                     <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
                       <PanelValidaciones validacion={validacion || null} />
                     </div>
@@ -471,27 +475,27 @@ export default function RegistroManualHorariosPage() {
         <div className="space-y-8">
           
           {/* Matriz de Disponibilidad (Ahora a todo lo ancho) */}
-          <div className="bg-white rounded-[3rem] shadow-xl border border-slate-200/60 p-10 space-y-8">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-8">
+          <div className="bg-white dark:bg-[#0A192F] rounded-[3rem] shadow-xl border border-gray-100 dark:border-[#112240] p-10 space-y-8">
+            <div className="flex items-center justify-between border-b border-gray-100 dark:border-[#112240] pb-8">
               <div className="flex items-center gap-6">
-                <div className="p-4 bg-amber-50 rounded-3xl text-amber-600 shadow-sm">
+                <div className="p-4 bg-[#003366]/5 dark:bg-[#003366]/30 rounded-3xl text-[#003366] dark:text-[#D4AF37] border border-[#003366]/10 dark:border-[#003366]/50 shadow-sm">
                   <LayoutDashboard className="w-8 h-8" />
                 </div>
                 <div>
-                  <h2 className="text-3xl font-black text-slate-800 tracking-tight">Matriz de Horarios</h2>
-                  <p className="text-sm text-slate-400 font-bold uppercase tracking-widest mt-1">
+                  <h2 className="text-3xl font-black text-gray-800 dark:text-white tracking-tight">Matriz Operativa</h2>
+                  <p className="text-sm text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest mt-1">
                     {ambienteId ? (
                       <span className="flex items-center gap-2">
-                        Ambiente: <span className="text-slate-600 font-black">{matriz?.ambienteCodigo || 'Cargando...'}</span>
+                        Infraestructura Asignada: <span className="text-[#003366] dark:text-[#D4AF37] font-black">{matriz?.ambienteCodigo || 'Cargando...'}</span>
                       </span>
-                    ) : 'Seleccione un ambiente para visualizar la disponibilidad'}
+                    ) : 'Seleccione una configuración física para proceder'}
                   </p>
                 </div>
               </div>
               {ambienteId && (
-                <div className="flex items-center gap-3 px-6 py-3 bg-emerald-50 text-emerald-600 rounded-[1.5rem] border border-emerald-100 text-xs font-black uppercase tracking-widest shadow-sm">
+                <div className="flex items-center gap-3 px-6 py-3 bg-emerald-50 dark:bg-emerald-900/10 text-emerald-700 dark:text-emerald-400 rounded-[1.5rem] border border-emerald-100 dark:border-emerald-800/30 text-xs font-black uppercase tracking-widest shadow-sm">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Sistema Sincronizado
+                  Sincronización Activa
                 </div>
               )}
             </div>
@@ -511,14 +515,14 @@ export default function RegistroManualHorariosPage() {
 
           {/* Horario del Docente y Confirmación Final */}
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            <div className="xl:col-span-2 bg-white rounded-[3rem] shadow-xl border border-slate-200/60 p-10 space-y-8">
-              <div className="flex items-center gap-6 border-b border-slate-100 pb-8">
-                <div className="p-4 bg-blue-50 rounded-3xl text-blue-600 shadow-sm">
+            <div className="xl:col-span-2 bg-white dark:bg-[#0A192F] rounded-[3rem] shadow-xl border border-gray-100 dark:border-[#112240] p-10 space-y-8">
+              <div className="flex items-center gap-6 border-b border-gray-100 dark:border-[#112240] pb-8">
+                <div className="p-4 bg-[#003366]/5 dark:bg-[#003366]/30 rounded-3xl text-[#003366] dark:text-[#D4AF37] border border-[#003366]/10 dark:border-[#003366]/50 shadow-sm">
                   <Calendar className="w-8 h-8" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-black text-slate-800 tracking-tight">Carga Horaria Actual</h2>
-                  <p className="text-sm text-slate-400 font-bold uppercase tracking-widest mt-1">Vista Previa Consolidada</p>
+                  <h2 className="text-2xl font-black text-gray-800 dark:text-white tracking-tight">Carga Horaria Actual</h2>
+                  <p className="text-sm text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest mt-1">Vista Previa Consolidada</p>
                 </div>
               </div>
               <div className="overflow-x-auto custom-scrollbar">
@@ -526,16 +530,16 @@ export default function RegistroManualHorariosPage() {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-[#0b1f3a] to-[#1e3a8a] rounded-[3rem] shadow-2xl p-10 text-white flex flex-col justify-between relative overflow-hidden group">
-              <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full group-hover:scale-150 transition-transform duration-700" />
+            <div className="bg-[#0A192F] rounded-[3rem] shadow-2xl p-10 text-white flex flex-col justify-between relative overflow-hidden group border border-[#112240]">
+              <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full group-hover:scale-150 transition-transform duration-700 pointer-events-none" />
               
               <div className="space-y-4 relative z-10">
-                <div className="p-4 bg-white/10 rounded-2xl w-fit">
-                  <ShieldCheck className="w-8 h-8 text-emerald-400" />
+                <div className="p-4 bg-[#D4AF37]/20 border border-[#D4AF37]/30 rounded-2xl w-fit">
+                  <ShieldCheck className="w-8 h-8 text-[#D4AF37]" />
                 </div>
-                <h3 className="text-3xl font-black tracking-tight leading-tight">Confirmar Programación</h3>
-                <p className="text-white/60 text-sm leading-relaxed">
-                  Verifica que no existan advertencias en el panel de reglas antes de confirmar. Esta acción es irreversible una vez guardada.
+                <h3 className="text-3xl font-black tracking-tight leading-tight">Confirmar Padrón</h3>
+                <p className="text-white/60 text-sm leading-relaxed font-medium">
+                  Certifique que el registro cumpla con el Reglamento Académico. La confirmación establecerá estos bloques como definitivos en el sistema.
                 </p>
               </div>
 

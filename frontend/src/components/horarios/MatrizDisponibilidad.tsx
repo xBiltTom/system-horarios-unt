@@ -33,11 +33,11 @@ interface MatrizProps {
 }
 
 const colores: Record<string, string> = {
-  LIBRE: 'bg-emerald-50/40 hover:bg-emerald-100/70 border border-emerald-100 hover:border-emerald-300 transition-all duration-75 cursor-pointer hover:scale-[1.01] group relative',
-  OCUPADO: 'bg-rose-50/60 border border-rose-100/80 text-rose-500/80 cursor-not-allowed',
-  SELECCION_TEMPORAL: 'bg-amber-50 border-2 border-amber-300 text-amber-800 transition-all duration-75 cursor-pointer hover:scale-[1.01] relative shadow-sm',
-  BLOQUEO_INSTITUCIONAL: 'bg-slate-50 border border-slate-200/60 text-slate-400/80 cursor-not-allowed',
-  DOCENTE_OTRO_AMBIENTE: 'bg-indigo-50 border-2 border-indigo-200 text-indigo-800 transition-all duration-75 cursor-pointer hover:scale-[1.01] relative shadow-sm opacity-90',
+  LIBRE: 'bg-emerald-50/40 dark:bg-emerald-900/10 hover:bg-emerald-100/70 dark:hover:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/30 hover:border-emerald-300 dark:hover:border-emerald-500/50 transition-all duration-75 cursor-pointer hover:scale-[1.01] group relative',
+  OCUPADO: 'bg-rose-50/60 dark:bg-rose-900/10 border border-rose-100/80 dark:border-rose-800/30 text-rose-500/80 dark:text-rose-400/80 cursor-not-allowed',
+  SELECCION_TEMPORAL: 'bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-500/50 text-amber-800 dark:text-amber-400 transition-all duration-75 cursor-pointer hover:scale-[1.01] relative shadow-sm',
+  BLOQUEO_INSTITUCIONAL: 'bg-gray-50 dark:bg-[#020C1B] border border-gray-200/60 dark:border-[#112240] text-gray-400/80 dark:text-gray-500/80 cursor-not-allowed',
+  DOCENTE_OTRO_AMBIENTE: 'bg-indigo-50 dark:bg-indigo-900/20 border-2 border-indigo-200 dark:border-indigo-500/50 text-indigo-800 dark:text-indigo-400 transition-all duration-75 cursor-pointer hover:scale-[1.01] relative shadow-sm opacity-90',
 };
 
 const obtenerHoraEntera = (valor: string) => parseInt(valor.split(':')[0], 10);
@@ -55,14 +55,14 @@ const esBloqueoDeAlmuerzo = (horaInicio: string, bloqueoAlmuerzo?: { inicio: str
 export function MatrizDisponibilidad({ matriz, alHacerClickCelda, bloqueado = false, bloqueoAlmuerzo }: MatrizProps) {
   if (!matriz) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50/50 p-12 text-center shadow-inner">
-        <div className="rounded-full bg-gray-100 p-4 mb-3">
-          <svg className="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 dark:border-[#112240] bg-gray-50/50 dark:bg-[#020C1B] p-12 text-center shadow-inner">
+        <div className="rounded-full bg-gray-100 dark:bg-white/5 p-4 mb-3">
+          <svg className="h-8 w-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
           </svg>
         </div>
-        <p className="text-sm font-semibold text-gray-700">Por favor, seleccione un ambiente</p>
-        <p className="text-xs text-gray-400 mt-1 max-w-xs">Elige un aula o laboratorio del menú superior para visualizar su matriz de horarios.</p>
+        <p className="text-sm font-semibold text-gray-700 dark:text-gray-300">Por favor, seleccione un ambiente</p>
+        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 max-w-xs">Elige un aula o laboratorio del menú superior para visualizar su matriz de horarios.</p>
       </div>
     );
   }
@@ -71,25 +71,25 @@ export function MatrizDisponibilidad({ matriz, alHacerClickCelda, bloqueado = fa
 
   return (
     <div className="space-y-4">
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm">
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse text-left text-xs table-fixed">
             <thead>
-              <tr className="bg-gray-50/80 border-b border-gray-200">
-                <th className="border-r border-gray-200 px-2 py-3 font-semibold text-gray-500 text-center w-24">Hora</th>
+              <tr className="bg-gray-50/80 dark:bg-[#020C1B] border-b border-gray-200 dark:border-[#112240]">
+                <th className="border-r border-gray-200 dark:border-[#112240] px-2 py-3 font-semibold text-gray-500 dark:text-gray-400 text-center w-24">Hora</th>
                 {dias.map((dia) => (
-                  <th key={dia} className="border-r border-gray-200 px-1 py-3 font-semibold text-gray-600 text-center uppercase tracking-wider">
+                  <th key={dia} className="border-r border-gray-200 dark:border-[#112240] px-1 py-3 font-semibold text-gray-600 dark:text-gray-300 text-center uppercase tracking-wider">
                     {dia}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-150">
+            <tbody className="divide-y divide-gray-150 dark:divide-[#112240]">
               {matriz.filas.map((fila) => {
                 const horaFin = `${(parseInt(fila.horaInicio.split(':')[0]) + 1).toString().padStart(2, '0')}:00`;
                 return (
-                  <tr key={fila.horaInicio} className="hover:bg-slate-50/30 transition-colors">
-                    <td className="border-r border-gray-200 px-2 py-3 text-center font-semibold bg-slate-50/50 text-gray-500 w-24">
+                  <tr key={fila.horaInicio} className="hover:bg-gray-50/30 dark:hover:bg-white/5 transition-colors">
+                    <td className="border-r border-gray-200 dark:border-[#112240] px-2 py-3 text-center font-semibold bg-gray-50/50 dark:bg-[#020C1B]/50 text-gray-500 dark:text-gray-400 w-24">
                       {fila.horaInicio}
                     </td>
                     {fila.celdas.map((celda, idx) => {
@@ -100,7 +100,7 @@ export function MatrizDisponibilidad({ matriz, alHacerClickCelda, bloqueado = fa
                         <td
                           key={idx}
                           className={cn(
-                            'border-r border-gray-200 px-0.5 py-1 text-center min-h-[50px] transition-all',
+                            'border-r border-gray-200 dark:border-[#112240] px-0.5 py-1 text-center min-h-[50px] transition-all',
                             colores[estadoVisible],
                             bloqueado && estadoVisible !== 'BLOQUEO_INSTITUCIONAL' && 'cursor-not-allowed opacity-70'
                           )}
@@ -117,11 +117,11 @@ export function MatrizDisponibilidad({ matriz, alHacerClickCelda, bloqueado = fa
                             )}
                             {estadoVisible === 'OCUPADO' && (
                               <div className="flex flex-col items-center justify-center p-0.5">
-                                <span className="text-[9px] font-semibold text-rose-500 tracking-tight leading-none">
+                                <span className="text-[9px] font-semibold text-rose-500 dark:text-rose-400 tracking-tight leading-none">
                                   Ocupado
                                 </span>
                                 {celda.info?.detalle && (
-                                  <span className="text-[7.5px] text-rose-400/90 font-medium truncate max-w-[90px] mt-0.5" title={celda.info.detalle}>
+                                  <span className="text-[7.5px] text-rose-400/90 dark:text-rose-300/80 font-medium truncate max-w-[90px] mt-0.5" title={celda.info.detalle}>
                                     {celda.info.detalle}
                                   </span>
                                 )}
@@ -129,26 +129,26 @@ export function MatrizDisponibilidad({ matriz, alHacerClickCelda, bloqueado = fa
                             )}
                             {estadoVisible === 'SELECCION_TEMPORAL' && (
                               <div className="flex flex-col items-center justify-center p-0.5 text-center w-full">
-                                <span className="text-[9px] font-bold text-amber-900 leading-tight truncate max-w-[95px]" title={celda.info?.curso}>
+                                <span className="text-[9px] font-bold text-amber-900 dark:text-amber-500 leading-tight truncate max-w-[95px]" title={celda.info?.curso}>
                                   {celda.info?.curso}
                                 </span>
-                                <span className="text-[8px] font-semibold text-amber-700 leading-none mt-0.5">
+                                <span className="text-[8px] font-semibold text-amber-700 dark:text-amber-600 leading-none mt-0.5">
                                   {celda.info?.tipoComponente} • Gr. {celda.info?.grupo}
                                 </span>
                               </div>
                             )}
                             {estadoVisible === 'DOCENTE_OTRO_AMBIENTE' && (
                               <div className="flex flex-col items-center justify-center p-0.5 text-center w-full">
-                                <span className="text-[9px] font-bold text-indigo-900 leading-tight truncate max-w-[95px]" title={celda.info?.curso}>
+                                <span className="text-[9px] font-bold text-indigo-900 dark:text-indigo-400 leading-tight truncate max-w-[95px]" title={celda.info?.curso}>
                                   {celda.info?.curso}
                                 </span>
-                                <span className="text-[8px] font-semibold text-indigo-600 leading-none mt-0.5">
+                                <span className="text-[8px] font-semibold text-indigo-600 dark:text-indigo-500 leading-none mt-0.5">
                                   Aula: {celda.info?.ambienteCodigo}
                                 </span>
                               </div>
                             )}
                             {estadoVisible === 'BLOQUEO_INSTITUCIONAL' && (
-                              <span className="text-[9px] font-medium text-slate-400">
+                              <span className="text-[9px] font-medium text-gray-400 dark:text-gray-500">
                                 Almuerzo
                               </span>
                             )}
@@ -163,33 +163,33 @@ export function MatrizDisponibilidad({ matriz, alHacerClickCelda, bloqueado = fa
           </table>
         </div>
       </div>
-      <div className="flex flex-wrap gap-4 px-3 py-2 text-xs font-medium text-gray-500 bg-gray-50/50 rounded-xl border border-gray-150">
+      <div className="flex flex-wrap gap-4 px-3 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-50/50 dark:bg-[#020C1B] rounded-xl border border-gray-150 dark:border-[#112240]">
         <span className="flex items-center gap-2">
-          <span className="w-4 h-4 rounded bg-emerald-50 border border-emerald-200"></span>
+          <span className="w-4 h-4 rounded bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-200 dark:border-emerald-800/30"></span>
           <span>Libre (Click para elegir)</span>
         </span>
         <span className="flex items-center gap-2">
-          <span className="w-4 h-4 rounded bg-rose-50 border border-rose-100"></span>
+          <span className="w-4 h-4 rounded bg-rose-50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-800/30"></span>
           <span>Ocupado por otro curso</span>
         </span>
         <span className="flex items-center gap-2">
-          <span className="w-4 h-4 rounded bg-amber-50 border-2 border-amber-300"></span>
+          <span className="w-4 h-4 rounded bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-500/50"></span>
           <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400"></span>
             Mi Selección en Aula actual (Click para quitar)
           </span>
         </span>
         <span className="flex items-center gap-2">
-          <span className="w-4 h-4 rounded bg-indigo-50 border-2 border-indigo-200"></span>
+          <span className="w-4 h-4 rounded bg-indigo-50 dark:bg-indigo-900/20 border-2 border-indigo-200 dark:border-indigo-500/50"></span>
           <span>Mi Horario en otra Aula (Click para quitar)</span>
         </span>
         <span className="flex items-center gap-2">
-          <span className="w-4 h-4 rounded bg-slate-50 border border-slate-200"></span>
+          <span className="w-4 h-4 rounded bg-gray-50 dark:bg-[#0A192F] border border-gray-200 dark:border-[#112240]"></span>
           <span>Restricción institucional / almuerzo</span>
         </span>
       </div>
       {bloqueado && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+        <div className="rounded-xl border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-900/20 px-4 py-3 text-sm text-amber-800 dark:text-amber-500 font-medium">
           No puede realizar cambios porque no tiene una ventana de atención asignada.
         </div>
       )}
