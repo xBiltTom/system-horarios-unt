@@ -9,11 +9,11 @@ import { useAuthStore } from '@/stores/auth.store';
 import { configuracionService } from '@/services/configuracion.service';
 import { Boton } from '@/components/ui/Boton';
 import { CampoTexto } from '@/components/ui/CampoTexto';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
 import { cn } from '@/lib/utilidades';
-import { ArrowLeft, CalendarDays, FileText, Save, Trash2, UserRound, Printer, AlertCircle, Plus, LayoutList } from 'lucide-react';
+import { ArrowLeft, CalendarDays, FileText, Save, Trash2, UserRound, Printer, AlertCircle, Plus, LayoutList, BookOpen } from 'lucide-react';
 import { MatrizCargaNoLectiva } from '@/components/horarios/MatrizCargaNoLectiva';
 
 type FormularioSeccion = {
@@ -446,51 +446,58 @@ export default function CargaNoLectivaPage() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <header className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-6 py-8 text-white shadow-xl relative">
-        <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
-        <div className="absolute left-1/3 bottom-0 h-56 w-56 bg-unt-accent/10 blur-3xl pointer-events-none"></div>
+    <div className="space-y-8 pb-20 animate-in fade-in duration-700">
+      <header className="relative rounded-[3rem] bg-[#0A192F] px-8 py-10 md:px-12 md:py-14 text-white shadow-2xl border border-[#112240] mx-4 sm:mx-6 lg:mx-8 mt-6">
+        <div className="absolute inset-0 overflow-hidden rounded-[3rem] pointer-events-none">
+          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-[#D4AF37]/5 blur-3xl" />
+          <div className="absolute left-1/4 bottom-0 h-56 w-56 bg-white/5 blur-3xl" />
+        </div>
         
-        <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="flex items-center gap-4">
-            <button onClick={() => router.push('/docente')} className="rounded-full p-3 text-white hover:bg-white/20 transition-colors">
-              <ArrowLeft className="h-6 w-6" />
+        <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="flex items-start gap-5">
+            <button onClick={() => router.push('/docente')} className="rounded-full p-3 bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors shadow-sm">
+              <ArrowLeft className="h-5 w-5" />
             </button>
-            <div className="flex flex-col gap-2">
-              <span className="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/80">
+            <div className="flex flex-col gap-3">
+              <span className="inline-flex w-max items-center gap-2 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
                 Panel Docente
               </span>
-              <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
-                Declaración Jurada y Calendario No Lectivo
+              <h1 className="text-3xl md:text-4xl font-serif font-bold tracking-tight text-white">
+                Declaración y Matriz No Lectiva
               </h1>
-              <p className="text-sm text-blue-100">
-                Distribuye tus horas no lectivas para el período {periodos?.find((p: any) => p.id === idPeriodo)?.nombre || 'actual'}
+              <p className="text-sm md:text-base text-gray-400 font-medium">
+                Distribuye tus horas no lectivas para el período <strong className="text-white">{periodos?.find((p: any) => p.id === idPeriodo)?.nombre || 'actual'}</strong>.
               </p>
             </div>
           </div>
 
-          <div className="w-full lg:w-64 space-y-3">
-            <label className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/80">Periodo Académico</label>
-            <Selector
-              value={idPeriodo}
-              onChange={(e: any) => setIdPeriodo(Number(e.target.value))}
-              className="border-white/20 bg-white/95 text-slate-900 focus:border-white focus:ring-white/30 shadow-sm"
-            >
-              {periodos.map((p: any) => (
-                <option key={p.id} value={p.id}>{p.nombre}</option>
-              ))}
-            </Selector>
+          <div className="w-full lg:w-72 space-y-3 rounded-[2rem] border border-white/10 bg-[#020C1B]/60 p-5 shadow-2xl backdrop-blur-xl">
+            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
+              <CalendarDays className="w-3.5 h-3.5" />
+              Periodo Académico
+            </label>
+            <div className="relative mt-2 dark">
+              <SelectorInstitucional
+                value={idPeriodo}
+                onChange={(val: any) => setIdPeriodo(Number(val))}
+                opciones={periodos?.map((p: any) => ({
+                  value: p.id,
+                  label: p.nombre,
+                })) || []}
+                placeholder="-- Seleccionar período --"
+              />
+            </div>
           </div>
         </div>
 
         {/* Navegación de Pestañas */}
-        <div className="relative z-10 mt-8">
-          <div className="flex bg-white/10 rounded-2xl p-1.5 backdrop-blur-md shadow-inner w-fit">
+        <div className="relative z-10 mt-10">
+          <div className="flex overflow-x-auto custom-scrollbar bg-[#020C1B]/50 rounded-2xl p-2 border border-white/5 shadow-inner w-full lg:w-fit gap-2">
             <button 
               onClick={() => setPestanaActiva('declaracion')}
               className={cn(
-                'flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300',
-                pestanaActiva === 'declaracion' ? 'bg-white text-unt-primary shadow-md scale-105' : 'text-white hover:bg-white/20'
+                'flex flex-shrink-0 items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300',
+                pestanaActiva === 'declaracion' ? 'bg-white text-[#0A192F] shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/5'
               )}
             >
               <LayoutList className="h-4 w-4" />
@@ -505,13 +512,13 @@ export default function CargaNoLectivaPage() {
                 setPestanaActiva('calendario');
               }}
               className={cn(
-                'flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300',
-                pestanaActiva === 'calendario' ? 'bg-white text-unt-primary shadow-md scale-105' : 'text-white hover:bg-white/20',
+                'flex flex-shrink-0 items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300',
+                pestanaActiva === 'calendario' ? 'bg-white text-[#0A192F] shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/5',
                 !declaracionData?.declaracion?.id ? 'opacity-50 cursor-not-allowed' : ''
               )}
             >
               <CalendarDays className="h-4 w-4" />
-              2. Calendario de Distribución
+              2. Matriz de Distribución
             </button>
             <button 
               onClick={() => {
@@ -522,19 +529,19 @@ export default function CargaNoLectivaPage() {
                 setPestanaActiva('formatos');
               }}
               className={cn(
-                'flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300',
-                pestanaActiva === 'formatos' ? 'bg-white text-unt-primary shadow-md scale-105' : 'text-white hover:bg-white/20',
+                'flex flex-shrink-0 items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300',
+                pestanaActiva === 'formatos' ? 'bg-white text-[#0A192F] shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/5',
                 !declaracionData?.declaracion?.id ? 'opacity-50 cursor-not-allowed' : ''
               )}
             >
               <FileText className="h-4 w-4" />
-              3. Formatos
+              3. Formatos Oficiales
             </button>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8 -mt-2">
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {!usuario?.idDocente ? (
           <Card className="border-none shadow-lg rounded-[2rem]">
             <CardContent className="py-16 text-center text-slate-500">
@@ -549,116 +556,107 @@ export default function CargaNoLectivaPage() {
             </CardContent>
           </Card>
         ) : pestanaActiva === 'declaracion' ? (
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {/* Columna izquierda: Datos del docente y secciones no lectivas */}
-            <div className="lg:col-span-2 space-y-6">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+            {/* Columna izquierda: Dossier */}
+            <div className="lg:col-span-8 space-y-8">
               {/* Datos del docente */}
-              <Card className="border-none shadow-lg rounded-[2rem] overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-100">
-                  <CardTitle className="flex items-center gap-2 text-slate-900 text-lg">
-                    <UserRound className="h-5 w-5 text-unt-primary" />
-                    Datos del docente
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 pt-6">
-                  <CampoTexto label="Nombres" value={declaracionData?.docente?.nombres || usuario?.docente?.nombres || ''} disabled />
-                  <CampoTexto label="Apellidos" value={declaracionData?.docente?.apellidos || usuario?.docente?.apellidos || ''} disabled />
+              <div className="bg-white dark:bg-[#020C1B] rounded-[2.5rem] border border-gray-100 dark:border-white/10 shadow-xl relative">
+                <div className="px-8 py-6 border-b border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 flex items-center gap-4 rounded-t-[2.5rem]">
+                  <div className="p-3 bg-indigo-50 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-2xl border border-indigo-100 dark:border-indigo-500/30">
+                    <UserRound className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Ficha del Docente</h2>
+                    <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-1">Información de Contrato</p>
+                  </div>
+                </div>
+                <div className="p-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                  <CampoTexto label="Nombres" value={declaracionData?.docente?.nombres || usuario?.docente?.nombres || ''} disabled className="lg:col-span-2" />
+                  <CampoTexto label="Apellidos" value={declaracionData?.docente?.apellidos || usuario?.docente?.apellidos || ''} disabled className="lg:col-span-2" />
                   <CampoTexto
                     label="Código IBM"
                     value={docente.codigo_ibm}
                     onChange={(e) => setDocente((actual) => ({ ...actual, codigo_ibm: e.target.value }))}
                     placeholder="Ingresa tu IBM"
                     disabled={Boolean(declaracionData?.docente?.codigo_ibm)}
-                    ayuda={declaracionData?.docente?.codigo_ibm ? 'El código IBM es inmutable una vez registrado.' : undefined}
+                    ayuda={declaracionData?.docente?.codigo_ibm ? 'Inmutable' : undefined}
+                    className="lg:col-span-2"
                   />
-                  <Selector
-                    label="Condición"
-                    value={docente.modalidad}
-                    onChange={(e: any) => setDocente((actual) => ({ ...actual, modalidad: e.target.value }))}
-                  >
-                    {MODALIDADES.map((opcion) => (
-                      <option key={opcion.valor} value={opcion.valor}>
-                        {opcion.etiqueta}
-                      </option>
-                    ))}
-                  </Selector>
-                  <Selector
-                    label="Categoría"
-                    value={docente.categoria}
-                    onChange={(e: any) => setDocente((actual) => ({ ...actual, categoria: e.target.value }))}
-                  >
-                    {CATEGORIAS.map((opcion) => (
-                      <option key={opcion.valor} value={opcion.valor}>
-                        {opcion.etiqueta}
-                      </option>
-                    ))}
-                  </Selector>
-                  <Selector
-                    label="Dedicación"
-                    value={docente.dedicacion}
-                    onChange={(e: any) => setDocente((actual) => ({ ...actual, dedicacion: e.target.value }))}
-                  >
-                    {DEDICACIONES.map((opcion) => (
-                      <option key={opcion.valor} value={opcion.valor}>
-                        {opcion.etiqueta}
-                      </option>
-                    ))}
-                  </Selector>
+                  <div className="space-y-1.5 lg:col-span-2">
+                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Condición</label>
+                    <SelectorInstitucional value={docente.modalidad} onChange={(val: any) => setDocente((actual) => ({ ...actual, modalidad: String(val) }))} opciones={MODALIDADES.map(m => ({value: m.valor, label: m.etiqueta}))} />
+                  </div>
+                  <div className="space-y-1.5 lg:col-span-2">
+                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Categoría</label>
+                    <SelectorInstitucional value={docente.categoria} onChange={(val: any) => setDocente((actual) => ({ ...actual, categoria: String(val) }))} opciones={CATEGORIAS.map(c => ({value: c.valor, label: c.etiqueta}))} />
+                  </div>
+                  <div className="space-y-1.5 lg:col-span-2">
+                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 ml-1">Dedicación</label>
+                    <SelectorInstitucional value={docente.dedicacion} onChange={(val: any) => setDocente((actual) => ({ ...actual, dedicacion: String(val) }))} opciones={DEDICACIONES.map(d => ({value: d.valor, label: d.etiqueta}))} />
+                  </div>
                   <CampoTexto
                     label="Teléfono"
                     value={docente.telefono}
                     onChange={(e) => setDocente((actual) => ({ ...actual, telefono: e.target.value }))}
                     placeholder="Opcional"
+                    className="lg:col-span-2"
                   />
                   <CampoTexto
                     label="Correo institucional"
                     value={declaracionData?.docente?.email || usuario?.email || ''}
                     disabled
+                    className="lg:col-span-2"
                   />
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
               {/* Secciones no lectivas */}
-              <Card className="border-none shadow-lg rounded-[2rem] overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-100">
-                  <CardTitle className="flex items-center gap-2 text-slate-900 text-lg">
-                    <FileText className="h-5 w-5 text-unt-primary" />
-                    Secciones no lectivas
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4 pt-6">
+              <div className="bg-white dark:bg-[#020C1B] rounded-[2.5rem] border border-gray-100 dark:border-white/10 shadow-xl relative">
+                <div className="px-8 py-6 border-b border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 flex items-center gap-4 rounded-t-[2.5rem]">
+                  <div className="p-3 bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded-2xl border border-amber-100 dark:border-amber-500/30">
+                    <FileText className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Declaración de Horas</h2>
+                    <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-1">Desglose de Actividades No Lectivas</p>
+                  </div>
+                </div>
+                
+                <div className="divide-y divide-gray-100 dark:divide-white/10">
                   {SECCIONES.map((seccion) => {
                     const deshabilitado = false;
                     const maxPermitido = reglas?.limites_fijos_por_seccion?.[seccion.clave];
+                    const tieneError = Boolean(erroresSecciones[seccion.clave]);
                     
                     return (
-                      <div key={seccion.clave} className={cn("rounded-2xl border bg-slate-50/40 p-5 shadow-sm relative group flex flex-col lg:flex-row gap-6 items-start transition-opacity", deshabilitado ? "opacity-60 border-gray-200" : "border-slate-200")}>
+                      <div key={seccion.clave} className={cn("p-8 flex flex-col xl:flex-row gap-8 items-start transition-colors", deshabilitado ? "bg-gray-50 dark:bg-white/5 opacity-60" : "hover:bg-slate-50/30 dark:hover:bg-white/[0.02]", tieneError && "bg-red-50/30 dark:bg-red-500/10")}>
                         {/* Title and Help text */}
-                        <div className="w-full lg:w-1/4 space-y-1">
-                          <h3 className="text-sm font-bold text-slate-900">{seccion.titulo}</h3>
-                          <p className="text-xs text-slate-500 leading-relaxed">{seccion.ayuda}</p>
+                        <div className="w-full xl:w-1/3 space-y-2">
+                          <h3 className="text-base font-black text-gray-900 dark:text-white tracking-tight">{seccion.titulo}</h3>
+                          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 leading-relaxed pr-4">{seccion.ayuda}</p>
                           {deshabilitado && (
-                            <span className="inline-block mt-2 text-[10px] font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-2 py-0.5 rounded">No Habilitado</span>
+                            <span className="inline-block mt-2 text-[10px] font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/20 px-2 py-1 rounded-md border border-amber-200 dark:border-amber-500/30">Inhabilitado</span>
                           )}
                         </div>
                         
                         {/* Description Textarea */}
-                        <div className="w-full lg:w-1/2">
+                        <div className="w-full xl:w-1/2">
+                          <label className="block text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2 ml-1">Detalle (Opcional)</label>
                           <textarea
                             value={secciones[seccion.clave].descripcion}
                             onChange={(e) => manejarCambioSeccion(seccion.clave, 'descripcion', e.target.value)}
                             disabled={deshabilitado}
-                            placeholder={deshabilitado ? "Esta sección no está habilitada para tu perfil." : "Detallar número de alumnos, ciclo académico, proyectos, etc..."}
+                            placeholder={deshabilitado ? "Sección inactiva." : "Especificar número de alumnos, grupos de investigación, u otros detalles..."}
                             rows={3}
-                            className="w-full rounded-xl border border-gray-300 bg-white p-3 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition-all focus:border-unt-primary focus:outline-none focus:ring-2 focus:ring-unt-primary/20 disabled:cursor-not-allowed disabled:bg-gray-100"
+                            className="w-full rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 p-4 text-sm font-medium text-gray-900 dark:text-white placeholder:text-gray-300 dark:placeholder:text-gray-600 shadow-sm transition-all focus:border-indigo-500 dark:focus:border-[#D4AF37] focus:outline-none focus:ring-4 focus:ring-indigo-500/10 dark:focus:ring-[#D4AF37]/10 disabled:cursor-not-allowed disabled:bg-gray-50 dark:disabled:bg-white/5"
                           />
                         </div>
 
                         {/* Hours and Code */}
-                        <div className="w-full lg:w-1/4 flex flex-col gap-3">
+                        <div className="w-full xl:w-[20%] flex flex-col gap-4">
                             <div className="relative">
                               <CampoTexto
-                                label={maxPermitido ? `Horas (Max. ${maxPermitido}h)` : "Horas"}
+                                label={maxPermitido ? `Horas (Max: ${maxPermitido})` : "Horas"}
                                 type="number"
                                 step="1"
                                 min="0"
@@ -666,167 +664,153 @@ export default function CargaNoLectivaPage() {
                                 onChange={(e) => manejarCambioSeccion(seccion.clave, 'horas', e.target.value)}
                                 disabled={deshabilitado}
                                 placeholder="0"
-                                className={cn("text-center text-lg font-bold h-11", erroresSecciones[seccion.clave] ? 'border-red-400 focus:border-red-500 focus:ring-red-500 bg-red-50 text-red-700' : 'text-slate-800')}
+                                className={cn("text-center text-xl font-black h-12 shadow-inner", tieneError ? 'border-red-300 dark:border-red-500/50 focus:border-red-500 focus:ring-red-500/20 bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-400' : 'text-indigo-950 dark:text-white bg-gray-50 dark:bg-white/5')}
                               />
-                              {erroresSecciones[seccion.clave] && (
-                                <p className="absolute -bottom-5 left-1 text-[10px] font-bold text-red-600 truncate max-w-full" title={erroresSecciones[seccion.clave]}>
+                              {tieneError && (
+                                <p className="absolute -bottom-6 left-0 text-[10px] font-bold text-red-600 dark:text-red-400 leading-tight w-[200px]" title={erroresSecciones[seccion.clave]}>
                                   {erroresSecciones[seccion.clave]}
                                 </p>
                               )}
                             </div>
                             <CampoTexto
-                              label="Resolución (Opcional)"
+                              label="Resolución"
                               value={secciones[seccion.clave].codigo_resolucion}
                               onChange={(e) => manejarCambioSeccion(seccion.clave, 'codigo_resolucion', e.target.value)}
                               disabled={deshabilitado}
-                              placeholder="Ej. RES-001-2026"
-                              className="text-xs h-9"
+                              placeholder="Ej. RES-001"
+                              className="text-xs h-10 font-mono uppercase"
                             />
                         </div>
                       </div>
                     )})}
-                  
-                  {/* Totalizador de horas inferior */}
-                  <div className="mt-8 flex justify-end border-t border-slate-200 pt-6">
-                    <div className="flex items-center gap-4 bg-slate-50 px-6 py-4 rounded-2xl border border-slate-200 shadow-sm">
-                      <span className="text-sm font-bold text-slate-600 uppercase tracking-widest">Total Horas Declaradas:</span>
-                      <span className={cn(
-                        "text-3xl font-black", 
-                        reglas && horasTotales > horasObjetivo ? "text-red-600" : 
-                        reglas && horasTotales < horasObjetivo ? "text-amber-500" : "text-emerald-600"
-                      )}>
-                        {formatearHoras(horasTotales)}
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
               {/* Detalle de carga lectiva */}
-              <Card className="border-none shadow-lg rounded-[2rem] overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-100">
-                  <CardTitle className="text-slate-900 text-lg">Detalle de carga lectiva asignada</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full text-left text-sm text-slate-700">
-                      <thead>
-                        <tr className="border-b border-slate-200 text-xs uppercase tracking-[0.14em] text-slate-500">
-                          <th className="py-3 pr-4 font-semibold">Código</th>
-                          <th className="py-3 pr-4 font-semibold">Curso</th>
-                          <th className="py-3 pr-4 font-semibold">Ciclo</th>
-                          <th className="py-3 pr-4 font-semibold">Componente</th>
-                          <th className="py-3 pr-4 font-semibold text-right">Horas</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(declaracionData?.carga_lectiva ?? []).map((fila: any, index: number) => (
-                          <tr key={`${fila.curso_codigo}-${index}`} className="border-b border-slate-100 last:border-b-0 hover:bg-slate-50/50 transition-colors">
-                            <td className="py-3 pr-4 font-mono">{fila.curso_codigo}</td>
-                            <td className="py-3 pr-4 font-medium">{fila.curso_nombre}</td>
-                            <td className="py-3 pr-4">{fila.ciclo}</td>
-                            <td className="py-3 pr-4">{fila.componente}</td>
-                            <td className="py-3 pr-4 text-right font-bold text-slate-900">{formatearHoras(Number(fila.horas ?? 0))}h</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+              <div className="bg-white dark:bg-[#020C1B] rounded-[2.5rem] border border-gray-100 dark:border-white/10 shadow-xl relative">
+                <div className="px-8 py-6 border-b border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 flex items-center gap-4 rounded-t-[2.5rem]">
+                  <div className="p-3 bg-emerald-50 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-2xl border border-emerald-100 dark:border-emerald-500/30">
+                    <BookOpen className="h-5 w-5" />
                   </div>
-                </CardContent>
-              </Card>
+                  <div>
+                    <h2 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Carga Lectiva Asignada</h2>
+                    <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-1">Cursos del Semestre</p>
+                  </div>
+                </div>
+                <div className="p-0 overflow-x-auto">
+                  <table className="min-w-full text-left text-sm">
+                    <thead>
+                      <tr className="bg-gray-50/50 dark:bg-white/5 text-[10px] uppercase tracking-widest text-gray-500 dark:text-gray-400 border-b border-gray-100 dark:border-white/10">
+                        <th className="py-4 pl-8 pr-4 font-black">Código</th>
+                        <th className="py-4 pr-4 font-black">Curso</th>
+                        <th className="py-4 pr-4 font-black">Ciclo</th>
+                        <th className="py-4 pr-4 font-black">Componente</th>
+                        <th className="py-4 pr-8 font-black text-right">Horas</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50 dark:divide-white/5">
+                      {(declaracionData?.carga_lectiva ?? []).length === 0 ? (
+                        <tr>
+                          <td colSpan={5} className="py-12 text-center text-gray-400 dark:text-gray-500 font-bold">No hay carga lectiva asignada.</td>
+                        </tr>
+                      ) : (
+                        (declaracionData?.carga_lectiva ?? []).map((fila: any, index: number) => (
+                          <tr key={`${fila.curso_codigo}-${index}`} className="hover:bg-gray-50/30 dark:hover:bg-white/5 transition-colors">
+                            <td className="py-4 pl-8 pr-4 font-mono font-bold text-gray-500 dark:text-gray-400">{fila.curso_codigo}</td>
+                            <td className="py-4 pr-4 font-bold text-gray-900 dark:text-white">{fila.curso_nombre}</td>
+                            <td className="py-4 pr-4 font-medium text-gray-600 dark:text-gray-300">{fila.ciclo}</td>
+                            <td className="py-4 pr-4">
+                              <span className="inline-block px-2.5 py-1 bg-indigo-50 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 text-[10px] font-black uppercase tracking-widest rounded-md border border-indigo-100 dark:border-indigo-500/30">{fila.componente}</span>
+                            </td>
+                            <td className="py-4 pr-8 text-right font-black text-lg text-gray-900 dark:text-white">{formatearHoras(Number(fila.horas ?? 0))}h</td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
 
-            {/* Columna derecha: Resumen y acciones */}
-            <div className="space-y-6 lg:sticky lg:top-6 lg:self-start">
-              <Card className="border-none shadow-lg rounded-[2rem] overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-unt-primary to-[#0f4c81] text-white py-4">
-                  <CardTitle className="flex items-center gap-2 text-white text-base">
-                    <Save className="h-4 w-4" />
-                    Resumen de la Declaración
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4 pt-5 max-h-[calc(100vh-6rem)] overflow-y-auto">
-                  <div className="rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 p-4 border border-slate-100">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-2">Total horas no lectivas</p>
-                    <p className="text-4xl font-extrabold text-slate-900">{formatearHoras(totalHoras)}h</p>
-                    <p className="mt-1 text-xs text-slate-500">Suma automática de todas las secciones declaradas.</p>
-                  </div>
-
-                  <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-3">Validación de jornada</p>
-                    <div className="space-y-2 text-sm text-slate-600">
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-slate-900">Carga lectiva:</span>
-                        <span className="font-mono text-lg">{formatearHoras(horasLectivas)}h</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold text-slate-900">Carga no lectiva:</span>
-                        <span className="font-mono text-lg">{formatearHoras(totalHoras)}h</span>
-                      </div>
-                      <div className="border-t border-slate-100 pt-2 mt-2">
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-slate-900 text-base">Carga total:</span>
-                          <span className="font-mono text-xl font-extrabold">{formatearHoras(horasTotales)}h</span>
-                        </div>
-                        <div className="flex items-center justify-between mt-1">
-                          <span className="font-semibold text-slate-900">Objetivo dedicación:</span>
-                          <span className="font-mono text-lg font-bold">{formatearHoras(horasObjetivo)}h</span>
-                        </div>
-                      </div>
-                    </div>
-                    {horasObjetivo > 0 && (
-                      <p className={cn(
-                        'mt-4 text-xs font-bold px-3 py-2 rounded-lg text-center',
-                        Math.abs(horasTotales - horasObjetivo) < 0.01 
-                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
-                          : 'bg-amber-50 text-amber-700 border border-amber-200'
-                      )}>
-                        {Math.abs(horasTotales - horasObjetivo) < 0.01
-                          ? '✅ La jornada está completa según dedicación.'
-                          : horasTotales < horasObjetivo
-                            ? `⚠️ Faltan ${formatearHoras(horasObjetivo - horasTotales)}h para completar la jornada.`
-                            : `⚠️ Sobran ${formatearHoras(horasTotales - horasObjetivo)}h (has excedido tu jornada).`}
-                      </p>
-                    )}
-                  </div>
-
-
-
-                  <div className="rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-3">Datos guardados</p>
-                    <div className="space-y-2 text-xs text-slate-600">
-                      <div className="flex justify-between">
-                        <span className="font-semibold text-slate-900">Periodo:</span>
-                        <span>{periodos.find((p: any) => p.id === idPeriodo)?.nombre || idPeriodo}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="font-semibold text-slate-900">IBM:</span>
-                        <span>{docente.codigo_ibm || 'Pendiente'}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="font-semibold text-slate-900">Condición:</span>
-                        <span>{docente.modalidad}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="font-semibold text-slate-900">Categoría:</span>
-                        <span>{docente.categoria}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 pt-1">
-                    <Boton
-                      onClick={guardarDeclaracion}
-                      className="w-full justify-center gap-2 rounded-[1.5rem] bg-gradient-to-r from-unt-primary to-[#0f4c81] px-4 py-3 text-sm font-bold text-white shadow-lg shadow-unt-primary/20 hover:from-[#0a2a52] hover:to-[#0a3a6e] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                      cargando={mutationGuardar.isPending || cargandoDeclaracion}
-                      disabled={Math.abs(horasTotales - horasObjetivo) > 0.01 || Object.keys(erroresSecciones).length > 0}
-                    >
+            {/* Columna derecha: Validator/Ledger */}
+            <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-8 lg:self-start">
+              <div className="bg-[#020C1B] rounded-[2.5rem] border border-[#112240] shadow-2xl overflow-hidden flex flex-col relative group">
+                <div className="absolute top-0 right-0 h-32 w-32 bg-indigo-500/10 blur-3xl pointer-events-none rounded-full" />
+                <div className="absolute bottom-0 left-0 h-32 w-32 bg-emerald-500/10 blur-3xl pointer-events-none rounded-full" />
+                
+                <div className="px-8 py-6 border-b border-[#112240] flex items-center justify-between relative z-10">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 bg-white/5 rounded-xl border border-white/10 text-gray-300">
                       <Save className="h-4 w-4" />
-                      {mutationGuardar.isPending ? 'Guardando...' : 'Guardar y Continuar'}
-                    </Boton>
+                    </div>
+                    <h2 className="text-lg font-black text-white tracking-wide">Validador de Jornada</h2>
                   </div>
-                </CardContent>
-              </Card>
+                  <span className="relative flex h-3 w-3">
+                    <span className={cn("animate-ping absolute inline-flex h-full w-full rounded-full opacity-75", Math.abs(horasTotales - horasObjetivo) < 0.01 && Object.keys(erroresSecciones).length === 0 ? "bg-emerald-400" : "bg-amber-400")}></span>
+                    <span className={cn("relative inline-flex rounded-full h-3 w-3", Math.abs(horasTotales - horasObjetivo) < 0.01 && Object.keys(erroresSecciones).length === 0 ? "bg-emerald-500" : "bg-amber-500")}></span>
+                  </span>
+                </div>
+
+                <div className="p-8 space-y-8 relative z-10 font-mono">
+                  {/* Ledger lines */}
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-end border-b border-white/10 pb-3">
+                      <span className="text-xs font-bold text-gray-400 tracking-wider">01. LECTIVA</span>
+                      <span className="text-xl font-black text-white">{formatearHoras(horasLectivas)}<span className="text-sm text-gray-500 ml-1">h</span></span>
+                    </div>
+                    <div className="flex justify-between items-end border-b border-white/10 pb-3">
+                      <span className="text-xs font-bold text-gray-400 tracking-wider">02. NO LECTIVA</span>
+                      <span className="text-xl font-black text-white">{formatearHoras(totalHoras)}<span className="text-sm text-gray-500 ml-1">h</span></span>
+                    </div>
+                    <div className="flex justify-between items-end border-b-2 border-white/20 pb-3 pt-2">
+                      <span className="text-sm font-black text-white tracking-wider">TOTAL CALCULADO</span>
+                      <span className="text-3xl font-black text-indigo-400">{formatearHoras(horasTotales)}<span className="text-sm text-indigo-500/50 ml-1">h</span></span>
+                    </div>
+                    <div className="flex justify-between items-end pt-2">
+                      <span className="text-xs font-bold text-gray-500 tracking-wider">META DEDICACIÓN</span>
+                      <span className="text-xl font-black text-gray-300">{formatearHoras(horasObjetivo)}<span className="text-sm text-gray-600 ml-1">h</span></span>
+                    </div>
+                  </div>
+
+                  {/* Status Box */}
+                  <div className={cn(
+                    "rounded-2xl p-5 border",
+                    Math.abs(horasTotales - horasObjetivo) < 0.01 
+                      ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" 
+                      : "bg-amber-500/10 border-amber-500/30 text-amber-400"
+                  )}>
+                    <p className="text-[10px] font-black uppercase tracking-widest mb-2 opacity-70">Estado de la Declaración</p>
+                    <p className="text-sm font-bold leading-relaxed">
+                      {Math.abs(horasTotales - horasObjetivo) < 0.01
+                        ? '> JORNADA CUADRADA CORRECTAMENTE.'
+                        : horasTotales < horasObjetivo
+                          ? `> FALTAN ${formatearHoras(horasObjetivo - horasTotales)}H PARA CUBRIR META.`
+                          : `> EXCESO DE ${formatearHoras(horasTotales - horasObjetivo)}H DETECTADO.`}
+                    </p>
+                  </div>
+
+                  {Object.keys(erroresSecciones).length > 0 && (
+                    <div className="rounded-2xl p-5 bg-red-500/10 border border-red-500/30 text-red-400">
+                      <p className="text-[10px] font-black uppercase tracking-widest mb-2 opacity-70">Errores Detectados</p>
+                      <p className="text-sm font-bold leading-relaxed">
+                        > REVISA LOS CAMPOS MARCADOS EN ROJO.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Submit Button */}
+                  <div className="pt-4">
+                    <button
+                      onClick={guardarDeclaracion}
+                      disabled={Math.abs(horasTotales - horasObjetivo) > 0.01 || Object.keys(erroresSecciones).length > 0 || mutationGuardar.isPending || cargandoDeclaracion}
+                      className="w-full flex items-center justify-center gap-3 p-5 rounded-2xl bg-white text-[#0A192F] font-black text-sm uppercase tracking-widest transition-all hover:bg-gray-200 disabled:opacity-50 disabled:bg-white/10 disabled:text-gray-400 disabled:cursor-not-allowed group shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+                    >
+                      {mutationGuardar.isPending ? 'PROCESANDO...' : 'GUARDAR Y CONTINUAR'}
+                      {!mutationGuardar.isPending && <ArrowLeft className="w-4 h-4 rotate-180 transition-transform group-hover:translate-x-1" />}
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         ) : pestanaActiva === 'calendario' ? (
