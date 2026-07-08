@@ -8,7 +8,7 @@ import { useResumenDocente } from '@/hooks/useEstadisticas';
 import { reportesService, descargarBlob } from '@/services/reportes.service';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { Boton } from '@/components/ui/Boton';
-import { Selector } from '@/components/ui/Selector';
+import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useAuthStore } from '@/stores/auth.store';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
@@ -22,6 +22,7 @@ import {
   CheckCircle,
   FileText,
   Compass,
+  FileSpreadsheet,
 } from 'lucide-react';
 
 export default function DashboardDocentePage() {
@@ -204,263 +205,394 @@ export default function DashboardDocentePage() {
   const porcentaje = resumen?.porcentaje ?? 0;
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      {/* Header Banner */}
-      <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-[#0b1f3a] via-[#123b6d] to-[#0f4c81] px-6 py-8 text-white shadow-xl relative">
-        <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-3xl pointer-events-none" />
-        <div className="absolute left-1/3 bottom-0 h-56 w-56 bg-unt-accent/10 blur-3xl pointer-events-none" />
+    <div className="space-y-10 pb-20 animate-in fade-in duration-700">
+      {/* PANEL DE BIENVENIDA (Comando Docente) */}
+      <div className="relative overflow-hidden rounded-[3rem] bg-[#0A192F] px-8 py-12 md:px-12 md:py-16 text-white shadow-2xl border border-[#112240]">
+        <div className="absolute top-0 right-0 h-96 w-96 rounded-full bg-[#D4AF37]/5 blur-3xl pointer-events-none" />
+        <div className="absolute -left-20 -bottom-20 h-64 w-64 bg-white/5 blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-3xl space-y-4">
-            <span className="inline-flex items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/80">
-              Panel Docente
-            </span>
-            <div className="space-y-2">
-              <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-                ¡Bienvenido, {nombreDocente}!
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
+          <div className="max-w-3xl space-y-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
+              <BookOpen className="w-3.5 h-3.5" />
+              Portal Docente
+            </div>
+            <div className="space-y-3">
+              <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight">
+                Hola, {nombreDocente}
               </h1>
-              <p className="text-sm text-white/80 sm:text-base">
-                Categoría: <span className="font-semibold text-white">{resumen?.docente?.categoria}</span> | Modalidad: <span className="font-semibold text-white">{resumen?.docente?.modalidad}</span>
+              <p className="text-lg text-gray-400 font-medium max-w-xl leading-relaxed">
+                Revisa tu estado actual de programación, horas asignadas y accede a tus reportes oficiales.
               </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <span className="px-4 py-2 bg-[#020C1B]/80 backdrop-blur-md rounded-xl border border-white/10 text-sm font-bold text-white shadow-sm">
+                Categoría: <span className="text-[#D4AF37] ml-1">{resumen?.docente?.categoria || 'N/A'}</span>
+              </span>
+              <span className="px-4 py-2 bg-[#020C1B]/80 backdrop-blur-md rounded-xl border border-white/10 text-sm font-bold text-white shadow-sm">
+                Modalidad: <span className="text-[#D4AF37] ml-1">{resumen?.docente?.modalidad || 'N/A'}</span>
+              </span>
             </div>
           </div>
 
-          <div className="w-full max-w-sm rounded-2xl border border-white/15 bg-white/10 p-5 shadow-lg backdrop-blur-md">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">Período académico</p>
-            <div className="mt-3">
-              <Selector
+          <div className="w-full max-w-sm rounded-[2rem] border border-white/10 bg-[#020C1B]/60 p-6 shadow-2xl backdrop-blur-xl flex flex-col gap-3">
+            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
+              <Calendar className="w-3.5 h-3.5" />
+              Período en Consulta
+            </p>
+            <div className="relative mt-2">
+              <SelectorInstitucional
                 value={idPeriodo}
-                onChange={(e: any) => setIdPeriodoSeleccionado(Number(e.target.value))}
-                className="mt-0 border-white/20 bg-white/95 text-slate-900 shadow-none focus:border-white focus:ring-white/30"
-              >
-                <option value={0}>-- Seleccionar período --</option>
-                {periodos?.map((p: any) => (
-                  <option key={p.id} value={p.id}>{p.nombre}</option>
-                ))}
-              </Selector>
+                onChange={(val: any) => setIdPeriodoSeleccionado(Number(val))}
+                opciones={periodos?.map((p: any) => ({
+                  value: p.id,
+                  label: p.nombre,
+                })) || []}
+                placeholder="-- Seleccionar período --"
+              />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Ventana de atencion banner */}
-      {bannerElement}
+      {/* ESTADO DE LA VENTANA DE ATENCIÓN (ALERTAS) */}
+      {proximaVentana ? (
+        (() => {
+          const getLimaParts = (date: Date) => {
+            const parts = new Intl.DateTimeFormat('en-US', {
+              timeZone: 'America/Lima',
+              year: 'numeric', month: 'numeric', day: 'numeric',
+              hour: 'numeric', minute: 'numeric', second: 'numeric',
+              hour12: false
+            }).formatToParts(date);
+            const find = (type: string) => Number(parts.find(p => p.type === type)?.value);
+            return { y: find('year'), m: find('month') - 1, d: find('day'), h: find('hour'), min: find('minute') };
+          };
+      
+          const lp = getLimaParts(new Date());
+          const ahoraLima = new Date(lp.y, lp.m, lp.d, lp.h, lp.min, 0);
+          
+          const pFecha = new Date(proximaVentana.fecha);
+          const y = pFecha.getUTCFullYear();
+          const m = pFecha.getUTCMonth();
+          const d = pFecha.getUTCDate();
+          const [hIni, mIni] = proximaVentana.horaInicio.split(':').map(Number);
+          const [hFin, mFin] = proximaVentana.horaFin.split(':').map(Number);
+          
+          const fechaInicio = new Date(y, m, d, hIni, mIni, 0);
+          const fechaFin = new Date(y, m, d, hFin, mFin, 0);
+      
+          const activa = ahoraLima >= fechaInicio && ahoraLima <= fechaFin;
+          const futura = ahoraLima < fechaInicio;
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        <Card className="border-slate-200 shadow-sm relative overflow-hidden">
-          <div className="absolute right-3 top-3 text-slate-100 font-bold text-6xl select-none pointer-events-none">H</div>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-semibold uppercase tracking-wider text-slate-500">Horas Semanales</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="text-3xl font-bold text-slate-900">
-              {horasAsignadas}h <span className="text-lg font-normal text-slate-500">/ {horasRequeridas}h</span>
+          if (activa) {
+            return (
+              <div className="relative overflow-hidden rounded-[2.5rem] bg-emerald-950 border border-emerald-800 p-8 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 group">
+                <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                <div className="flex items-center gap-6 relative z-10">
+                  <div className="p-5 bg-emerald-500/20 rounded-2xl border border-emerald-500/30 text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.2)] animate-pulse">
+                    <CheckCircle className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black text-white tracking-tight">¡Tu ventanilla está abierta!</h3>
+                    <p className="text-emerald-200 text-base font-medium mt-1">
+                      Puedes armar tu horario ahora mismo. Finaliza hoy a las <span className="font-bold text-white">{proximaVentana.horaFin}</span>.
+                    </p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => router.push('/horarios/seleccion')} 
+                  className="relative z-10 w-full md:w-auto px-10 py-5 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-black rounded-2xl transition-all hover:scale-105 active:scale-95 shadow-[0_10px_40px_rgba(16,185,129,0.3)] text-lg text-center"
+                >
+                  Entrar a la Matriz
+                </button>
+              </div>
+            );
+          } else if (futura) {
+            const formattedDate = pFecha.toLocaleDateString('es-PE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            return (
+              <div className="rounded-[2.5rem] bg-indigo-950 border border-indigo-900/50 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+                <div className="flex items-center gap-6">
+                  <div className="p-4 bg-indigo-500/20 rounded-2xl border border-indigo-500/30 text-indigo-400">
+                    <Calendar className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-white tracking-tight">Turno Programado</h3>
+                    <p className="text-indigo-200 text-sm font-medium mt-1">
+                      El sistema se habilitará el <span className="font-bold text-white">{formattedDate}</span> desde las <span className="font-bold text-white">{proximaVentana.horaInicio}</span>.
+                    </p>
+                  </div>
+                </div>
+                <span className="px-5 py-2.5 bg-indigo-500/20 text-indigo-300 text-xs font-black uppercase tracking-widest rounded-full border border-indigo-500/30 text-center">
+                  En Espera
+                </span>
+              </div>
+            );
+          } else {
+            return (
+              <div className="rounded-[2.5rem] bg-slate-900 border border-slate-800 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
+                <div className="flex items-center gap-6">
+                  <div className="p-4 bg-slate-800 rounded-2xl border border-slate-700 text-slate-400">
+                    <AlertCircle className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-white tracking-tight">Ventanilla Cerrada</h3>
+                    <p className="text-slate-400 text-sm font-medium mt-1">
+                      Tu plazo para armar el horario de forma directa finalizó el <span className="text-slate-300 font-bold">{pFecha.toLocaleDateString('es-PE')}</span> a las <span className="text-slate-300 font-bold">{proximaVentana.horaFin}</span>.
+                    </p>
+                  </div>
+                </div>
+                <span className="px-5 py-2.5 bg-slate-800 text-slate-400 text-xs font-black uppercase tracking-widest rounded-full border border-slate-700 text-center">
+                  Finalizado
+                </span>
+              </div>
+            );
+          }
+        })()
+      ) : (
+        <div className="rounded-[2.5rem] bg-amber-950/40 border border-amber-900/30 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
+          <div className="flex items-center gap-6">
+            <div className="p-4 bg-amber-500/20 rounded-2xl border border-amber-500/30 text-amber-500">
+              <AlertCircle className="w-8 h-8" />
             </div>
-            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-              <div
-                className={cn('h-full rounded-full transition-all', porcentaje >= 100 ? 'bg-emerald-500' : 'bg-indigo-500')}
-                style={{ width: `${Math.min(porcentaje, 100)}%` }}
-              />
+            <div>
+              <h3 className="text-xl font-black text-amber-500 tracking-tight">Sin Ventana Asignada</h3>
+              <p className="text-amber-200/60 text-sm font-medium mt-1">
+                No tienes un turno configurado para este periodo. Comunícate con secretaría si necesitas registrar carga académica.
+              </p>
             </div>
-            <p className="text-xs text-slate-500">
-              Progreso total: <span className="font-bold text-slate-700">{porcentaje}%</span> de horas asignadas.
-            </p>
-          </CardContent>
-        </Card>
+          </div>
+          <span className="px-5 py-2.5 bg-amber-500/10 text-amber-500 text-xs font-black uppercase tracking-widest rounded-full border border-amber-500/20 text-center">
+            No Asignado
+          </span>
+        </div>
+      )}
 
-        <Card className="border-slate-200 shadow-sm relative overflow-hidden">
-          <div className="absolute right-3 top-3 text-slate-100 font-bold text-6xl select-none pointer-events-none">C</div>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-semibold uppercase tracking-wider text-slate-500">Cursos Asignados</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-4xl font-bold text-slate-900">
+      {/* MÉTRICAS (KPIs) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 border border-gray-100 dark:border-[#112240] shadow-xl flex flex-col gap-6 relative overflow-hidden group hover:shadow-2xl transition-all">
+          <div className="flex items-center justify-between relative z-10">
+            <div className="p-4 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-2xl border border-indigo-100 dark:border-indigo-500/20">
+              <Clock className="w-6 h-6" />
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Horas Semanales</span>
+          </div>
+          <div className="relative z-10">
+            <h3 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight flex items-baseline gap-2">
+              {horasAsignadas}h
+              <span className="text-lg font-bold text-gray-400 dark:text-gray-500">/ {horasRequeridas}h</span>
+            </h3>
+          </div>
+          <div className="w-full bg-gray-100 dark:bg-[#020C1B] h-2 rounded-full overflow-hidden relative z-10 mt-auto">
+             <div className={cn("h-full rounded-full transition-all duration-1000", porcentaje >= 100 ? "bg-emerald-500" : "bg-indigo-500")} style={{ width: `${Math.min(porcentaje, 100)}%` }} />
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 border border-gray-100 dark:border-[#112240] shadow-xl flex flex-col gap-6 relative overflow-hidden group hover:shadow-2xl transition-all">
+          <div className="flex items-center justify-between relative z-10">
+            <div className="p-4 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-2xl border border-emerald-100 dark:border-emerald-500/20">
+              <BookOpen className="w-6 h-6" />
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Cursos Asignados</span>
+          </div>
+          <div className="relative z-10">
+            <h3 className="text-5xl font-black text-gray-900 dark:text-white tracking-tight">
               {(resumen?.componentes || []).length}
-            </div>
-            <p className="mt-2 text-xs text-slate-500">
-              Cursos ofertados asignados a tu carga académica.
-            </p>
-          </CardContent>
-        </Card>
+            </h3>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mt-2">Cursos ofertados en tu carga.</p>
+          </div>
+        </div>
 
-        <Card className="border-slate-200 shadow-sm relative overflow-hidden">
-          <div className="absolute right-3 top-3 text-slate-100 font-bold text-6xl select-none pointer-events-none">B</div>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-semibold uppercase tracking-wider text-slate-500">Bloques de Horario</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-slate-600 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                Confirmados:
-              </span>
-              <span className="font-bold text-slate-800 font-mono">{resumen?.bloquesConfirmados ?? 0}</span>
+        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 border border-gray-100 dark:border-[#112240] shadow-xl flex flex-col gap-6 relative overflow-hidden group hover:shadow-2xl transition-all">
+          <div className="flex items-center justify-between relative z-10">
+            <div className="p-4 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-2xl border border-rose-100 dark:border-rose-500/20">
+              <Calendar className="w-6 h-6" />
             </div>
-            <div className="flex justify-between items-center border-t border-slate-50 pt-2">
-              <span className="text-sm text-slate-600 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-amber-500" />
-                Borradores:
+            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">Bloques Creados</span>
+          </div>
+          <div className="space-y-4 relative z-10 flex-1 flex flex-col justify-end">
+            <div className="flex justify-between items-center bg-gray-50 dark:bg-[#020C1B] p-3 rounded-xl border border-gray-100 dark:border-white/5">
+              <span className="text-xs font-bold text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                Confirmados
               </span>
-              <span className="font-bold text-slate-800 font-mono">{resumen?.bloquesBorrador ?? 0}</span>
+              <span className="font-black text-gray-900 dark:text-white">{resumen?.bloquesConfirmados ?? 0}</span>
             </div>
-          </CardContent>
-        </Card>
+            <div className="flex justify-between items-center bg-gray-50 dark:bg-[#020C1B] p-3 rounded-xl border border-gray-100 dark:border-white/5">
+              <span className="text-xs font-bold text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
+                Borradores
+              </span>
+              <span className="font-black text-gray-900 dark:text-white">{resumen?.bloquesBorrador ?? 0}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Course breakdown list */}
-        <Card className="lg:col-span-2 border-slate-200 shadow-sm">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BookOpen className="h-5 w-5 text-indigo-500" />
-              Cursos y Progreso de Carga
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+        {/* LISTA DE CURSOS Y PROGRESO (7/12) */}
+        <div className="lg:col-span-7 bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 border border-gray-100 dark:border-[#112240] shadow-xl">
+          <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-6 mb-6">
+            <div className="p-3 bg-[#D4AF37]/10 rounded-xl border border-[#D4AF37]/20 text-[#D4AF37]">
+              <BookOpen className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Desglose de Cursos</h3>
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Avance de Programación</p>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
             {(resumen?.componentes || []).length === 0 ? (
-              <div className="py-8 text-center text-slate-500 text-sm">
-                No tienes cursos asignados para este periodo académico.
+              <div className="py-12 text-center flex flex-col items-center justify-center border-2 border-dashed border-gray-100 dark:border-[#112240] rounded-3xl">
+                <BookOpen className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-4" />
+                <p className="text-gray-500 dark:text-gray-400 font-bold">No tienes cursos asignados.</p>
               </div>
             ) : (
-              <div className="space-y-5">
-                {(resumen?.componentes || []).map((c: any) => (
-                  <div key={c.idComponente} className="p-4 rounded-xl border border-slate-150 bg-slate-50/50 space-y-2.5">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="font-bold text-slate-800">{c.nombreCurso}</h4>
-                        <span className="inline-block text-[10px] font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100 mt-1">
-                          {c.tipoComponente}
-                        </span>
-                      </div>
-                      <span className="text-sm font-bold text-slate-700 font-mono">
-                        {c.horasAsignadas}h <span className="text-slate-400 font-normal">/ {c.horasRequeridas}h</span>
+              (resumen?.componentes || []).map((c: any) => (
+                <div key={c.idComponente} className="p-5 rounded-2xl border border-gray-100 dark:border-[#112240] bg-gray-50 dark:bg-[#020C1B] hover:shadow-md transition-shadow">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h4 className="font-bold text-gray-900 dark:text-white">{c.nombreCurso}</h4>
+                      <span className="inline-block text-[9px] font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-2.5 py-1 rounded-md border border-indigo-100 dark:border-indigo-500/20 mt-2">
+                        {c.tipoComponente}
                       </span>
                     </div>
-
-                    <div className="space-y-1">
-                      <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                        <div
-                          className={cn('h-full rounded-full transition-all', c.porcentaje >= 100 ? 'bg-emerald-500' : 'bg-indigo-500')}
-                          style={{ width: `${Math.min(c.porcentaje, 100)}%` }}
-                        />
-                      </div>
-                      <div className="flex justify-between text-[11px] text-slate-500 font-medium">
-                        <span>Horas programadas</span>
-                        <span>{c.porcentaje}% completado</span>
-                      </div>
+                    <div className="text-right">
+                      <span className="text-lg font-black text-gray-900 dark:text-white">
+                        {c.horasAsignadas}h
+                      </span>
+                      <span className="text-sm font-bold text-gray-400 block mt-0.5">/ {c.horasRequeridas}h</span>
                     </div>
                   </div>
-                ))}
-              </div>
+
+                  <div className="space-y-2">
+                    <div className="w-full bg-gray-200 dark:bg-[#0A192F] h-1.5 rounded-full overflow-hidden">
+                      <div
+                        className={cn('h-full rounded-full transition-all duration-1000', c.porcentaje >= 100 ? 'bg-emerald-500' : 'bg-[#D4AF37]')}
+                        style={{ width: `${Math.min(c.porcentaje, 100)}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-end text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500">
+                      {c.porcentaje}% Completado
+                    </div>
+                  </div>
+                </div>
+              ))
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        {/* Quick actions & downloads */}
-        <div className="space-y-6">
-          <Card className="border-slate-200 shadow-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Compass className="h-5 w-5 text-indigo-500" />
-                Accesos Rápidos
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-3">
-              <Boton
+        {/* ACCIONES Y EXPORTACIÓN (5/12) */}
+        <div className="lg:col-span-5 space-y-8">
+          <div className="bg-[#020C1B] rounded-[2.5rem] p-8 border border-[#112240] shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-2xl rounded-full pointer-events-none" />
+            <div className="flex items-center gap-4 border-b border-white/10 pb-5 mb-6 relative z-10">
+              <div className="p-3 bg-white/10 rounded-xl border border-white/10 text-white shadow-inner">
+                <Compass className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-xl font-black text-white tracking-tight">Accesos Rápidos</h3>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Panel de Control</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3 relative z-10">
+              <button
                 onClick={() => router.push('/docente/carga-no-lectiva')}
-                className="w-full justify-start text-left bg-amber-50 border border-amber-100 text-amber-700 hover:bg-amber-100 font-semibold"
+                className="w-full flex items-center gap-4 p-4 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-500 transition-all font-bold group"
               >
-                <FileText className="h-4 w-4 text-amber-500" />
+                <FileText className="h-5 w-5 group-hover:scale-110 transition-transform" />
                 Registrar Carga No Lectiva
-              </Boton>
-              <Boton
+              </button>
+              <button
                 onClick={() => router.push('/horarios/seleccion')}
-                className="w-full justify-start text-left bg-indigo-50 border border-indigo-100 text-indigo-700 hover:bg-indigo-100 font-semibold"
+                className="w-full flex items-center gap-4 p-4 rounded-2xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 text-indigo-400 transition-all font-bold group"
               >
-                ✏️ Elegir mi Horario (Matriz)
-              </Boton>
-              <Boton
+                <BookOpen className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                Elegir mi Horario (Matriz)
+              </button>
+              <button
                 onClick={() => router.push('/horarios/vista-docente')}
-                variante="borde"
-                className="w-full justify-start text-left font-semibold text-slate-700"
+                className="w-full flex items-center gap-4 p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-all font-bold group"
               >
-                👁️ Ver mi Horario Completo
-              </Boton>
-              <Boton
-                onClick={() => router.push('/notificaciones/preferencias')}
-                variante="borde"
-                className="w-full justify-start text-left font-semibold text-slate-700"
-              >
-                ⚙️ Configurar Notificaciones
-              </Boton>
-            </CardContent>
-          </Card>
+                <Calendar className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                Ver mi Horario Completo
+              </button>
+            </div>
+          </div>
 
-          <Card className="border-slate-200 shadow-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Download className="h-5 w-5 text-indigo-500" />
-                Descargar Entregables
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-3">
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-semibold text-slate-700">Tipo de exportación</label>
+          <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 border border-gray-100 dark:border-[#112240] shadow-xl relative overflow-hidden">
+            <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-5 mb-6">
+              <div className="p-3 bg-emerald-50 dark:bg-emerald-500/10 rounded-xl border border-emerald-100 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                <Download className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Exportación</h3>
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Descargar Reportes</p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <p className="text-xs font-black text-gray-800 dark:text-gray-300">Modo de Exportación</p>
                 <div className="flex flex-col gap-2">
-                  <label className="flex items-center gap-2 cursor-pointer">
+                  <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 dark:border-[#112240] bg-gray-50 dark:bg-[#020C1B] cursor-pointer hover:border-indigo-500/50 transition-colors">
                     <input
                       type="radio"
                       name="exportOption"
                       value="completo"
                       checked={exportOption === 'completo'}
                       onChange={(e) => setExportOption(e.target.value as any)}
-                      className="w-4 h-4 text-indigo-600"
+                      className="w-4 h-4 text-indigo-600 bg-white dark:bg-[#0A192F] border-gray-300 dark:border-gray-600 focus:ring-indigo-600 dark:focus:ring-indigo-500 dark:ring-offset-gray-800"
                     />
-                    <span className="text-sm text-slate-700">Horario completo (carga lectiva + no lectiva)</span>
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300">Horario Completo (Lectiva + No Lectiva)</span>
                   </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
+                  <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 dark:border-[#112240] bg-gray-50 dark:bg-[#020C1B] cursor-pointer hover:border-indigo-500/50 transition-colors">
                     <input
                       type="radio"
                       name="exportOption"
                       value="carga-lectiva"
                       checked={exportOption === 'carga-lectiva'}
                       onChange={(e) => setExportOption(e.target.value as any)}
-                      className="w-4 h-4 text-indigo-600"
+                      className="w-4 h-4 text-indigo-600 bg-white dark:bg-[#0A192F] border-gray-300 dark:border-gray-600 focus:ring-indigo-600 dark:focus:ring-indigo-500 dark:ring-offset-gray-800"
                     />
-                    <span className="text-sm text-slate-700">Solo carga lectiva</span>
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300">Solo Carga Lectiva</span>
                   </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
+                  <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 dark:border-[#112240] bg-gray-50 dark:bg-[#020C1B] cursor-pointer hover:border-indigo-500/50 transition-colors">
                     <input
                       type="radio"
                       name="exportOption"
                       value="carga-no-lectiva"
                       checked={exportOption === 'carga-no-lectiva'}
                       onChange={(e) => setExportOption(e.target.value as any)}
-                      className="w-4 h-4 text-indigo-600"
+                      className="w-4 h-4 text-indigo-600 bg-white dark:bg-[#0A192F] border-gray-300 dark:border-gray-600 focus:ring-indigo-600 dark:focus:ring-indigo-500 dark:ring-offset-gray-800"
                     />
-                    <span className="text-sm text-slate-700">Solo carga no lectiva</span>
+                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300">Solo Carga No Lectiva</span>
                   </label>
                 </div>
               </div>
-              <Boton
-                onClick={() => handleDescargarReporte('excel')}
-                disabled={descargando !== null}
-                className="w-full flex items-center justify-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 font-semibold"
-              >
-                <Clock className="h-4 w-4 text-emerald-500" />
-                {descargando === 'excel' ? 'Generando Excel...' : 'Descargar Horario Excel'}
-              </Boton>
-              <Boton
-                onClick={() => handleDescargarReporte('pdf')}
-                disabled={descargando !== null}
-                className="w-full flex items-center justify-center gap-2 bg-rose-50 border border-rose-200 text-rose-700 hover:bg-rose-100 font-semibold"
-              >
-                <FileText className="h-4 w-4 text-rose-500" />
-                {descargando === 'pdf' ? 'Generando PDF...' : 'Descargar Horario PDF'}
-              </Boton>
-            </CardContent>
-          </Card>
+
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={() => handleDescargarReporte('excel')}
+                  disabled={descargando !== null}
+                  className="w-full flex items-center justify-center gap-2 p-4 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 rounded-xl transition-all font-bold disabled:opacity-50"
+                >
+                  {descargando === 'excel' ? <SpinnerCarga /> : <FileSpreadsheet className="h-5 w-5" />}
+                  {descargando === 'excel' ? 'Procesando...' : 'Descargar en Excel'}
+                </button>
+                <button
+                  onClick={() => handleDescargarReporte('pdf')}
+                  disabled={descargando !== null}
+                  className="w-full flex items-center justify-center gap-2 p-4 bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 text-rose-700 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-500/20 rounded-xl transition-all font-bold disabled:opacity-50"
+                >
+                  {descargando === 'pdf' ? <SpinnerCarga /> : <FileText className="h-5 w-5" />}
+                  {descargando === 'pdf' ? 'Procesando...' : 'Descargar en PDF'}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
