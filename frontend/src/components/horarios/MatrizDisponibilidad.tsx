@@ -1,4 +1,5 @@
 'use client';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utilidades';
 
 interface MatrizProps {
@@ -52,7 +53,100 @@ const esBloqueoDeAlmuerzo = (horaInicio: string, bloqueoAlmuerzo?: { inicio: str
   return hora >= inicio && hora < fin;
 };
 
+// Helper: can this estado be toggled via drag?
+const esEstadoInteractivo = (estado: string) =>
+  estado === 'LIBRE' || estado === 'SELECCION_TEMPORAL' || estado === 'DOCENTE_OTRO_AMBIENTE';
+
 export function MatrizDisponibilidad({ matriz, alHacerClickCelda, bloqueado = false, bloqueoAlmuerzo }: MatrizProps) {
+  // Drag-to-paint state
+  const [isDragging, setIsDragging] = useState(false);
+  const dragModeRef = useRef<'select' | 'deselect' | null>(null);
+  const processedCellsRef = useRef<Set<string>>(new Set());
+  const tableRef = useRef<HTMLDivElement>(null);
+
+  // Build a stable cell-key from dia+hora
+  const cellKey = (dia: string, hora: string) => `${dia}__${hora}`;
+
+  // Resolve the visible estado for a celda (handles almuerzo override)
+  const resolveEstado = useCallback(
+    (celda: { estado: string; horaInicio: string }) => {
+      const esAlmuerzo = celda.estado === 'LIBRE' && esBloqueoDeAlmuerzo(celda.horaInicio, bloqueoAlmuerzo);
+      return esAlmuerzo ? 'BLOQUEO_INSTITUCIONAL' : celda.estado;
+    },
+    [bloqueoAlmuerzo]
+  );
+
+  // Global mouseup listener to stop dragging even if the mouse leaves the table
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      if (isDragging) {
+        setIsDragging(false);
+        dragModeRef.current = null;
+        processedCellsRef.current.clear();
+      }
+    };
+
+    document.addEventListener('mouseup', handleGlobalMouseUp);
+    return () => document.removeEventListener('mouseup', handleGlobalMouseUp);
+  }, [isDragging]);
+
+  // Prevent text selection while dragging
+  useEffect(() => {
+    if (isDragging) {
+      document.body.style.userSelect = 'none';
+      document.body.style.webkitUserSelect = 'none';
+    } else {
+      document.body.style.userSelect = '';
+      document.body.style.webkitUserSelect = '';
+    }
+    return () => {
+      document.body.style.userSelect = '';
+      document.body.style.webkitUserSelect = '';
+    };
+  }, [isDragging]);
+
+  const handleMouseDown = useCallback(
+    (dia: string, hora: string, estadoVisible: string, info?: any) => {
+      if (bloqueado) return;
+      if (!esEstadoInteractivo(estadoVisible)) return;
+
+      // Determine drag mode based on the first cell
+      const mode: 'select' | 'deselect' =
+        estadoVisible === 'LIBRE' ? 'select' : 'deselect';
+
+      dragModeRef.current = mode;
+      processedCellsRef.current.clear();
+      processedCellsRef.current.add(cellKey(dia, hora));
+      setIsDragging(true);
+
+      // Act on the first cell immediately
+      alHacerClickCelda(dia, hora, estadoVisible, info);
+    },
+    [bloqueado, alHacerClickCelda]
+  );
+
+  const handleMouseEnter = useCallback(
+    (dia: string, hora: string, estadoVisible: string, info?: any) => {
+      if (!isDragging || bloqueado || !dragModeRef.current) return;
+
+      const key = cellKey(dia, hora);
+      if (processedCellsRef.current.has(key)) return;
+
+      // Only act on cells compatible with the current drag mode
+      if (dragModeRef.current === 'select' && estadoVisible !== 'LIBRE') return;
+      if (
+        dragModeRef.current === 'deselect' &&
+        estadoVisible !== 'SELECCION_TEMPORAL' &&
+        estadoVisible !== 'DOCENTE_OTRO_AMBIENTE'
+      )
+        return;
+
+      processedCellsRef.current.add(key);
+      alHacerClickCelda(dia, hora, estadoVisible, info);
+    },
+    [isDragging, bloqueado, alHacerClickCelda]
+  );
+
   if (!matriz) {
     return (
       <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 dark:border-[#112240] bg-gray-50/50 dark:bg-[#020C1B] p-12 text-center shadow-inner">
@@ -71,7 +165,10 @@ export function MatrizDisponibilidad({ matriz, alHacerClickCelda, bloqueado = fa
 
   return (
     <div className="space-y-4">
-      <div className="overflow-hidden rounded-xl border border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm">
+      <div
+        ref={tableRef}
+        className="overflow-hidden rounded-xl border border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm"
+      >
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse text-left text-xs table-fixed">
             <thead>
@@ -86,29 +183,44 @@ export function MatrizDisponibilidad({ matriz, alHacerClickCelda, bloqueado = fa
             </thead>
             <tbody className="divide-y divide-gray-150 dark:divide-[#112240]">
               {matriz.filas.map((fila) => {
-                const horaFin = `${(parseInt(fila.horaInicio.split(':')[0]) + 1).toString().padStart(2, '0')}:00`;
                 return (
                   <tr key={fila.horaInicio}>
                     <td className="border-r border-b border-gray-100 dark:border-[#112240] px-2 py-3 text-center font-bold bg-white dark:bg-[#0A192F] text-gray-400 dark:text-gray-500 w-24 align-top">
                       <div className="-mt-3">{fila.horaInicio}</div>
                     </td>
                     {fila.celdas.map((celda, idx) => {
-                      const esAlmuerzo = celda.estado === 'LIBRE' && esBloqueoDeAlmuerzo(celda.horaInicio, bloqueoAlmuerzo);
-                      const estadoVisible = esAlmuerzo ? 'BLOQUEO_INSTITUCIONAL' : celda.estado;
+                      const estadoVisible = resolveEstado(celda);
+                      const isInteractive = esEstadoInteractivo(estadoVisible) && !bloqueado;
+
+                      // Visual feedback during drag: highlight compatible cells
+                      const isDragTarget =
+                        isDragging &&
+                        !bloqueado &&
+                        ((dragModeRef.current === 'select' && estadoVisible === 'LIBRE') ||
+                          (dragModeRef.current === 'deselect' &&
+                            (estadoVisible === 'SELECCION_TEMPORAL' || estadoVisible === 'DOCENTE_OTRO_AMBIENTE')));
 
                       return (
                         <td
                           key={idx}
-                          className="border-r border-b border-gray-100 dark:border-[#112240] p-1 text-center h-[70px] min-w-[120px] transition-all group align-top"
-                          onClick={() => {
-                            if (bloqueado) return;
-                            alHacerClickCelda(celda.diaSemana, celda.horaInicio, estadoVisible, celda.info);
+                          className={cn(
+                            'border-r border-b border-gray-100 dark:border-[#112240] p-1 text-center h-[70px] min-w-[120px] transition-all group align-top',
+                            isDragTarget && 'ring-2 ring-inset ring-emerald-400/60 dark:ring-emerald-500/40 bg-emerald-50/30 dark:bg-emerald-900/10'
+                          )}
+                          onMouseDown={(e) => {
+                            e.preventDefault(); // prevent text selection
+                            handleMouseDown(celda.diaSemana, celda.horaInicio, estadoVisible, celda.info);
                           }}
+                          onMouseEnter={() =>
+                            handleMouseEnter(celda.diaSemana, celda.horaInicio, estadoVisible, celda.info)
+                          }
                         >
                           <div className={cn(
                             'w-full h-full rounded-xl flex items-center justify-center p-1.5 transition-all',
                             colores[estadoVisible],
-                            bloqueado && estadoVisible !== 'BLOQUEO_INSTITUCIONAL' && 'cursor-not-allowed opacity-70'
+                            bloqueado && estadoVisible !== 'BLOQUEO_INSTITUCIONAL' && 'cursor-not-allowed opacity-70',
+                            isInteractive && !isDragging && 'cursor-pointer',
+                            isDragging && isInteractive && 'cursor-crosshair'
                           )}>
                             {estadoVisible === 'LIBRE' && (
                               <span className="text-emerald-500 dark:text-emerald-400 font-bold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-75">
@@ -166,7 +278,7 @@ export function MatrizDisponibilidad({ matriz, alHacerClickCelda, bloqueado = fa
       <div className="flex flex-wrap gap-4 px-3 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-50/50 dark:bg-[#020C1B] rounded-xl border border-gray-150 dark:border-[#112240]">
         <span className="flex items-center gap-2">
           <span className="w-4 h-4 rounded bg-emerald-50 dark:bg-emerald-900/10 border border-emerald-200 dark:border-emerald-800/30"></span>
-          <span>Libre (Click para elegir)</span>
+          <span>Libre (Arrastra para seleccionar)</span>
         </span>
         <span className="flex items-center gap-2">
           <span className="w-4 h-4 rounded bg-rose-50 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-800/30"></span>
@@ -176,12 +288,12 @@ export function MatrizDisponibilidad({ matriz, alHacerClickCelda, bloqueado = fa
           <span className="w-4 h-4 rounded bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-500/50"></span>
           <span className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400"></span>
-            Mi Selección en Aula actual (Click para quitar)
+            Mi Selección en Aula actual (Arrastra para quitar)
           </span>
         </span>
         <span className="flex items-center gap-2">
           <span className="w-4 h-4 rounded bg-indigo-50 dark:bg-indigo-900/20 border-2 border-indigo-200 dark:border-indigo-500/50"></span>
-          <span>Mi Horario en otra Aula (Click para quitar)</span>
+          <span>Mi Horario en otra Aula (Arrastra para quitar)</span>
         </span>
         <span className="flex items-center gap-2">
           <span className="w-4 h-4 rounded bg-gray-50 dark:bg-[#0A192F] border border-gray-200 dark:border-[#112240]"></span>
