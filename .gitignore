@@ -17,6 +17,7 @@ Horarios_KIMI.txt
 .next/
 dist/
 build/
+*.tsbuildinfo
 
 # Logs
 *.log

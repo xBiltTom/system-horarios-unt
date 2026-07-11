@@ -16,9 +16,10 @@ interface SelectorInstitucionalProps {
   opciones: Opcion[];
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
 }
 
-export function SelectorInstitucional({ label, value, onChange, opciones, placeholder = 'Seleccionar...', className }: SelectorInstitucionalProps) {
+export function SelectorInstitucional({ label, value, onChange, opciones, placeholder = 'Seleccionar...', className, disabled = false }: SelectorInstitucionalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -34,6 +35,12 @@ export function SelectorInstitucional({ label, value, onChange, opciones, placeh
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (disabled) {
+      setIsOpen(false);
+    }
+  }, [disabled]);
+
   return (
     <div className={cn("relative w-full space-y-1.5", className)} ref={containerRef}>
       {label && (
@@ -44,10 +51,12 @@ export function SelectorInstitucional({ label, value, onChange, opciones, placeh
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        disabled={disabled}
         className={cn(
           "w-full flex items-center justify-between gap-2 px-4 py-3.5 text-left rounded-2xl border transition-all duration-200 outline-none shadow-sm",
           !isOpen && "bg-slate-50/50 hover:bg-white border-gray-200 text-gray-900 dark:bg-white/5 dark:hover:bg-[#020C1B] dark:border-white/10 dark:text-white",
-          isOpen && "border-[#003366] bg-white text-[#003366] ring-4 ring-[#003366]/5 dark:border-[#D4AF37] dark:bg-[#020C1B] dark:text-[#D4AF37] dark:ring-[#D4AF37]/10"
+          isOpen && "border-[#003366] bg-white text-[#003366] ring-4 ring-[#003366]/5 dark:border-[#D4AF37] dark:bg-[#020C1B] dark:text-[#D4AF37] dark:ring-[#D4AF37]/10",
+          disabled && "cursor-not-allowed opacity-60 hover:bg-slate-50/50 dark:hover:bg-white/5"
         )}
       >
         <span className="block truncate text-sm font-medium tracking-wide">
