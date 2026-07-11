@@ -793,7 +793,7 @@ export default function CargaNoLectivaPage() {
                     <div className="rounded-2xl p-5 bg-red-500/10 border border-red-500/30 text-red-400">
                       <p className="text-[10px] font-black uppercase tracking-widest mb-2 opacity-70">Errores Detectados</p>
                       <p className="text-sm font-bold leading-relaxed">
-                        > REVISA LOS CAMPOS MARCADOS EN ROJO.
+                        &gt; REVISA LOS CAMPOS MARCADOS EN ROJO.
                       </p>
                     </div>
                   )}
