@@ -22,8 +22,8 @@ router.get('/global/pdf', ReportesController.pdfGlobal);
 router.get('/global/excel', ReportesController.excelGlobal);
 
 // ---- Email endpoints ----
-router.post('/enviar-correo/docente/:idDocente', ReportesController.enviarCorreoDocente);
-router.post('/enviar-correo/todos', ReportesController.enviarCorreosTodos);
+// router.post('/enviar-correo/docente/:idDocente', ReportesController.enviarCorreoDocente);
+// router.post('/enviar-correo/todos', ReportesController.enviarCorreosTodos);
 // ---- Publish endpoint ----
 router.post('/publicar', ReportesController.publicarPeriodo);
 
