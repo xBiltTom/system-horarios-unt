@@ -249,30 +249,7 @@ export default function ReportesSecretariaPage() {
                 </div>
               </div>
 
-              {idDocente > 0 && (
-                <div className="mt-2 flex items-center gap-4 p-4 bg-gray-50 dark:bg-[#020C1B]/50 rounded-2xl border border-gray-200 dark:border-[#112240] animate-in fade-in zoom-in-95 duration-300">
-                  <div className="flex-1">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-0.5">Distribución Digital</p>
-                    <p className="text-xs font-bold text-gray-800 dark:text-gray-300">Enviar documento oficial</p>
-                  </div>
-                  <div className="flex gap-2 shrink-0">
-                    <button 
-                      onClick={() => handleEnviarCorreo(idDocente)}
-                      className="p-2.5 bg-white dark:bg-[#0A192F] border border-gray-200 dark:border-gray-700 rounded-xl text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-800 transition-all shadow-sm"
-                      title="Enviar por Correo Institucional"
-                    >
-                      <Mail className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={() => handleEnviarWhatsApp((cargaDocentes || []).find((d:any) => d.id === idDocente))}
-                      className="p-2.5 bg-white dark:bg-[#0A192F] border border-gray-200 dark:border-gray-700 rounded-xl text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 dark:hover:border-emerald-800 transition-all shadow-sm"
-                      title="Enviar por WhatsApp"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              )}
+
             </div>
 
             {/* Auditoría por Día */}
@@ -378,17 +355,6 @@ export default function ReportesSecretariaPage() {
                 </button>
               </div>
 
-              <div className="pt-6 border-t border-white/10 relative z-10">
-                <p className="text-[9px] font-black uppercase tracking-widest text-rose-500/80 mb-3 text-center">Acción Masiva Irreversible</p>
-                <button 
-                  className="w-full p-6 rounded-2xl border border-dashed border-rose-500/50 text-rose-400 hover:bg-rose-500/10 hover:border-rose-400 transition-all duration-300 flex flex-col items-center justify-center gap-2 group"
-                  onClick={() => setModalEnviarTodos(true)}
-                >
-                  <Mail className="w-6 h-6 mb-1 group-hover:-translate-y-1 transition-transform" />
-                  <span className="text-sm font-black tracking-wide">DIFUNDIR A TODO EL PADRÓN</span>
-                  <span className="text-[10px] font-medium text-rose-500/70">Enviar correos con horarios adjuntos</span>
-                </button>
-              </div>
             </div>
 
             {/* Tarjeta Informativa Institucional */}

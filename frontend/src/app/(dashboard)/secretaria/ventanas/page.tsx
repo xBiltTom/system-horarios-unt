@@ -333,24 +333,6 @@ export default function VentanasSecretariaPage() {
                 {mostrarEdicion ? 'Ocultar Edición' : 'Editar Horario General'}
               </Boton>
               <Boton
-                variante="secundario"
-                className="rounded-xl font-bold text-[#003366] dark:text-[#D4AF37] border-[#003366]/20 dark:border-white/10"
-                onClick={() => {
-                  if (!idPeriodo || totalVentanas === 0) return;
-                  setConfirmacion({
-                    titulo: '¿Enviar notificaciones?',
-                    mensaje: 'Se enviará un correo electrónico a cada docente con los detalles de su turno asignado.',
-                    tipo: 'pregunta',
-                    textoConfirmar: 'Enviar correos',
-                    onConfirm: () => enviarCorreosMutation.mutate(),
-                  });
-                }}
-                disabled={!idPeriodo || totalVentanas === 0 || enviarCorreosMutation.isPending}
-              >
-                <Send className="w-4 h-4 mr-2" />
-                {enviarCorreosMutation.isPending ? 'Enviando...' : 'Notificar Docentes'}
-              </Boton>
-              <Boton
                 variante="peligro"
                 className="rounded-xl font-bold"
                 onClick={() => {

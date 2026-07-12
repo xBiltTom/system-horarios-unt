@@ -2,79 +2,81 @@ import { prisma } from '@/lib/prisma';
 import PDFDocument from 'pdfkit';
 import { crearContextoHorarioCiclo } from './horario-ciclo.utils';
 
-const BORDER_COLOR = '#1A1A2E';
-const HEADER_BG = '#E8E4F0';
+const BORDER_COLOR = '#003366'; // Azul UNT
+const HEADER_BG = '#EBF1F6'; // Azul muy claro para cabeceras
 
 // ────────────────────────────────────────────────────────────
 // Sistema de paletas profesionales
 // ────────────────────────────────────────────────────────────
 
 /**
- * 32 colores claros y profesionales, visualmente distintos entre sí.
- * Inspirados en paletas de diseño editorial: lavandas, mints, cielos, rosas,
- * sages, melocotones, índigos suaves, ámbar, etc. Todos superan el contraste
- * necesario para texto negro sobre fondo claro.
+ * Paleta para carga LECTIVA:
+ * Tonos profesionales y muy suaves derivados de azules, celestes,
+ * grises fríos y cianes (alineados al azul institucional UNT).
+ * Garantizan alto contraste con texto negro al imprimir.
  */
 const PALETA_LECTIVA: string[] = [
-  '#C9E4F5', // Celeste suave
-  '#C5E8D3', // Mint fresco
-  '#F5D7E3', // Rosa palo
-  '#D4C9F0', // Lavanda
-  '#FAE8C2', // Ámbar claro
-  '#C2E8E8', // Turquesa suave
-  '#F0D9C5', // Melocotón
-  '#D1EAC5', // Verde sage
-  '#E8C9E4', // Malva claro
-  '#C5D4F0', // Azul pizarra suave
-  '#F5F0C2', // Lima pálido
-  '#F0C5C5', // Coral suave
-  '#C5E4D4', // Seafoam
-  '#E4D4C5', // Arena cálida
-  '#D4E8C2', // Pistacho
-  '#C5C9E8', // Perivenio
-  '#F0E4C5', // Crema dorada
-  '#E4C5D4', // Frambuesa suave
-  '#C5E8E4', // Aqua pálido
-  '#D8C5F0', // Violeta claro
-  '#E8D4C2', // Tostado suave
-  '#C2D8E8', // Denim suave
-  '#F5E4C5', // Vainilla
-  '#C8E4C5', // Eucalipto
-  '#F0C8D4', // Peonía suave
-  '#C5D8D4', // Grisáceo menta
-  '#E8E4C2', // Mostaza pálida
-  '#D4C5E8', // Orquídea suave
-  '#C5E4E8', // Cielo invierno
-  '#F0D4C5', // Salmón claro
-  '#D4E4C5', // Helecho pálido
-  '#E4C5C5', // Rosa empolvado
+  '#D9E6F2', // Azul claro 1
+  '#E6EEF4', // Gris azulado 1
+  '#CDE0F5', // Celeste 1
+  '#DDEBF7', // Azul cielo pálido
+  '#E1E8ED', // Gris frío
+  '#D4E5ED', // Slate suave
+  '#D1E8F7', // Celeste hielo
+  '#DCEAF0', // Cian pastel
+  '#E6F0FA', // Azul nube
+  '#CBDCEB', // Steel blue pálido
+  '#D6EAF8', // Light blue pálido
+  '#E3EBF2', // Gris azulado 2
+  '#D1E0EE', // Azul lavado
+  '#DAE8F3', // Celeste pálido 2
+  '#E1E9F0', // Plumbago claro
+  '#D5E5F2', // Cerúleo muy claro
+  '#C9DDE8', // Slate hielo
+  '#DBE7ED', // Gris azul muy claro
+  '#CFE2F3', // Celeste bebé
+  '#E0EAF5', // Lino azulado
+  '#D3E3F0', // Azul polvo
+  '#D8EAF5', // Agua claro
+  '#E4ECF2', // Blanco azulado
+  '#CDDFEF', // Niebla azul
+  '#D6E3EA', // Azul acero pálido
+  '#DBEAF7', // Celeste brillante pero claro
+  '#DFEBF2', // Gris gaviota
+  '#CCE1ED', // Iceberg
+  '#D3E5F3', // Azul marino muy diluido
+  '#D9E8ED', // Gris cian
+  '#CFE5F2', // Celeste 3
+  '#E5ECF0', // Nube gris
 ];
 
 /**
- * 20 colores para carga no-lectiva: distintos entre sí y claramente
- * diferenciados del rango lectivo. Tonos más cálidos/neutros.
+ * Paleta para carga NO-LECTIVA:
+ * Tonos dorados, ámbar, arena y amarillos muy tenues (alineados al 
+ * color secundario dorado de la UNT). Totalmente distintos a la 
+ * paleta lectiva, conservando perfecta legibilidad.
  */
 const PALETA_NO_LECTIVA: string[] = [
-  '#FFE5A0', // Amarillo suave
-  '#FFD0A8', // Naranja claro
-  '#FFDBC5', // Durazno
-  '#F5D5A0', // Ocre claro
-  '#FFE0C8', // Albaricoque
-  '#F5E8A0', // Limón pálido
-  '#FFDAB5', // Mandarina suave
-  '#F0D890', // Miel pálida
-  '#FFD8B0', // Papaya claro
-  '#F5C8A8', // Terracota suave
-  '#FFE8B0', // Trigo
-  '#F5D0B0', // Bisque
-  '#FFD5C0', // Melón suave
-  '#F0E0A0', // Champagne
-  '#FFD0B8', // Coral claro
-  '#F5E0B0', // Crema caliente
-  '#FFD8A0', // Sol suave
-  '#F0D0A8', // Caramelo claro
-  '#FFE0B0', // Vainilla cálida
-  '#F5D8C0', // Piel suave
+  '#FFF5D6', // Dorado pálido
+  '#FDF0D5', // Crema arena
+  '#FFF8E1', // Vainilla
+  '#FAEBD7', // Blanco antiguo
+  '#FFF3CD', // Amarillo pastel
+  '#FCEFCC', // Miel muy suave
+  '#F8F2E6', // Beige ceniza
+  '#FFF1DF', // Melocotón muy claro
+  '#FDF4E3', // Lino dorado
+  '#FFF7D9', // Sol pálido
+  '#F5EAD4', // Trigo claro
+  '#FDF2DD', // Bizcocho
+  '#FFF4EB', // Nácar ámbar
+  '#F6EED8', // Desierto suave
+  '#FFF6CC', // Maíz claro
+  '#FBF1D1', // Paja pálida
+  '#FDF3E8', // Almendra
+  '#FFF9ED', // Chiffón de limón
+  '#F4EED1', // Verde dorado muy claro
+  '#FFF0D1', // Ámbar bebé
 ];
 
 /** Devuelve el color lectivo para el índice dado (1-based), garantizando unicidad cíclica */
@@ -88,6 +90,26 @@ function obtenerColorNoLectiva(index: number): string {
 }
 
 const NO_LECTIVA_BG = PALETA_NO_LECTIVA[0];
+
+// Placeholder de Logo en Base64 para Marca de Agua (Se puede reemplazar con PNG real)
+const LOGO_UNT_BASE64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4//8/AAX+Av7czFnnAAAAAElFTkSuQmCC';
+
+function dibujarMarcaDeAgua(doc: PDFDocumentWithTable) {
+  const wmSize = 250;
+  const x = (doc.page.width - wmSize) / 2;
+  const y = (doc.page.height - wmSize) / 2;
+  try {
+    const logoBuffer = require('fs').readFileSync('logo_unt.png');
+    doc.save();
+    doc.opacity(0.06);
+    doc.image(logoBuffer, x, y, { width: wmSize });
+    doc.restore();
+  } catch (e) {
+    // Si el logo no es válido, ignorar
+  }
+}
+
+
 
 /**
  * Construye un Map<indice, colorHex> para los registros del contexto,
@@ -205,6 +227,7 @@ function dibujarCajaInfoPeriodo(
     doc
       .fontSize(index === 0 ? 10 : 8)
       .font(index === 0 ? 'Helvetica-Bold' : 'Helvetica')
+      .fillColor(index === 0 ? BORDER_COLOR : 'black')
       .text(linea, leftColX, y, { width: width - 12, align: 'center' });
   });
 }
@@ -215,8 +238,8 @@ function dibujarCajaInfoPeriodo(
 
 const DIAS = ['LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO'];
 const HORAS = [
-  '07:00','08:00','09:00','10:00','11:00','12:00','13:00',
-  '14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00',
+  '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00',
+  '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00',
 ];
 
 function dibujarRejillaBase(
@@ -544,6 +567,7 @@ function dibujarTablaDetalleNoLectiva(
       .text('Sin carga no lectiva declarada', tableStartX + 4, currentY + 2);
     currentY += 12;
   }
+
   return currentY;
 }
 
@@ -564,7 +588,11 @@ async function generarPaginaCiclo(
   const headerBoxWidth = pageWidth * 0.3;
   const headerBoxHeight = 110;
 
-  dibujarCajaInfoPeriodo(doc, leftColX, topMargin, headerBoxWidth, headerBoxHeight, [
+  const availableTableWidth = pageWidth - headerBoxWidth - 20;
+  const headerBoxX = leftColX + availableTableWidth + 20;
+  const tableStartX = leftColX;
+
+  dibujarCajaInfoPeriodo(doc, headerBoxX, topMargin, headerBoxWidth, headerBoxHeight, [
     'UNIVERSIDAD NACIONAL DE TRUJILLO',
     'FACULTAD DE INGENIERÍA',
     'ESCUELA DE INGENIERÍA DE SISTEMAS',
@@ -577,7 +605,6 @@ async function generarPaginaCiclo(
   ]);
 
   const detailHeaders = ['N°', 'PROFESOR', 'ASIGNATURA', 'T', 'P', 'L', 'G', 'T.H', 'DEPARTAMENTO'];
-  const availableTableWidth = pageWidth - headerBoxWidth - 20;
   const colWidths = [
     availableTableWidth * 0.04,
     availableTableWidth * 0.22,
@@ -589,7 +616,6 @@ async function generarPaginaCiclo(
     availableTableWidth * 0.08,
     availableTableWidth * 0.12,
   ];
-  const tableStartX = leftColX + headerBoxWidth + 20;
   let currentY = topMargin;
   let currentX = tableStartX;
 
@@ -662,6 +688,8 @@ async function generarPaginaCiclo(
 
   dibujarRejillaBase(doc, leftColX, horarioTop, gridColWidth, gridRowHeight);
   dibujarBloquesCiclo(doc, contexto, mapaColores, leftColX, horarioTop, gridColWidth, gridRowHeight);
+
+  dibujarMarcaDeAgua(doc);
 }
 
 // ────────────────────────────────────────────────────────────
@@ -683,7 +711,11 @@ async function generarPaginaDocente(
   const headerBoxHeight = 110;
 
   // ── Cabecera ──
-  dibujarCajaInfoPeriodo(doc, leftColX, topMargin, headerBoxWidth, headerBoxHeight, [
+  const availableTableWidth = pageWidth - headerBoxWidth - 20;
+  const headerBoxX = leftColX + availableTableWidth + 20;
+  const tableStartX = leftColX;
+
+  dibujarCajaInfoPeriodo(doc, headerBoxX, topMargin, headerBoxWidth, headerBoxHeight, [
     'UNIVERSIDAD NACIONAL DE TRUJILLO',
     'FACULTAD DE INGENIERÍA',
     'ESCUELA DE INGENIERÍA DE SISTEMAS',
@@ -738,10 +770,6 @@ async function generarPaginaDocente(
     });
   }
 
-  // ── Calcular ancho disponible para tablas ──
-  const availableTableWidth = pageWidth - headerBoxWidth - 20;
-  const tableStartX = leftColX + headerBoxWidth + 20;
-
   // ── Widths para tabla lectiva (sin columna CICLO) ──
   const colWidthsLectiva = [
     availableTableWidth * 0.07,  // N°
@@ -766,7 +794,7 @@ async function generarPaginaDocente(
   if (exportOption === 'completo') {
     // Tabla lectiva
     // Separador visual
-    
+
     doc.font('Helvetica-Bold').fontSize(7).fillColor('#000000ff')
       .text('CARGA LECTIVA', tableStartX, currentY);
     currentY += 10;
@@ -783,23 +811,25 @@ async function generarPaginaDocente(
     currentY += 10;
 
     // Tabla no lectiva
-    dibujarTablaDetalleNoLectiva(
+    currentY = dibujarTablaDetalleNoLectiva(
       doc, declaracion, mapaColoresNoLectiva,
       tableStartX, colWidthsNL, currentY
     );
 
   } else if (exportOption === 'carga-lectiva') {
-    dibujarTablaDetalleLectiva(
+    currentY = dibujarTablaDetalleLectiva(
       doc, contexto, mapaColores,
       tableStartX, colWidthsLectiva, currentY
     );
 
   } else if (exportOption === 'carga-no-lectiva') {
-    dibujarTablaDetalleNoLectiva(
+    currentY = dibujarTablaDetalleNoLectiva(
       doc, declaracion, mapaColoresNoLectiva,
       tableStartX, colWidthsNL, currentY
     );
   }
+
+  dibujarMarcaDeAgua(doc);
 
   // ── Página 2: Horario ──
   doc.addPage({ size: 'A4', layout: 'landscape', margin: 30 });
@@ -827,6 +857,8 @@ async function generarPaginaDocente(
       leftColX, horarioTop, gridColWidth, gridRowHeight, slotsNL
     );
   }
+
+  dibujarMarcaDeAgua(doc);
 }
 
 // ────────────────────────────────────────────────────────────
@@ -846,7 +878,11 @@ async function generarPaginaAmbiente(
   const headerBoxWidth = pageWidth * 0.3;
   const headerBoxHeight = 100;
 
-  dibujarCajaInfoPeriodo(doc, leftColX, topMargin, headerBoxWidth, headerBoxHeight, [
+  const availableTableWidth = pageWidth - headerBoxWidth - 20;
+  const headerBoxX = leftColX + availableTableWidth + 20;
+  const tableStartX = leftColX;
+
+  dibujarCajaInfoPeriodo(doc, headerBoxX, topMargin, headerBoxWidth, headerBoxHeight, [
     'UNIVERSIDAD NACIONAL DE TRUJILLO',
     'FACULTAD DE INGENIERÍA',
     'ESCUELA DE INGENIERÍA DE SISTEMAS',
@@ -857,7 +893,6 @@ async function generarPaginaAmbiente(
   ]);
 
   const detailHeaders = ['N°', 'PROFESOR', 'ASIGNATURA', 'TIPO', 'G', 'TOT'];
-  const availableTableWidth = pageWidth - headerBoxWidth - 20;
   const colWidths = [
     availableTableWidth * 0.06,
     availableTableWidth * 0.27,
@@ -866,7 +901,6 @@ async function generarPaginaAmbiente(
     availableTableWidth * 0.08,
     availableTableWidth * 0.07,
   ];
-  const tableStartX = leftColX + headerBoxWidth + 20;
   let currentY = topMargin;
   let currentX = tableStartX;
 
@@ -940,6 +974,8 @@ async function generarPaginaAmbiente(
     currentY += 10;
   }
 
+  dibujarMarcaDeAgua(doc);
+
   // ── Página 2: horario ──
   doc.addPage({ size: 'A4', layout: 'landscape', margin: 30 });
 
@@ -1012,6 +1048,8 @@ async function generarPaginaAmbiente(
     });
     y += gridRowHeight;
   });
+
+  dibujarMarcaDeAgua(doc);
 }
 
 // ────────────────────────────────────────────────────────────
