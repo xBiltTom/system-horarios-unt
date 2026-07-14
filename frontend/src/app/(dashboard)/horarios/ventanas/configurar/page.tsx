@@ -33,11 +33,7 @@ export default function ConfigurarVentanasPage() {
     mutationFn: () => ventanasService.generarAutomatica({ idPeriodo: idPeriodo!, fechaInicio }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ventanas', idPeriodo] });
-      setToast({ mensaje: 'Ventanas generadas correctamente', tipo: 'success' });
     },
-    onError: (error: any) => {
-      setToast({ mensaje: error.response?.data?.error || 'Error al generar ventanas', tipo: 'error' });
-    }
   });
 
   const paginacion = usePaginacion(ventanasExistentes || [], { porPagina: 10 });

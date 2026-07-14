@@ -97,6 +97,8 @@ export default function OfertaPorCiclosPage() {
     }
   };
 
+  const paginacion = usePaginacion(cursos || [], { porPagina: 10 });
+
   return (
     <div className="space-y-8 max-w-[1800px] mx-auto pb-20 animate-in fade-in duration-500">
       {/* Dossier Header */}
