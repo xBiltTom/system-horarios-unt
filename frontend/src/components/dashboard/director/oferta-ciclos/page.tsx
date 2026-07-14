@@ -11,6 +11,8 @@ import { cargaHorariaService } from '@/services/carga-horaria.service';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
 import { LayoutGrid, Filter, BookOpen, Clock, Users, GraduationCap, Trash2, List } from 'lucide-react';
+import { usePaginacion } from '@/hooks/usePaginacion';
+import { ControlPaginacion } from '@/components/ui/ControlPaginacion';
 
 export default function OfertaPorCiclosPage() {
   const queryClient = useQueryClient();
@@ -45,13 +47,11 @@ export default function OfertaPorCiclosPage() {
     queryFn: () => curriculaService.listar().then(res => res.data),
   });
 
-  const curriculaVigente = curricula?.find((c: any) => c.vigente);
+  const curriculaActiva = curricula?.find((c: any) => c.vigente);
 
   useEffect(() => {
-    if (curriculaVigente && idCurricula === null) {
-      setIdCurricula(curriculaVigente.id);
-    }
-  }, [curriculaVigente, idCurricula]);
+    if (curriculaActiva) setIdCurricula(curriculaActiva.id);
+  }, [curriculaActiva]);
 
   // Obtener ciclos del periodo activo
   const { data: ciclos, isLoading: isLoadingCiclos } = useQuery({
@@ -171,7 +171,7 @@ export default function OfertaPorCiclosPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-white/5">
-                {cursos.map((curso: any) => (
+                {paginacion.itemsPagina.map((curso: any) => (
                   <tr key={curso.id} className="hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors group">
                     <td className="px-6 py-5 align-top">
                       <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-[#003366]/5 text-[#003366] dark:bg-white/5 dark:text-gray-300 border border-[#003366]/10 dark:border-white/10 font-mono">
@@ -227,6 +227,9 @@ export default function OfertaPorCiclosPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="px-6 pb-5 pt-3">
+            <ControlPaginacion {...paginacion} etiqueta="cursos" />
           </div>
         </Card>
       ) : (

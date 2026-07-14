@@ -8,6 +8,8 @@ import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { BookOpen, Search, Layers, GraduationCap, Users, Clock, Info, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utilidades';
+import { usePaginacion } from '@/hooks/usePaginacion';
+import { ControlPaginacion } from '@/components/ui/ControlPaginacion';
 
 export default function CursosAsignadosSecretariaPage() {
   const [idPeriodo, setIdPeriodo] = useState<number | null>(null);
@@ -58,6 +60,8 @@ export default function CursosAsignadosSecretariaPage() {
       return coincideCiclo && coincideComponente && coincideBusqueda;
     });
   }, [ofertas, filtroCiclo, filtroComponente, busqueda]);
+
+  const paginacion = usePaginacion(cursosFiltrados, { porPagina: 10 });
 
   if (periodosLoading) return <SpinnerCarga />;
 
@@ -162,7 +166,7 @@ export default function CursosAsignadosSecretariaPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-[#112240]">
-              {cursosFiltrados.map((o: any) => (
+              {paginacion.itemsPagina.map((o: any) => (
                 <tr key={o.id} className="hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors group">
                   <td className="px-8 py-5 font-black text-gray-400 dark:text-gray-500 text-sm">{o.curso?.codigo}</td>
                   <td className="px-8 py-5">
@@ -200,6 +204,9 @@ export default function CursosAsignadosSecretariaPage() {
               ))}
             </tbody>
           </table>
+          <div className="px-8 pb-5">
+            <ControlPaginacion {...paginacion} etiqueta="cursos" />
+          </div>
         </div>
       )}
     </div>

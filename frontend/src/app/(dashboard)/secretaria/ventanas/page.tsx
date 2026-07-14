@@ -11,6 +11,8 @@ import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
 import { Modal } from '@/components/ui/Modal';
+import { usePaginacion } from '@/hooks/usePaginacion';
+import { ControlPaginacion } from '@/components/ui/ControlPaginacion';
 import { cn } from '@/lib/utilidades';
 import { Edit2, Check, Clock, Calendar as CalendarIcon, X, AlertCircle, Trash2, RotateCcw, Send, Power, CalendarClock } from 'lucide-react';
 import { ModalConfirmacion } from '@/components/ui/ModalConfirmacion';
@@ -229,6 +231,8 @@ export default function VentanasSecretariaPage() {
     });
   }, [ventanas]);
 
+  const paginacion = usePaginacion(filas, { porPagina: 10 });
+
   const ventanasActivas = useMemo(
     () => (ventanas || []).filter((ventana: any) => ventana.estado !== 'CANCELADO'),
     [ventanas]
@@ -445,7 +449,7 @@ export default function VentanasSecretariaPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-[#112240]">
-                {filas.map((fila) => (
+                {paginacion.itemsPagina.map((fila) => (
                   <tr key={fila.id} className={cn(
                     'transition-colors group',
                     fila.razonTiempo === 'EN_TURNO' ? 'bg-emerald-50/50 dark:bg-emerald-900/10 hover:bg-emerald-50 dark:hover:bg-emerald-900/20' : 'hover:bg-gray-50/50 dark:hover:bg-white/5'
@@ -523,6 +527,9 @@ export default function VentanasSecretariaPage() {
                 ))}
               </tbody>
             </table>
+            <div className="px-8 pb-5">
+              <ControlPaginacion {...paginacion} etiqueta="turnos" />
+            </div>
           </div>
         )}
       </div>

@@ -10,6 +10,8 @@ import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { NotificacionToast } from '@/components/ui/NotificacionToast';
 import { Calendar, Zap, List } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { usePaginacion } from '@/hooks/usePaginacion';
+import { ControlPaginacion } from '@/components/ui/ControlPaginacion';
 
 export default function ConfigurarVentanasPage() {
   const [idPeriodo, setIdPeriodo] = useState<number | null>(null);
@@ -31,8 +33,14 @@ export default function ConfigurarVentanasPage() {
     mutationFn: () => ventanasService.generarAutomatica({ idPeriodo: idPeriodo!, fechaInicio }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ventanas', idPeriodo] });
+      setToast({ mensaje: 'Ventanas generadas correctamente', tipo: 'success' });
     },
+    onError: (error: any) => {
+      setToast({ mensaje: error.response?.data?.error || 'Error al generar ventanas', tipo: 'error' });
+    }
   });
+
+  const paginacion = usePaginacion(ventanasExistentes || [], { porPagina: 10 });
 
   if (periodosLoading) return <SpinnerCarga />;
 
@@ -100,8 +108,8 @@ export default function ConfigurarVentanasPage() {
                       <th className="px-4 py-2">Estado</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y">
-                    {ventanasExistentes?.map((v: any) => (
+                  <tbody className="divide-y divide-gray-100">
+                    {paginacion.itemsPagina.map((v: any) => (
                       <tr key={v.id} className="hover:bg-slate-50">
                         <td className="px-4 py-2 font-medium">#{v.orden}</td>
                         <td className="px-4 py-2">{new Date(v.fecha).toLocaleDateString()}</td>
@@ -128,6 +136,11 @@ export default function ConfigurarVentanasPage() {
                     )}
                   </tbody>
                 </table>
+                {ventanasExistentes?.length > 0 && (
+                  <div className="pt-4">
+                    <ControlPaginacion {...paginacion} etiqueta="ventanas" />
+                  </div>
+                )}
               </div>
             )}
           </CardContent>

@@ -4,6 +4,8 @@ import React from 'react';
 import { useAuthStore } from '@/stores/auth.store';
 import { Edit2, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utilidades';
+import { usePaginacion } from '@/hooks/usePaginacion';
+import { ControlPaginacion } from '@/components/ui/ControlPaginacion';
 
 interface Columna {
   clave: string;
@@ -18,6 +20,10 @@ interface TablaDatosProps {
   alEditar?: (item: any) => void;
   alEliminar?: (item: any) => void;
   loading?: boolean;
+  /** Items per page. Default 10. Pass 0 to disable pagination. */
+  porPagina?: number;
+  /** Label shown in pagination info e.g. "docentes". Default "registros" */
+  etiquetaPaginacion?: string;
 }
 
 export function TablaDatos({ 
@@ -26,10 +32,16 @@ export function TablaDatos({
   alHacerClick, 
   alEditar, 
   alEliminar,
-  loading 
+  loading,
+  porPagina = 10,
+  etiquetaPaginacion = 'registros',
 }: TablaDatosProps) {
   const usuario = useAuthStore(state => state.usuario);
   const puedeEditar = usuario?.rol === 'ADMINISTRADOR' || usuario?.rol === 'DIRECTOR';
+
+  const paginacion = usePaginacion(datos || [], {
+    porPagina: porPagina === 0 ? (datos?.length ?? 999) : porPagina,
+  });
 
   if (loading) {
     return (
@@ -69,7 +81,7 @@ export function TablaDatos({
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50 dark:divide-white/5">
-            {datos.map((item, index) => (
+            {paginacion.itemsPagina.map((item, index) => (
               <tr
                 key={item.id || index}
                 className={cn(
@@ -112,6 +124,11 @@ export function TablaDatos({
           </tbody>
         </table>
       </div>
+      {porPagina > 0 && paginacion.totalItems > 0 && (
+        <div className="px-8 pb-5">
+          <ControlPaginacion {...paginacion} etiqueta={etiquetaPaginacion} />
+        </div>
+      )}
     </div>
   );
 }

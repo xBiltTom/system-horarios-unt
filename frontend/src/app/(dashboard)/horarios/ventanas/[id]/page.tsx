@@ -4,6 +4,8 @@ import { useParams } from 'next/navigation';
 import { ventanasService } from '@/services/ventanas.service';
 import { Boton } from '@/components/ui/Boton';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
+import { usePaginacion } from '@/hooks/usePaginacion';
+import { ControlPaginacion } from '@/components/ui/ControlPaginacion';
 
 export default function AtencionVentanaPage() {
   const params = useParams();
@@ -44,6 +46,8 @@ export default function AtencionVentanaPage() {
       queryClient.invalidateQueries({ queryKey: ['cola', id] });
     },
   });
+
+  const paginacion = usePaginacion(cola.data || [], { porPagina: 10 });
 
   if (isLoading) return <SpinnerCarga />;
   if (!ventana) return <p>Ventana no encontrada</p>;
@@ -97,7 +101,7 @@ export default function AtencionVentanaPage() {
               </tr>
             </thead>
             <tbody>
-              {cola.data?.map((a: any) => (
+              {paginacion.itemsPagina.map((a: any) => (
                 <tr key={a.id} className="border-t">
                   <td className="px-4 py-2">{a.orden_espera}</td>
                   <td className="px-4 py-2">{a.docente.nombres} {a.docente.apellidos}</td>
@@ -107,6 +111,11 @@ export default function AtencionVentanaPage() {
               ))}
             </tbody>
           </table>
+          {(cola.data?.length ?? 0) > 0 && (
+            <div className="mt-4">
+              <ControlPaginacion {...paginacion} etiqueta="docentes" />
+            </div>
+          )}
         </>
       )}
 

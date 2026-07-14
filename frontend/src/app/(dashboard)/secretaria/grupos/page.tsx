@@ -8,6 +8,8 @@ import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { Users, Search, GraduationCap, BookOpen, Layers, Info, ChevronRight, User } from 'lucide-react';
 import { cn } from '@/lib/utilidades';
+import { usePaginacion } from '@/hooks/usePaginacion';
+import { ControlPaginacion } from '@/components/ui/ControlPaginacion';
 
 export default function GruposSecretariaPage() {
   const [idPeriodo, setIdPeriodo] = useState<number | null>(null);
@@ -55,7 +57,9 @@ export default function GruposSecretariaPage() {
                               g.codigo.toLowerCase().includes(busqueda.toLowerCase());
       return coincidePeriodo && coincideCiclo && coincideComponente && coincideBusqueda;
     });
-  }, [grupos, idPeriodo, filtroCiclo, filtroComponente, busqueda]);
+  }, [grupos, filtroCiclo, filtroComponente, busqueda]);
+
+  const paginacion = usePaginacion(gruposFiltrados, { porPagina: 10 });
 
   if (periodosLoading) return <SpinnerCarga />;
 
@@ -160,7 +164,7 @@ export default function GruposSecretariaPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-[#112240]">
-              {gruposFiltrados.map((g: any) => (
+              {paginacion.itemsPagina.map((g: any) => (
                 <tr key={g.id} className="hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors group">
                   <td className="px-8 py-5">
                     <span className="px-3 py-1 rounded-full bg-[#003366]/10 text-[#003366] dark:bg-white/10 dark:text-[#D4AF37] text-[10px] font-black uppercase border border-[#003366]/20 dark:border-white/10 shadow-sm">
@@ -195,6 +199,9 @@ export default function GruposSecretariaPage() {
               ))}
             </tbody>
           </table>
+          <div className="px-8 pb-5">
+            <ControlPaginacion {...paginacion} etiqueta="grupos" />
+          </div>
         </div>
       )}
     </div>

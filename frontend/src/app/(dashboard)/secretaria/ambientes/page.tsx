@@ -8,6 +8,8 @@ import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { School, Search, Filter, LayoutGrid, List, Info, Users, Clock } from 'lucide-react';
 import { cn } from '@/lib/utilidades';
+import { usePaginacion } from '@/hooks/usePaginacion';
+import { ControlPaginacion } from '@/components/ui/ControlPaginacion';
 
 export default function AmbientesSecretariaPage() {
   const [idPeriodo, setIdPeriodo] = useState<number | null>(null);
@@ -53,6 +55,8 @@ export default function AmbientesSecretariaPage() {
       return coincideTipo && coincideCapacidad && coincideBusqueda;
     });
   }, [ambientes, filtroTipo, filtroCapacidad, busqueda]);
+
+  const paginacion = usePaginacion(ambientesFiltrados, { porPagina: 10 });
 
   if (periodosLoading) return <SpinnerCarga />;
 
@@ -166,7 +170,7 @@ export default function AmbientesSecretariaPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-[#112240]">
-              {ambientesFiltrados.map((amb: any) => {
+              {paginacion.itemsPagina.map((amb: any) => {
                 const horas = amb.bloques?.length || 0;
                 const ocupacionPorcentaje = Math.min((horas / 40) * 100, 100);
                 
@@ -216,6 +220,9 @@ export default function AmbientesSecretariaPage() {
               })}
             </tbody>
           </table>
+          <div className="px-8 pb-5">
+            <ControlPaginacion {...paginacion} etiqueta="ambientes" />
+          </div>
         </div>
       )}
     </div>

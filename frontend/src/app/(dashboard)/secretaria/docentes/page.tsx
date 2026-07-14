@@ -8,6 +8,8 @@ import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { UserCheck, Search, Briefcase, GraduationCap, Clock, Mail, Phone, Info, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utilidades';
+import { usePaginacion } from '@/hooks/usePaginacion';
+import { ControlPaginacion } from '@/components/ui/ControlPaginacion';
 
 export default function DocentesSecretariaPage() {
   const [idPeriodo, setIdPeriodo] = useState<number | null>(null);
@@ -61,6 +63,8 @@ export default function DocentesSecretariaPage() {
       return { ...doc, horasAsignadas };
     });
   }, [cargaResumen, filtroModalidad, filtroCategoria, busqueda]);
+
+  const paginacion = usePaginacion(docentesFiltrados, { porPagina: 10 });
 
   if (periodosLoading) return <SpinnerCarga />;
 
@@ -165,7 +169,7 @@ export default function DocentesSecretariaPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-[#112240]">
-              {docentesFiltrados.map((doc: any) => {
+              {paginacion.itemsPagina.map((doc: any) => {
                 const maxHoras = doc.horas_max_semana || 40;
                 const asignadas = doc.horasAsignadas || 0;
                 const porcentaje = Math.min((asignadas / maxHoras) * 100, 100);
@@ -217,6 +221,9 @@ export default function DocentesSecretariaPage() {
               })}
             </tbody>
           </table>
+          <div className="px-8 pb-5">
+            <ControlPaginacion {...paginacion} etiqueta="docentes" />
+          </div>
         </div>
       )}
     </div>

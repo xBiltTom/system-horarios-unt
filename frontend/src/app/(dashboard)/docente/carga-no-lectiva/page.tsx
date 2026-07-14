@@ -15,6 +15,8 @@ import { NotificacionToast } from '@/components/ui/NotificacionToast';
 import { cn } from '@/lib/utilidades';
 import { ArrowLeft, CalendarDays, FileText, Save, Trash2, UserRound, Printer, AlertCircle, Plus, LayoutList, BookOpen } from 'lucide-react';
 import { MatrizCargaNoLectiva } from '@/components/horarios/MatrizCargaNoLectiva';
+import { usePaginacion } from '@/hooks/usePaginacion';
+import { ControlPaginacion } from '@/components/ui/ControlPaginacion';
 
 type FormularioSeccion = {
   horas: string;
@@ -445,6 +447,9 @@ export default function CargaNoLectivaPage() {
     mutationGuardar.mutate(payload);
   };
 
+  const paginacionCargaLectiva = usePaginacion(declaracionData?.carga_lectiva || [], { porPagina: 5 });
+  const paginacionFormatos = usePaginacion(declaracionData?.formatos || [], { porPagina: 5 });
+
   return (
     <div className="space-y-8 pb-20 animate-in fade-in duration-700">
       {/* Dossier Header */}
@@ -701,7 +706,7 @@ export default function CargaNoLectivaPage() {
                           <td colSpan={5} className="py-12 text-center text-gray-400 dark:text-gray-500 font-bold">No hay carga lectiva asignada.</td>
                         </tr>
                       ) : (
-                        (declaracionData?.carga_lectiva ?? []).map((fila: any, index: number) => (
+                        paginacionCargaLectiva.itemsPagina.map((fila: any, index: number) => (
                           <tr key={`${fila.curso_codigo}-${index}`} className="hover:bg-gray-50/30 dark:hover:bg-white/5 transition-colors">
                             <td className="py-4 pl-8 pr-4 font-mono font-bold text-gray-500 dark:text-gray-400">{fila.curso_codigo}</td>
                             <td className="py-4 pr-4 font-bold text-gray-900 dark:text-white">{fila.curso_nombre}</td>
@@ -715,6 +720,11 @@ export default function CargaNoLectivaPage() {
                       )}
                     </tbody>
                   </table>
+                  {(declaracionData?.carga_lectiva?.length ?? 0) > 0 && (
+                    <div className="pt-4 px-6 pb-2">
+                      <ControlPaginacion {...paginacionCargaLectiva} etiqueta="cursos" />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -923,7 +933,7 @@ export default function CargaNoLectivaPage() {
                           </tr>
                         </thead>
                         <tbody>
-                          {(declaracionData?.formatos ?? []).map((formato: any) => (
+                          {paginacionFormatos.itemsPagina.map((formato: any) => (
                             <tr key={formato.tipo} className="border-b border-slate-100 last:border-b-0 hover:bg-slate-50/50 transition-colors">
                               <td className="py-3 pr-4 font-medium">{formato.etiqueta}</td>
                               <td className="py-3 pr-4">{formato.sede}</td>
@@ -950,6 +960,11 @@ export default function CargaNoLectivaPage() {
                           ))}
                         </tbody>
                       </table>
+                      {(declaracionData?.formatos?.length ?? 0) > 0 && (
+                        <div className="pt-4">
+                          <ControlPaginacion {...paginacionFormatos} etiqueta="formatos" />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
