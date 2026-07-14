@@ -148,7 +148,7 @@ export default function SecretariaDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-in slide-in-from-bottom-4 duration-700 delay-100">
         
         {/* KPI: Docentes */}
-        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 shadow-xl border border-gray-100 dark:border-[#112240] group hover:scale-[1.02] transition-all duration-300">
+        <div className="bg-white dark:bg-[#0A192F] rounded-2xl p-8 shadow-xl border border-gray-100 dark:border-[#112240] group hover:scale-[1.02] transition-all duration-300">
           <div className="flex items-center justify-between mb-6">
             <div className="p-4 bg-[#003366]/5 dark:bg-[#003366]/20 rounded-2xl text-[#003366] dark:text-blue-400 group-hover:bg-[#003366] group-hover:text-white transition-colors duration-300">
               <Users className="w-6 h-6" />
@@ -166,7 +166,7 @@ export default function SecretariaDashboard() {
         </div>
 
         {/* KPI: Cursos */}
-        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 shadow-xl border border-gray-100 dark:border-[#112240] group hover:scale-[1.02] transition-all duration-300">
+        <div className="bg-white dark:bg-[#0A192F] rounded-2xl p-8 shadow-xl border border-gray-100 dark:border-[#112240] group hover:scale-[1.02] transition-all duration-300">
           <div className="flex items-center justify-between mb-6">
             <div className="p-4 bg-emerald-50 dark:bg-emerald-500/10 rounded-2xl text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
               <BookOpen className="w-6 h-6" />
@@ -184,7 +184,7 @@ export default function SecretariaDashboard() {
         </div>
 
         {/* KPI: Ambientes */}
-        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 shadow-xl border border-gray-100 dark:border-[#112240] group hover:scale-[1.02] transition-all duration-300">
+        <div className="bg-white dark:bg-[#0A192F] rounded-2xl p-8 shadow-xl border border-gray-100 dark:border-[#112240] group hover:scale-[1.02] transition-all duration-300">
           <div className="flex items-center justify-between mb-6">
             <div className="p-4 bg-amber-50 dark:bg-[#D4AF37]/10 rounded-2xl text-amber-600 dark:text-[#D4AF37] group-hover:bg-amber-600 dark:group-hover:bg-[#D4AF37] group-hover:text-white transition-colors duration-300">
               <School className="w-6 h-6" />
@@ -202,7 +202,7 @@ export default function SecretariaDashboard() {
         </div>
 
         {/* KPI: Ventana / Tiempo */}
-        <div className="bg-[#0A192F] dark:bg-[#020C1B] rounded-[2.5rem] p-8 shadow-2xl text-white group hover:scale-[1.02] transition-all duration-300 border border-[#112240]">
+        <div className="bg-[#0A192F] dark:bg-[#020C1B] rounded-2xl p-8 shadow-2xl text-white group hover:scale-[1.02] transition-all duration-300 border border-[#112240]">
           <div className="flex items-center justify-between mb-6">
             <div className="p-4 bg-white/10 rounded-2xl text-white group-hover:bg-[#D4AF37] group-hover:text-white transition-all duration-300">
               <Clock className="w-6 h-6" />
@@ -239,7 +239,7 @@ export default function SecretariaDashboard() {
           
           {/* Card: Registro Manual */}
           <Link href="/secretaria/registro-horarios" className="group">
-            <div className="h-full bg-white dark:bg-[#0A192F] rounded-[3rem] p-8 shadow-xl border border-gray-100 dark:border-[#112240] hover:border-[#003366]/30 dark:hover:border-[#D4AF37]/50 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
+            <div className="h-full bg-white dark:bg-[#0A192F] rounded-2xl p-8 shadow-xl border border-gray-100 dark:border-[#112240] hover:border-[#003366]/30 dark:hover:border-[#D4AF37]/50 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
               <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-[#003366]/5 dark:bg-white/5 rounded-full group-hover:scale-150 transition-transform duration-700" />
               <div className="relative z-10 space-y-6">
                 <div className="p-4 bg-[#003366]/10 dark:bg-white/10 rounded-2xl text-[#003366] dark:text-[#D4AF37] w-fit">
@@ -258,7 +258,7 @@ export default function SecretariaDashboard() {
 
           {/* Card: Ambientes */}
           <Link href="/secretaria/ambientes" className="group">
-            <div className="h-full bg-white dark:bg-[#0A192F] rounded-[3rem] p-8 shadow-xl border border-gray-100 dark:border-[#112240] hover:border-[#003366]/30 dark:hover:border-[#D4AF37]/50 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
+            <div className="h-full bg-white dark:bg-[#0A192F] rounded-2xl p-8 shadow-xl border border-gray-100 dark:border-[#112240] hover:border-[#003366]/30 dark:hover:border-[#D4AF37]/50 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
               <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-[#003366]/5 dark:bg-white/5 rounded-full group-hover:scale-150 transition-transform duration-700" />
               <div className="relative z-10 space-y-6">
                 <div className="p-4 bg-[#003366]/10 dark:bg-white/10 rounded-2xl text-[#003366] dark:text-[#D4AF37] w-fit">
@@ -276,7 +276,7 @@ export default function SecretariaDashboard() {
           </Link>
 
           {/* Card: Reportes Consolidados */}
-          <div className="md:col-span-2 bg-white dark:bg-[#0A192F] rounded-[3rem] p-6 sm:p-8 shadow-xl border border-gray-100 dark:border-[#112240] overflow-hidden relative">
+          <div className="md:col-span-2 bg-white dark:bg-[#0A192F] rounded-2xl p-6 sm:p-8 shadow-xl border border-gray-100 dark:border-[#112240] overflow-hidden relative">
             <div className="flex flex-col xl:flex-row items-center justify-between gap-6 xl:gap-8">
               <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
                 <div className="p-4 sm:p-5 bg-blue-50 dark:bg-[#D4AF37]/10 rounded-[2rem] text-blue-600 dark:text-[#D4AF37] flex-shrink-0">
@@ -311,7 +311,7 @@ export default function SecretariaDashboard() {
 
         {/* Lado Derecho: Publicación y Notificación (4/12) */}
         <div className="lg:col-span-4 animate-in slide-in-from-right-4 duration-700 delay-300">
-          <div className="bg-[#0A192F] h-full rounded-[3rem] p-10 shadow-2xl text-white flex flex-col justify-between relative overflow-hidden group border border-[#112240]">
+          <div className="bg-[#0A192F] h-full rounded-2xl p-10 shadow-2xl text-white flex flex-col justify-between relative overflow-hidden group border border-[#112240]">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl" />
             <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#D4AF37]/10 rounded-full -ml-10 -mb-10 blur-2xl" />
             
@@ -351,7 +351,7 @@ export default function SecretariaDashboard() {
 
       {/* Sección de Gráficos de Avance */}
       <div className="animate-in slide-in-from-bottom-4 duration-700 delay-400">
-        <div className="bg-white dark:bg-[#0A192F] rounded-[3rem] shadow-xl border border-gray-100 dark:border-[#112240] p-10">
+        <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl border border-gray-100 dark:border-[#112240] p-10">
           <div className="flex items-center justify-between mb-10">
             <div className="flex items-center gap-4">
               <div className="p-4 bg-[#003366]/5 dark:bg-white/5 rounded-2xl text-[#003366] dark:text-[#D4AF37]">
