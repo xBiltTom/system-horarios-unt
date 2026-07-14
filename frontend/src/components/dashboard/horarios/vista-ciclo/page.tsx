@@ -61,32 +61,24 @@ export default function VistaHorarioCicloPage() {
 
   return (
     <div className="space-y-10 pb-20">
-      {/* PANEL DE CONTEXTO: GESTIÓN ACADÉMICA */}
-      <div className="bg-[#0A192F] rounded-3xl shadow-2xl border border-[#112240] flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative transition-all p-8 lg:p-10">
-        <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-3xl" />
-          <div className="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
-        </div>
-        
-        <div className="relative z-10 space-y-4 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
+      {/* Dossier Header */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-[#0A192F]/10 dark:border-white/10 mb-8 mx-4 sm:mx-6 lg:mx-8 mt-6">
+        <div>
+          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#0A192F]/50 dark:text-white/50 mb-2">
             <Layers className="w-3.5 h-3.5" />
-            Progreso Académico
+            <span>Progreso Académico</span>
           </div>
-          <h1 className="text-3xl font-serif font-bold text-white tracking-tight">Ocupación por Ciclo</h1>
-          <p className="text-sm text-gray-400 font-medium leading-relaxed">
-            Consulte la programación estructurada por nivel académico. Los reportes incluyen cruces formativos y mallas consolidadas.
-          </p>
+          <h1 className="text-3xl font-black text-[#0A192F] dark:text-white tracking-tight">Ocupación por Ciclo</h1>
         </div>
-        
         {periodoActivo && (
-          <div className="relative z-10 flex items-center gap-4 bg-[#020C1B]/80 backdrop-blur-xl p-5 rounded-2xl border border-white/10 shadow-xl shrink-0">
-            <div className="p-3 bg-[#D4AF37]/20 rounded-xl border border-[#D4AF37]/30">
-              <Calendar className="w-5 h-5 text-[#D4AF37]" />
-            </div>
-            <div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Periodo Académico</p>
-              <p className="text-lg font-black text-white leading-tight">{periodoActivo.nombre}</p>
+          <div className="w-full lg:w-72 shrink-0">
+            <label className="text-[10px] font-bold text-[#0A192F]/50 dark:text-white/50 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5" />
+              Periodo Académico
+            </label>
+            <div className="bg-gray-100 dark:bg-[#020C1B] border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm font-bold text-gray-700 dark:text-white flex items-center justify-between">
+              <span>{periodoActivo.nombre}</span>
+              <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
             </div>
           </div>
         )}

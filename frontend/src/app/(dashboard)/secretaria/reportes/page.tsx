@@ -153,30 +153,20 @@ export default function ReportesSecretariaPage() {
 
   return (
     <div className="space-y-10 max-w-[1400px] mx-auto pb-20">
-      {/* PANEL CENTRAL DE EXPORTACIÓN Y AUDITORÍA */}
-      <div className="bg-[#0A192F] rounded-3xl shadow-2xl border border-[#112240] relative transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-8 p-8 lg:p-10">
-        {/* Capa de fondo con overflow hidden para los difuminados decorativos */}
-        <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -left-20 -bottom-20 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-        </div>
-        
-        <div className="relative z-10 space-y-4 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
+      {/* Dossier Header */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-[#0A192F]/10 dark:border-white/10 mb-8 mx-4 sm:mx-6 lg:mx-8 mt-6">
+        <div>
+          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#0A192F]/50 dark:text-white/50 mb-2">
             <BarChart3 className="w-3.5 h-3.5" />
-            Central de Exportación y Auditoría
+            <span>Central de Exportación y Auditoría</span>
           </div>
-          <h1 className="text-3xl font-serif font-bold text-white tracking-tight">Reportes Institucionales</h1>
-          <p className="text-sm text-gray-400 font-medium leading-relaxed">
-            Emite documentos oficiales para el padrón docente, actas de auditoría física y consolidados operativos del semestre académico.
-          </p>
+          <h1 className="text-3xl font-black text-[#0A192F] dark:text-white tracking-tight">Reportes Institucionales</h1>
         </div>
-        
-        <div className="relative z-10 w-full lg:w-[350px] bg-[#020C1B]/80 backdrop-blur-xl p-6 rounded-2xl border border-white/10 shadow-xl shrink-0">
-          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center justify-between">
-            <span>Periodo Auditado</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-          </p>
+        <div className="w-full lg:w-72 shrink-0">
+          <label className="text-[10px] font-bold text-[#0A192F]/50 dark:text-white/50 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5" />
+            Periodo Auditado
+          </label>
           <SelectorInstitucional
             opciones={[
               { value: '', label: 'Seleccionar periodo...' },
