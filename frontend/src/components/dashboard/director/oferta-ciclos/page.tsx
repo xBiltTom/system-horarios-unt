@@ -99,25 +99,13 @@ export default function OfertaPorCiclosPage() {
 
   return (
     <div className="space-y-8 max-w-[1800px] mx-auto pb-20 animate-in fade-in duration-500">
-      {/* Header Institucional */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240]">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
-          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+      {/* Dossier Header */}
+      <div className="pb-5 border-b border-[#0A192F]/12 dark:border-white/10">
+        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#0A192F]/40 dark:text-white/40 mb-1.5">
+          <List className="w-3.5 h-3.5" />
+          <span>Catálogo por Ciclo</span>
         </div>
-        
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="space-y-5">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 backdrop-blur-md rounded-full border border-[#D4AF37]/30 text-xs font-bold uppercase tracking-widest text-[#D4AF37]">
-              <List className="w-4 h-4" />
-              Catálogo por Ciclo
-            </div>
-            <h1 className="text-4xl font-serif font-extrabold tracking-wide text-white">Malla y Oferta</h1>
-            <p className="text-lg text-gray-400 font-light max-w-2xl">
-              Visualiza los cursos, componentes y distribución por grupos de cada ciclo académico del periodo.
-            </p>
-          </div>
-        </div>
+        <h1 className="font-serif text-[2rem] text-[#0A192F] dark:text-white tracking-tight leading-tight">Malla y Oferta</h1>
       </div>
 
       <Card className="bg-white dark:bg-[#0A192F] border-none shadow-xl rounded-[2.5rem] overflow-visible z-20 relative">

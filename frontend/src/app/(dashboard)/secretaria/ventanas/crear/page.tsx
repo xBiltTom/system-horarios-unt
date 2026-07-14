@@ -104,35 +104,22 @@ export default function CrearVentanaSecretariaPage() {
 
   return (
     <div className="space-y-10 max-w-5xl mx-auto pb-20">
-      {/* Header Institucional UNT */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240] z-20">
-        <div className="absolute inset-0 overflow-hidden rounded-[3rem] pointer-events-none">
-          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
-          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
-        </div>
-        
-        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="space-y-4 text-center md:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
-              <CalendarClock className="w-3.5 h-3.5" />
-              Gestión de Accesos
-            </div>
-            <h1 className="text-4xl font-serif font-bold tracking-tight text-white drop-shadow-sm">
-              Crear Ventana de <span className="text-[#D4AF37]">Atención</span>
-            </h1>
-            <p className="text-lg text-white/70 max-w-xl font-medium leading-relaxed">
-              Define los parámetros institucionales para generar y asignar los turnos automáticos al padrón de docentes.
-            </p>
+      {/* Dossier Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-5 border-b border-[#0A192F]/12 dark:border-white/10">
+        <div>
+          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#0A192F]/40 dark:text-white/40 mb-1.5">
+            <CalendarClock className="w-3.5 h-3.5" />
+            <span>Gestión de Accesos</span>
           </div>
-
-          <button 
-            onClick={() => router.back()}
-            className="flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 transition-all font-bold text-sm text-white/90 hover:text-white"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Volver
-          </button>
+          <h1 className="font-serif text-[2rem] text-[#0A192F] dark:text-white tracking-tight leading-tight">Crear Ventana de Atención</h1>
         </div>
+        <button
+          onClick={() => router.back()}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#0A192F]/15 dark:border-white/15 text-sm font-bold text-[#0A192F]/60 dark:text-white/50 hover:text-[#0A192F] dark:hover:text-white hover:border-[#0A192F]/30 transition-all"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Volver
+        </button>
       </div>
 
       <div className="grid grid-cols-1 gap-8 animate-in slide-in-from-bottom-4 duration-700">

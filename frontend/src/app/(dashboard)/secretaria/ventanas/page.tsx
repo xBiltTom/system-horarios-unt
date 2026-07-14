@@ -262,43 +262,31 @@ export default function VentanasSecretariaPage() {
 
   return (
     <div className="space-y-8 max-w-[1600px] mx-auto pb-20">
-      {/* Header Institucional UNT */}
-      <div className="relative rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240] z-20">
-        <div className="absolute inset-0 overflow-hidden rounded-[3rem] pointer-events-none">
-          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
-          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
+      {/* Dossier Header */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-5 border-b border-[#0A192F]/12 dark:border-white/10">
+        <div>
+          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#0A192F]/40 dark:text-white/40 mb-1.5">
+            <CalendarClock className="w-3.5 h-3.5" />
+            <span>Gestión de Accesos</span>
+          </div>
+          <h1 className="font-serif text-[2rem] text-[#0A192F] dark:text-white tracking-tight leading-tight">Ventanas de Atención</h1>
         </div>
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
-              <CalendarClock className="w-3.5 h-3.5" />
-              Gestión de Accesos
-            </div>
-            <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-white drop-shadow-sm">
-              Ventanas de <span className="text-[#D4AF37]">Atención</span>
-            </h1>
-            <p className="text-lg text-white/70 max-w-2xl font-medium leading-relaxed">
-              Controla y organiza los turnos de registro de horarios para garantizar un acceso ordenado y jerárquico al sistema.
-            </p>
+        <div className="flex flex-col sm:flex-row gap-3 items-end shrink-0">
+          <div className="w-full sm:w-72">
+            <p className="text-[10px] font-bold text-[#0A192F]/40 dark:text-white/40 uppercase tracking-widest mb-2">Periodo Lectivo</p>
+            <SelectorInstitucional
+              opciones={[
+                { value: '', label: 'Seleccionar periodo...' },
+                ...(periodos || []).map((p: any) => ({ value: String(p.id), label: p.nombre })),
+              ]}
+              value={idPeriodo?.toString() || ''}
+              onChange={(val) => setIdPeriodo(val ? parseInt(val as string, 10) : null)}
+              className="w-full"
+            />
           </div>
-          
-          <div className="flex flex-col sm:flex-row gap-4 items-end">
-            <div className="w-full sm:w-80 bg-[#020C1B]/50 backdrop-blur-xl p-6 rounded-[2rem] border border-white/10 shadow-2xl dark">
-              <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3 ml-1">Periodo Lectivo</p>
-              <SelectorInstitucional
-                opciones={[
-                  { value: '', label: 'Seleccionar periodo...' },
-                  ...(periodos || []).map((p: any) => ({ value: String(p.id), label: p.nombre })),
-                ]}
-                value={idPeriodo?.toString() || ''}
-                onChange={(val) => setIdPeriodo(val ? parseInt(val as string, 10) : null)}
-                className="w-full"
-              />
-            </div>
-            <Boton onClick={() => router.push('/secretaria/ventanas/crear')} className="whitespace-nowrap h-[52px] px-8 rounded-2xl bg-[#D4AF37] hover:bg-[#b08d28] text-[#0A192F] font-bold shadow-lg mb-6">
-              + Crear ventana
-            </Boton>
-          </div>
+          <Boton onClick={() => router.push('/secretaria/ventanas/crear')} className="whitespace-nowrap h-[52px] px-6 rounded-2xl bg-[#D4AF37] hover:bg-[#b08d28] text-[#0A192F] font-bold shadow-lg">
+            + Crear ventana
+          </Boton>
         </div>
       </div>
 

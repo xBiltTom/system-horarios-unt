@@ -274,38 +274,20 @@ export default function RegistroManualHorariosPage() {
 
   return (
     <div className="space-y-10 max-w-[1600px] mx-auto pb-20 px-4">
-      {/* Header Institucional UNT */}
-      <div className="relative overflow-hidden rounded-[3rem] bg-[#0A192F] px-10 py-12 text-white shadow-2xl border border-[#112240] z-20">
-        <div className="absolute inset-0 overflow-hidden rounded-[3rem] pointer-events-none">
-          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
-          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
-        </div>
-        
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
-              <CalendarClock className="w-3.5 h-3.5" />
-              Asistencia Administrativa
-            </div>
-            <h1 className="text-4xl font-serif font-bold tracking-tight text-white drop-shadow-sm">
-              Registro Manual de <span className="text-[#D4AF37]">Horarios</span>
-            </h1>
-            <p className="text-lg text-white/70 max-w-2xl font-medium leading-relaxed">
-              Asigna de manera excepcional la carga lectiva para docentes que requieren apoyo administrativo o técnico directo.
-            </p>
+      {/* Dossier Header */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-5 border-b border-[#0A192F]/12 dark:border-white/10">
+        <div>
+          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#0A192F]/40 dark:text-white/40 mb-1.5">
+            <CalendarClock className="w-3.5 h-3.5" />
+            <span>Asistencia Administrativa</span>
           </div>
-          
-          <div className="w-full lg:w-96 bg-[#020C1B]/50 backdrop-blur-xl p-6 rounded-[2.5rem] border border-white/10 shadow-2xl dark">
-            <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3 ml-1">Periodo Académico Activo</p>
-            <div className="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/10">
-              <div className="p-3 bg-[#D4AF37]/20 rounded-xl border border-[#D4AF37]/30">
-                <Calendar className="w-6 h-6 text-[#D4AF37]" />
-              </div>
-              <div>
-                <p className="text-sm font-black text-white">{periodoActivo?.nombre || 'No identificado'}</p>
-                <p className="text-[10px] text-white/60 font-bold uppercase tracking-widest mt-0.5">Escuela de Ing. de Sistemas</p>
-              </div>
-            </div>
+          <h1 className="font-serif text-[2rem] text-[#0A192F] dark:text-white tracking-tight leading-tight">Registro Manual de Horarios</h1>
+        </div>
+        <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#0A192F]/10 dark:border-white/10 bg-[#0A192F]/3 dark:bg-white/5 shrink-0">
+          <Calendar className="w-4 h-4 text-[#D4AF37]" />
+          <div>
+            <p className="text-[10px] font-bold text-[#0A192F]/40 dark:text-white/40 uppercase tracking-widest">Periodo Activo</p>
+            <p className="text-sm font-bold text-[#0A192F] dark:text-white">{periodoActivo?.nombre || 'No identificado'}</p>
           </div>
         </div>
       </div>

@@ -81,80 +81,47 @@ export default function VistaHorarioDocentePage() {
 
   return (
     <div className="max-w-[1400px] mx-auto space-y-8 animate-in fade-in duration-500 pb-12">
-      {/* Control Console (Always Dark Navy) */}
-      <header className="dark bg-[#020C1B] rounded-[2.5rem] border border-white/10 shadow-2xl p-8 relative overflow-hidden flex flex-col gap-8">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
-        <div className="absolute left-1/4 bottom-0 w-96 h-96 bg-[#003366]/40 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none" />
-        
-        <div className="relative z-10 flex flex-col xl:flex-row xl:items-end justify-between gap-8">
-          <div className="flex flex-col gap-6">
-            <div className="flex items-center gap-4">
-              <button onClick={() => router.push('/docente')} className="rounded-full p-3 bg-white/5 text-white hover:bg-white/10 hover:scale-105 transition-all shadow-sm">
-                <ArrowLeft className="h-6 w-6" />
-              </button>
-              <div className="flex flex-col gap-1.5">
-                <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#D4AF37]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse"></span>
-                  Panel Docente
-                </span>
-                <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white flex items-center gap-4">
-                  Dossier Académico
-                </h1>
-                <p className="text-sm font-medium text-gray-400 mt-1 max-w-xl leading-relaxed">
-                  Consolidado oficial de carga lectiva y no lectiva. Utilice los controles para generar su anexo u hoja de trabajo para el período.
-                </p>
+      {/* Dossier Header */}
+      <div className="flex flex-col gap-5 pb-5 border-b border-[#0A192F]/12 dark:border-white/10">
+        {/* Row 1: title + back + period selector */}
+        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <button onClick={() => router.push('/docente')} className="rounded-xl p-2.5 border border-[#0A192F]/15 dark:border-white/15 text-[#0A192F]/50 dark:text-white/50 hover:text-[#0A192F] dark:hover:text-white hover:border-[#0A192F]/30 transition-all shrink-0 mt-0.5">
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+            <div>
+              <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#0A192F]/40 dark:text-white/40 mb-1.5">
+                <FileText className="w-3.5 h-3.5" />
+                <span>Panel Docente</span>
               </div>
-            </div>
-
-            {/* View Mode Selectors */}
-            <div className="flex flex-wrap gap-3 mt-2">
-              {[
-                { id: 'completo', label: 'Visión Integral', icon: FileText },
-                { id: 'carga-lectiva', label: 'Carga Lectiva', icon: FileText },
-                { id: 'carga-no-lectiva', label: 'Carga No Lectiva', icon: FileText }
-              ].map((opt) => (
-                <button
-                  key={opt.id}
-                  onClick={() => setExportOption(opt.id as any)}
-                  className={`relative px-5 py-3 rounded-2xl flex items-center gap-3 transition-all duration-300 border overflow-hidden ${
-                    exportOption === opt.id 
-                      ? 'bg-white/10 border-white/20 text-white shadow-lg' 
-                      : 'bg-[#0A192F]/50 border-transparent text-gray-400 hover:text-gray-200 hover:bg-[#0A192F]'
-                  }`}
-                >
-                  {exportOption === opt.id && <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#D4AF37]" />}
-                  <opt.icon className={`w-4 h-4 ${exportOption === opt.id ? 'text-[#D4AF37]' : ''}`} />
-                  <span className="text-xs font-bold tracking-wide">{opt.label}</span>
-                </button>
-              ))}
+              <h1 className="font-serif text-[2rem] text-[#0A192F] dark:text-white tracking-tight leading-tight">Dossier Académico</h1>
             </div>
           </div>
 
-          <div className="flex flex-col gap-6 w-full xl:w-[350px]">
+          <div className="flex flex-col sm:flex-row gap-3 items-end shrink-0">
             {/* Periodo Selector */}
-            <div className="space-y-3 relative z-50">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500 ml-1">Periodo Vigente</label>
+            <div className="w-full sm:w-64 relative z-50">
+              <p className="text-[10px] font-bold text-[#0A192F]/40 dark:text-white/40 uppercase tracking-widest mb-2">Periodo Vigente</p>
               <SelectorInstitucional
                 opciones={periodos.map((p: any) => ({ value: p.id, label: p.nombre }))}
                 value={idPeriodoSeleccionado}
                 onChange={(val) => setIdPeriodoSeleccionado(Number(val))}
               />
             </div>
-            
-            {/* Export Actions */}
-            <div className="flex gap-3">
+            {/* Export buttons */}
+            <div className="flex gap-2 shrink-0">
               <button
                 onClick={handleExportarExcel}
                 disabled={exportandoExcel || !docenteSeleccionado}
-                className="flex-1 flex items-center justify-center gap-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 py-3.5 rounded-2xl text-xs font-bold transition-all disabled:opacity-50"
+                className="flex items-center justify-center gap-2 bg-emerald-50 dark:bg-emerald-500/10 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 px-4 py-3 rounded-xl text-xs font-bold transition-all disabled:opacity-50"
               >
                 <Clock className="h-4 w-4" />
-                {exportandoExcel ? 'Procesando...' : 'Excel (.xlsx)'}
+                {exportandoExcel ? 'Procesando...' : 'Excel'}
               </button>
               <button
                 onClick={handleExportarPdf}
                 disabled={exportandoPdf || !docenteSeleccionado}
-                className="flex-1 flex items-center justify-center gap-2 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]/20 py-3.5 rounded-2xl text-xs font-bold transition-all disabled:opacity-50"
+                className="flex items-center justify-center gap-2 bg-[#D4AF37]/10 hover:bg-[#D4AF37]/20 text-[#b08d28] dark:text-[#D4AF37] border border-[#D4AF37]/30 px-4 py-3 rounded-xl text-xs font-bold transition-all disabled:opacity-50"
               >
                 <FileText className="h-4 w-4" />
                 {exportandoPdf ? 'Procesando...' : 'PDF Oficial'}
@@ -162,7 +129,28 @@ export default function VistaHorarioDocentePage() {
             </div>
           </div>
         </div>
-      </header>
+
+        {/* Row 2: View Mode Selector */}
+        <div className="flex flex-wrap gap-2">
+          {[
+            { id: 'completo', label: 'Visión Integral' },
+            { id: 'carga-lectiva', label: 'Carga Lectiva' },
+            { id: 'carga-no-lectiva', label: 'Carga No Lectiva' }
+          ].map((opt) => (
+            <button
+              key={opt.id}
+              onClick={() => setExportOption(opt.id as any)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
+                exportOption === opt.id
+                  ? 'bg-[#0A192F] dark:bg-white text-white dark:text-[#0A192F] border-[#0A192F] dark:border-white shadow-sm'
+                  : 'bg-transparent text-[#0A192F]/50 dark:text-white/40 border-[#0A192F]/15 dark:border-white/10 hover:border-[#0A192F]/30 dark:hover:border-white/30 hover:text-[#0A192F] dark:hover:text-white'
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {toast && <NotificacionToast mensaje={toast.mensaje} tipo={toast.tipo} onClose={() => setToast(null)} />}
 

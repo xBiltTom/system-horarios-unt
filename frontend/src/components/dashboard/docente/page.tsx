@@ -206,54 +206,37 @@ export default function DashboardDocentePage() {
 
   return (
     <div className="space-y-10 pb-20 animate-in fade-in duration-700">
-      {/* PANEL DE BIENVENIDA (Comando Docente) */}
-      <div className="relative rounded-[3rem] bg-[#0A192F] px-8 py-12 md:px-12 md:py-16 text-white shadow-2xl border border-[#112240]">
-        <div className="absolute inset-0 overflow-hidden rounded-[3rem] pointer-events-none">
-          <div className="absolute top-0 right-0 h-96 w-96 rounded-full bg-[#D4AF37]/5 blur-3xl" />
-          <div className="absolute -left-20 -bottom-20 h-64 w-64 bg-white/5 blur-3xl" />
+      {/* Dossier Header */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-5 border-b border-[#0A192F]/12 dark:border-white/10">
+        <div>
+          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#0A192F]/40 dark:text-white/40 mb-1.5">
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>Portal Docente</span>
+          </div>
+          <h1 className="font-serif text-[2rem] text-[#0A192F] dark:text-white tracking-tight leading-tight">{nombreDocente}</h1>
+          <div className="flex flex-wrap items-center gap-2 mt-2">
+            <span className="px-3 py-1 rounded-lg border border-[#0A192F]/10 dark:border-white/10 text-[11px] font-bold text-[#0A192F]/60 dark:text-white/50">
+              Categoría: <span className="text-[#0A192F] dark:text-white">{resumen?.docente?.categoria || 'N/A'}</span>
+            </span>
+            <span className="px-3 py-1 rounded-lg border border-[#0A192F]/10 dark:border-white/10 text-[11px] font-bold text-[#0A192F]/60 dark:text-white/50">
+              Modalidad: <span className="text-[#0A192F] dark:text-white">{resumen?.docente?.modalidad || 'N/A'}</span>
+            </span>
+          </div>
         </div>
-
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
-          <div className="max-w-3xl space-y-5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded-full text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
-              <BookOpen className="w-3.5 h-3.5" />
-              Portal Docente
-            </div>
-            <div className="space-y-3">
-              <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-tight">
-                Hola, {nombreDocente}
-              </h1>
-              <p className="text-lg text-gray-400 font-medium max-w-xl leading-relaxed">
-                Revisa tu estado actual de programación, horas asignadas y accede a tus reportes oficiales.
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <span className="px-4 py-2 bg-[#020C1B]/80 backdrop-blur-md rounded-xl border border-white/10 text-sm font-bold text-white shadow-sm">
-                Categoría: <span className="text-[#D4AF37] ml-1">{resumen?.docente?.categoria || 'N/A'}</span>
-              </span>
-              <span className="px-4 py-2 bg-[#020C1B]/80 backdrop-blur-md rounded-xl border border-white/10 text-sm font-bold text-white shadow-sm">
-                Modalidad: <span className="text-[#D4AF37] ml-1">{resumen?.docente?.modalidad || 'N/A'}</span>
-              </span>
-            </div>
-          </div>
-
-          <div className="w-full max-w-sm rounded-[2rem] border border-white/10 bg-[#020C1B]/60 p-6 shadow-2xl backdrop-blur-xl flex flex-col gap-3">
-            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
-              <Calendar className="w-3.5 h-3.5" />
-              Período en Consulta
-            </p>
-            <div className="relative mt-2 dark">
-              <SelectorInstitucional
-                value={idPeriodo}
-                onChange={(val: any) => setIdPeriodoSeleccionado(Number(val))}
-                opciones={periodos?.map((p: any) => ({
-                  value: p.id,
-                  label: p.nombre,
-                })) || []}
-                placeholder="-- Seleccionar período --"
-              />
-            </div>
-          </div>
+        <div className="w-full lg:w-72 shrink-0">
+          <p className="text-[10px] font-bold text-[#0A192F]/40 dark:text-white/40 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5" />
+            Período en Consulta
+          </p>
+          <SelectorInstitucional
+            value={idPeriodo}
+            onChange={(val: any) => setIdPeriodoSeleccionado(Number(val))}
+            opciones={periodos?.map((p: any) => ({
+              value: p.id,
+              label: p.nombre,
+            })) || []}
+            placeholder="-- Seleccionar período --"
+          />
         </div>
       </div>
 

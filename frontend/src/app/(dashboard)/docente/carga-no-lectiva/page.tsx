@@ -447,99 +447,86 @@ export default function CargaNoLectivaPage() {
 
   return (
     <div className="space-y-8 pb-20 animate-in fade-in duration-700">
-      <header className="relative rounded-[3rem] bg-[#0A192F] px-8 py-10 md:px-12 md:py-14 text-white shadow-2xl border border-[#112240] mx-4 sm:mx-6 lg:mx-8 mt-6">
-        <div className="absolute inset-0 overflow-hidden rounded-[3rem] pointer-events-none">
-          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-[#D4AF37]/5 blur-3xl" />
-          <div className="absolute left-1/4 bottom-0 h-56 w-56 bg-white/5 blur-3xl" />
-        </div>
-        
-        <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="flex items-start gap-5">
-            <button onClick={() => router.push('/docente')} className="rounded-full p-3 bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors shadow-sm">
-              <ArrowLeft className="h-5 w-5" />
-            </button>
-            <div className="flex flex-col gap-3">
-              <span className="inline-flex w-max items-center gap-2 rounded-full border border-[#D4AF37]/20 bg-[#D4AF37]/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-[#D4AF37] shadow-sm">
-                Panel Docente
-              </span>
-              <h1 className="text-3xl md:text-4xl font-serif font-bold tracking-tight text-white">
-                Declaración y Matriz No Lectiva
-              </h1>
-              <p className="text-sm md:text-base text-gray-400 font-medium">
-                Distribuye tus horas no lectivas para el período <strong className="text-white">{periodos?.find((p: any) => p.id === idPeriodo)?.nombre || 'actual'}</strong>.
-              </p>
-            </div>
-          </div>
-
-          <div className="w-full lg:w-72 space-y-3 rounded-[2rem] border border-white/10 bg-[#020C1B]/60 p-5 shadow-2xl backdrop-blur-xl">
-            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
+      {/* Dossier Header */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-5 border-b border-[#0A192F]/12 dark:border-white/10 mx-4 sm:mx-6 lg:mx-8 mt-6">
+        <div className="flex items-start gap-4">
+          <button onClick={() => router.push('/docente')} className="rounded-xl p-2.5 border border-[#0A192F]/15 dark:border-white/15 text-[#0A192F]/50 dark:text-white/50 hover:text-[#0A192F] dark:hover:text-white hover:border-[#0A192F]/30 transition-all shrink-0 mt-0.5">
+            <ArrowLeft className="h-4 w-4" />
+          </button>
+          <div>
+            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#0A192F]/40 dark:text-white/40 mb-1.5">
               <CalendarDays className="w-3.5 h-3.5" />
-              Periodo Académico
-            </label>
-            <div className="relative mt-2 dark">
-              <SelectorInstitucional
-                value={idPeriodo}
-                onChange={(val: any) => setIdPeriodo(Number(val))}
-                opciones={periodos?.map((p: any) => ({
-                  value: p.id,
-                  label: p.nombre,
-                })) || []}
-                placeholder="-- Seleccionar período --"
-              />
+              <span>Panel Docente</span>
             </div>
+            <h1 className="font-serif text-[2rem] text-[#0A192F] dark:text-white tracking-tight leading-tight">Declaración y Matriz No Lectiva</h1>
           </div>
         </div>
+        <div className="w-full lg:w-72 shrink-0">
+          <label className="text-[10px] font-bold text-[#0A192F]/40 dark:text-white/40 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+            <CalendarDays className="w-3.5 h-3.5" />
+            Periodo Académico
+          </label>
+          <SelectorInstitucional
+            value={idPeriodo}
+            onChange={(val: any) => setIdPeriodo(Number(val))}
+            opciones={periodos?.map((p: any) => ({
+              value: p.id,
+              label: p.nombre,
+            })) || []}
+            placeholder="-- Seleccionar período --"
+          />
+        </div>
+      </div>
 
-        {/* Navegación de Pestañas */}
-        <div className="relative z-10 mt-10">
-          <div className="flex overflow-x-auto custom-scrollbar bg-[#020C1B]/50 rounded-2xl p-2 border border-white/5 shadow-inner w-full lg:w-fit gap-2">
-            <button 
-              onClick={() => setPestanaActiva('declaracion')}
-              className={cn(
-                'flex flex-shrink-0 items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300',
-                pestanaActiva === 'declaracion' ? 'bg-white text-[#0A192F] shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/5'
-              )}
-            >
-              <LayoutList className="h-4 w-4" />
-              1. Declaración de Horas
-            </button>
-            <button 
-              onClick={() => {
-                if (!declaracionData?.declaracion?.id) {
-                  setToast({ mensaje: 'Primero debes guardar tu declaración (Paso 1)', tipo: 'error' });
-                  return;
-                }
-                setPestanaActiva('calendario');
-              }}
-              className={cn(
-                'flex flex-shrink-0 items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300',
-                pestanaActiva === 'calendario' ? 'bg-white text-[#0A192F] shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/5',
-                !declaracionData?.declaracion?.id ? 'opacity-50 cursor-not-allowed' : ''
-              )}
-            >
-              <CalendarDays className="h-4 w-4" />
-              2. Matriz de Distribución
-            </button>
-            <button 
-              onClick={() => {
-                if (!declaracionData?.declaracion?.id) {
-                  setToast({ mensaje: 'Primero debes guardar tu declaración (Paso 1)', tipo: 'error' });
-                  return;
-                }
-                setPestanaActiva('formatos');
-              }}
-              className={cn(
-                'flex flex-shrink-0 items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-300',
-                pestanaActiva === 'formatos' ? 'bg-white text-[#0A192F] shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/5',
-                !declaracionData?.declaracion?.id ? 'opacity-50 cursor-not-allowed' : ''
-              )}
-            >
-              <FileText className="h-4 w-4" />
-              3. Formatos Oficiales
-            </button>
-          </div>
+      {/* Navegación de Pestañas */}
+      <div className="mx-4 sm:mx-6 lg:mx-8">
+        <div className="flex overflow-x-auto custom-scrollbar rounded-2xl p-1 border border-[#0A192F]/10 bg-[#0A192F]/5 w-full lg:w-fit gap-1">
+          <button
+            onClick={() => setPestanaActiva('declaracion')}
+            className={cn(
+              'flex flex-shrink-0 items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200',
+              pestanaActiva === 'declaracion' ? 'bg-white text-[#0A192F] shadow-sm' : 'text-[#0A192F]/50 hover:text-[#0A192F] hover:bg-white/60'
+            )}
+          >
+            <LayoutList className="h-4 w-4" />
+            1. Declaración de Horas
+          </button>
+          <button
+            onClick={() => {
+              if (!declaracionData?.declaracion?.id) {
+                setToast({ mensaje: 'Primero debes guardar tu declaración (Paso 1)', tipo: 'error' });
+                return;
+              }
+              setPestanaActiva('calendario');
+            }}
+            className={cn(
+              'flex flex-shrink-0 items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200',
+              pestanaActiva === 'calendario' ? 'bg-white text-[#0A192F] shadow-sm' : 'text-[#0A192F]/50 hover:text-[#0A192F] hover:bg-white/60',
+              !declaracionData?.declaracion?.id ? 'opacity-40 cursor-not-allowed' : ''
+            )}
+          >
+            <CalendarDays className="h-4 w-4" />
+            2. Matriz de Distribución
+          </button>
+          <button
+            onClick={() => {
+              if (!declaracionData?.declaracion?.id) {
+                setToast({ mensaje: 'Primero debes guardar tu declaración (Paso 1)', tipo: 'error' });
+                return;
+              }
+              setPestanaActiva('formatos');
+            }}
+            className={cn(
+              'flex flex-shrink-0 items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200',
+              pestanaActiva === 'formatos' ? 'bg-white text-[#0A192F] shadow-sm' : 'text-[#0A192F]/50 hover:text-[#0A192F] hover:bg-white/60',
+              !declaracionData?.declaracion?.id ? 'opacity-40 cursor-not-allowed' : ''
+            )}
+          >
+            <FileText className="h-4 w-4" />
+            3. Formatos Oficiales
+          </button>
         </div>
-      </header>
+      </div>
 
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {!usuario?.idDocente ? (
