@@ -4,12 +4,12 @@ import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { periodosService } from '@/services/periodos.service';
 import { useResumen, useAvanceCategoria, useOcupacionAmbientes, useMapaCalor, useCargaDocente } from '@/hooks/useEstadisticas';
-import { useActividadTiempoReal } from '@/hooks/useActividadTiempoReal';
+
 import { PanelKPIs } from '@/components/dashboard/PanelKPIs';
 import { GraficoAvanceCategoria } from '@/components/dashboard/GraficoAvanceCategoria';
 import { GraficoOcupacionAmbientes } from '@/components/dashboard/GraficoOcupacionAmbientes';
 import { MapaCalorOcupacion } from '@/components/dashboard/MapaCalorOcupacion';
-import { ActividadTiempoReal } from '@/components/dashboard/ActividadTiempoReal';
+
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { Boton } from '@/components/ui/Boton';
 import { SelectorInstitucional } from '@/components/ui/SelectorInstitucional';
@@ -46,7 +46,7 @@ export default function DashboardPage() {
   const { data: ocupacion } = useOcupacionAmbientes(idPeriodo);
   const { data: mapaCalor } = useMapaCalor(idPeriodo);
   const { data: cargaDocente } = useCargaDocente(idPeriodo);
-  const eventos = useActividadTiempoReal();
+
 
   const ocupacionTop = useMemo(() => (ocupacion || []).slice(0, 5), [ocupacion]);
   const docentesOrdenados = useMemo(() => {
@@ -78,55 +78,40 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      {/* Hero Banner */}
-      <div className="relative rounded-3xl border border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm">
-        {/* Background with hidden overflow for decorative blurs */}
-        <div className="absolute inset-0 overflow-hidden rounded-3xl bg-gradient-to-br from-[#1E5A99] to-[#003366] dark:from-[#050f20] dark:to-[#020C1B] pointer-events-none">
-          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
-          <div className="absolute left-1/4 bottom-0 h-48 w-48 rounded-full bg-[#D4AF37]/10 blur-3xl" />
-        </div>
-
-        {/* Content layer allowing dropdowns to escape */}
-        <div className="relative z-10 px-6 py-10 text-white sm:px-10">
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-3xl space-y-5">
-              <div className="inline-flex items-center rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#D4AF37]">
-                {usuario?.rol || 'SISTEMA'}
-              </div>
-              <div className="space-y-2">
-                <h1 className="text-3xl font-serif tracking-wide sm:text-4xl text-white">{tituloPanel}</h1>
-                <p className="text-sm leading-relaxed text-gray-300 sm:text-base font-light max-w-2xl">
-                  {descripcionPanel}
-                </p>
-              </div>
-              
-              <div className="flex flex-wrap gap-4 pt-2">
-                <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-3 backdrop-blur-sm">
-                  <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Usuario Activo</p>
-                  <p className="mt-1 text-sm font-semibold text-white tracking-wide">{usuario?.nombre || usuario?.email || 'Administrador'}</p>
-                </div>
-                <div className="rounded-xl border border-white/10 bg-white/5 px-5 py-3 backdrop-blur-sm">
-                  <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Período Actual</p>
-                  <p className="mt-1 text-sm font-semibold text-[#D4AF37] tracking-wide">{periodoActivo?.nombre || 'No definido'}</p>
-                </div>
-              </div>
+      {/* Dossier Header */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-5 border-b border-[#0A192F]/12 dark:border-white/10">
+        <div>
+          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#0A192F]/40 dark:text-white/40 mb-1.5">
+            <span className="px-2 py-0.5 rounded-md bg-[#0A192F]/8 dark:bg-white/10 font-black tracking-widest">
+              {usuario?.rol || 'SISTEMA'}
+            </span>
+          </div>
+          <h1 className="font-serif text-[2rem] text-[#0A192F] dark:text-white tracking-tight leading-tight">{tituloPanel}</h1>
+          <div className="flex flex-wrap gap-3 mt-3">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#0A192F]/10 dark:border-white/10">
+              <p className="text-[10px] font-bold text-[#0A192F]/40 dark:text-white/40 uppercase tracking-widest">Usuario</p>
+              <p className="text-xs font-semibold text-[#0A192F] dark:text-white">{usuario?.nombre || usuario?.email || 'Administrador'}</p>
             </div>
-
-            <div className="w-full max-w-sm rounded-2xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-md">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-white/70 mb-3">Filtrar por Período</p>
-              <SelectorInstitucional
-                value={idPeriodo}
-                onChange={(val: any) => setIdPeriodoSeleccionado(Number(val))}
-                opciones={(periodos || []).map((p: any) => ({ value: p.id, label: p.nombre }))}
-                placeholder="-- Seleccionar período --"
-              />
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#0A192F]/10 dark:border-white/10">
+              <p className="text-[10px] font-bold text-[#0A192F]/40 dark:text-white/40 uppercase tracking-widest">Período</p>
+              <p className="text-xs font-semibold text-[#D4AF37]">{periodoActivo?.nombre || 'No definido'}</p>
             </div>
           </div>
+        </div>
+        <div className="w-full lg:w-72 shrink-0">
+          <p className="text-[10px] font-bold text-[#0A192F]/40 dark:text-white/40 uppercase tracking-widest mb-2">Filtrar por Período</p>
+          <SelectorInstitucional
+            value={idPeriodo}
+            onChange={(val: any) => setIdPeriodoSeleccionado(Number(val))}
+            opciones={(periodos || []).map((p: any) => ({ value: p.id, label: p.nombre }))}
+            placeholder="-- Seleccionar período --"
+          />
         </div>
       </div>
 
       <PanelKPIs kpis={kpis} />
 
+      {/* Fila 1: Mapa de Uso + Alertas */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* Mapa de Uso (Solo Admin/Secretaria) */}
         {usuario?.rol !== 'DIRECTOR' && (
@@ -140,12 +125,12 @@ export default function DashboardPage() {
           </Card>
         )}
 
-        <Card className={`${usuario?.rol === 'DIRECTOR' ? 'lg:col-span-2 h-[420px]' : 'lg:col-span-1 h-[420px]'} border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col`}>
+        <Card className={`${usuario?.rol === 'DIRECTOR' ? 'lg:col-span-3 h-[420px]' : 'lg:col-span-1 h-[420px]'} border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col`}>
           <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5 shrink-0">
             <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Alertas de Carga Docente</CardTitle>
           </CardHeader>
           <CardContent className="pt-6 flex-1 min-h-0">
-            <div className={`h-full overflow-y-auto pr-2 custom-scrollbar ${usuario?.rol === 'DIRECTOR' ? 'grid grid-cols-1 sm:grid-cols-2 gap-4' : 'space-y-3'}`}>
+            <div className={`h-full overflow-y-auto pr-2 custom-scrollbar ${usuario?.rol === 'DIRECTOR' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4' : 'space-y-3'}`}>
               {docentesOrdenados.map((item: any) => {
                 const esCritico = item.porcentajeCumplimiento < 50;
                 const colorBadge = esCritico ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-[#D4AF37]/10 text-[#D4AF37]';
@@ -165,42 +150,35 @@ export default function DashboardPage() {
             </div>
           </CardContent>
         </Card>
+      </div>
 
-        {/* Progreso por Categoría (Visible para todos) */}
-        <Card className="lg:col-span-1 border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col">
+      {/* Fila 2: Progreso por Categoría + Aulas Más Saturadas (side by side) */}
+      <div className={`grid grid-cols-1 gap-8 ${usuario?.rol !== 'DIRECTOR' ? 'lg:grid-cols-2' : ''}`}>
+        <Card className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col">
           <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5 shrink-0">
             <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Progreso por Categoría</CardTitle>
           </CardHeader>
           <CardContent className="pt-6 flex-1">
-            <div className="h-[280px]">
+            <div className="h-[300px]">
               {avanceCategoria && <GraficoAvanceCategoria datos={avanceCategoria} />}
             </div>
           </CardContent>
         </Card>
 
-        {/* Aulas Saturadas (Solo Admin/Secretaria) */}
         {usuario?.rol !== 'DIRECTOR' && (
-          <Card className="lg:col-span-1 border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col">
+          <Card className="border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col">
             <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5 shrink-0">
               <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Aulas Más Saturadas</CardTitle>
             </CardHeader>
             <CardContent className="pt-6 flex-1">
-              <div className="h-[280px]">
+              <div className="h-[300px]">
                 {ocupacionTop.length > 0 && <GraficoOcupacionAmbientes datos={ocupacionTop} />}
               </div>
             </CardContent>
           </Card>
         )}
-
-        <Card className={`${usuario?.rol === 'DIRECTOR' ? 'lg:col-span-3' : 'lg:col-span-1'} border-gray-200 dark:border-[#112240] bg-white dark:bg-[#0A192F] shadow-sm rounded-2xl flex flex-col`}>
-          <CardHeader className="border-b border-gray-100 dark:border-[#112240] pb-5 shrink-0">
-            <CardTitle className="text-lg font-serif tracking-wide text-[#003366] dark:text-white">Actividad Reciente</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6 flex-1 min-h-0">
-            <ActividadTiempoReal eventos={eventos} />
-          </CardContent>
-        </Card>
       </div>
+
     </div>
   );
 }
