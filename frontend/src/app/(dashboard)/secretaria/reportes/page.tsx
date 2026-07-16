@@ -179,7 +179,7 @@ export default function ReportesSecretariaPage() {
       </div>
 
       {!idPeriodo ? (
-        <div className="flex flex-col items-center justify-center py-24 bg-gray-50/50 dark:bg-[#0A192F]/50 backdrop-blur-sm rounded-[2.5rem] border-2 border-dashed border-gray-200 dark:border-[#112240] animate-in fade-in duration-700">
+        <div className="flex flex-col items-center justify-center py-24 bg-gray-50/50 dark:bg-[#0A192F]/50 backdrop-blur-sm rounded-2xl border-2 border-dashed border-gray-200 dark:border-[#112240] animate-in fade-in duration-700">
           <div className="p-6 bg-gray-100/80 dark:bg-[#020C1B] rounded-full mb-6 border border-gray-200 dark:border-[#112240] shadow-sm">
             <LayoutDashboard className="w-10 h-10 text-gray-400 dark:text-gray-500" />
           </div>
@@ -195,7 +195,7 @@ export default function ReportesSecretariaPage() {
           <div className="lg:col-span-7 space-y-8">
             
             {/* Padrón Docente */}
-            <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col gap-6">
+            <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col gap-6">
               <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-5">
                 <div className="p-3 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400">
                   <User className="w-5 h-5" />
@@ -243,7 +243,7 @@ export default function ReportesSecretariaPage() {
             </div>
 
             {/* Auditoría por Día */}
-            <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col gap-6">
+            <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col gap-6">
               <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-5">
                 <div className="p-3 bg-amber-50 dark:bg-amber-500/10 rounded-xl border border-amber-100 dark:border-amber-500/20 text-amber-600 dark:text-amber-400">
                   <Calendar className="w-5 h-5" />
@@ -296,59 +296,59 @@ export default function ReportesSecretariaPage() {
 
           {/* SECCIÓN 2: OPERACIONES GLOBALES (5/12) */}
           <div className="lg:col-span-5 space-y-8">
-            <div className="bg-[#020C1B] rounded-[2.5rem] shadow-2xl p-8 text-white space-y-8 border border-[#112240] relative overflow-hidden flex flex-col">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+            <div className="bg-white dark:bg-[#020C1B] rounded-2xl shadow-xl dark:shadow-2xl p-8 space-y-8 border border-gray-100 dark:border-[#112240] relative overflow-hidden flex flex-col">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-50 dark:bg-white/5 rounded-full blur-2xl pointer-events-none" />
               
-              <div className="flex items-center gap-4 border-b border-white/10 pb-5 relative z-10">
-                <div className="p-3 bg-white/10 rounded-xl border border-white/10 text-white shadow-inner">
+              <div className="flex items-center gap-4 border-b border-gray-100 dark:border-white/10 pb-5 relative z-10">
+                <div className="p-3 bg-gray-100 dark:bg-white/10 rounded-xl border border-gray-200 dark:border-white/10 text-gray-700 dark:text-white shadow-sm dark:shadow-inner">
                   <LayoutDashboard className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-black tracking-tight text-white">Consolidados Globales</h2>
-                  <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-0.5">Operaciones del Periodo</p>
+                  <h2 className="text-lg font-black tracking-tight text-gray-900 dark:text-white">Consolidados Globales</h2>
+                  <p className="text-[10px] text-gray-500 dark:text-gray-400 font-black uppercase tracking-widest mt-0.5">Operaciones del Periodo</p>
                 </div>
               </div>
 
               <div className="space-y-4 relative z-10">
                 <button 
-                  className="w-full p-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all flex items-center justify-between group disabled:opacity-50"
+                  className="w-full p-5 rounded-2xl bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 transition-all flex items-center justify-between group disabled:opacity-50"
                   onClick={() => handleDescargar('pdf')}
                   disabled={!!descargando}
                 >
                   <div className="flex items-center gap-4">
-                    <div className="p-2 bg-rose-500/20 rounded-lg border border-rose-500/30 text-rose-400">
+                    <div className="p-2 bg-rose-50 dark:bg-rose-500/20 rounded-lg border border-rose-200 dark:border-rose-500/30 text-rose-600 dark:text-rose-400">
                       <FileText className="w-5 h-5" />
                     </div>
                     <div className="text-left">
-                      <p className="text-sm font-bold text-white group-hover:text-rose-100">Libro Maestro (PDF)</p>
+                      <p className="text-sm font-bold text-gray-800 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-100">Libro Maestro (PDF)</p>
                       <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">Todos los horarios</p>
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+                  <ArrowRight className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-rose-600 dark:group-hover:text-white transition-colors" />
                 </button>
                 
                 <button 
-                  className="w-full p-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-all flex items-center justify-between group disabled:opacity-50"
+                  className="w-full p-5 rounded-2xl bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 transition-all flex items-center justify-between group disabled:opacity-50"
                   onClick={() => handleDescargar('excel')}
                   disabled={!!descargando}
                 >
                   <div className="flex items-center gap-4">
-                    <div className="p-2 bg-emerald-500/20 rounded-lg border border-emerald-500/30 text-emerald-400">
+                    <div className="p-2 bg-emerald-50 dark:bg-emerald-500/20 rounded-lg border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
                       <FileSpreadsheet className="w-5 h-5" />
                     </div>
                     <div className="text-left">
-                      <p className="text-sm font-bold text-white group-hover:text-emerald-100">Matriz de Datos (Excel)</p>
+                      <p className="text-sm font-bold text-gray-800 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-100">Matriz de Datos (Excel)</p>
                       <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">Data procesable</p>
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+                  <ArrowRight className="w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-emerald-600 dark:group-hover:text-white transition-colors" />
                 </button>
               </div>
 
             </div>
 
             {/* Tarjeta Informativa Institucional */}
-            <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-lg border border-gray-100 dark:border-[#112240] p-6 flex items-start gap-4">
+            <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-lg border border-gray-100 dark:border-[#112240] p-6 flex items-start gap-4">
               <div className="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800/30 text-emerald-600 dark:text-emerald-400 shrink-0">
                 <ShieldCheck className="w-6 h-6" />
               </div>
@@ -366,7 +366,7 @@ export default function ReportesSecretariaPage() {
       {/* Modal enviar a todos */}
       {modalEnviarTodos && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-2xl p-10 max-w-md w-full mx-4 border border-gray-100 dark:border-[#112240]">
+          <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-2xl p-10 max-w-md w-full mx-4 border border-gray-100 dark:border-[#112240]">
             <div className="text-center mb-8">
               <div className="w-20 h-20 bg-rose-50 dark:bg-rose-900/20 rounded-full flex items-center justify-center mx-auto mb-6 ring-8 ring-rose-50/50 dark:ring-rose-900/10 border border-rose-100 dark:border-rose-800/30">
                 <Mail className="w-10 h-10 text-rose-600 dark:text-rose-400" />

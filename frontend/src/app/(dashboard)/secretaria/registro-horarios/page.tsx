@@ -343,205 +343,195 @@ export default function RegistroManualHorariosPage() {
           )}
         </div>
 
-        {/* CONSOLA DE CONFIGURACIÓN Y AUDITORÍA */}
+        {/* TABLERO PRINCIPAL: HERRAMIENTAS Y MATRIZ */}
         {docenteId && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 animate-in slide-in-from-bottom-4 duration-500">
+          <div className="flex flex-col xl:flex-row gap-8 animate-in slide-in-from-bottom-4 duration-500 items-start">
             
-            {/* PANEL IZQUIERDO: CONFIGURACIÓN DE CARGA (7/12) */}
-            <div className="lg:col-span-7 bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 space-y-8 flex flex-col">
-              <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-5">
-                <div className="p-2.5 bg-gray-50 dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10">
-                  <BookOpen className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-black text-gray-800 dark:text-white tracking-tight">Configuración de Carga</h3>
-                  <p className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-0.5">Asignación de componentes y espacios</p>
-                </div>
-              </div>
+            {/* COLUMNA IZQUIERDA: HERRAMIENTAS DE DND Y AUDITORÍA (Ancho Fijo) */}
+            <div className="w-full xl:w-[360px] shrink-0 space-y-6 xl:sticky xl:top-6 z-20">
               
-              <div className="flex-1 space-y-8">
-                {/* Lista de Cursos */}
-                <div className="space-y-3">
-                  <p className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest ml-1">1. Seleccione la carga pendiente</p>
-                  <div className="bg-gray-50/50 dark:bg-[#020C1B] rounded-2xl border border-gray-100 dark:border-[#112240] p-1.5 max-h-[220px] overflow-y-auto custom-scrollbar">
+              {/* PANEL DE CONFIGURACIÓN DE CARGA */}
+              <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl border border-gray-100 dark:border-[#112240] p-6 space-y-6 flex flex-col">
+                <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-4">
+                  <div className="p-2.5 bg-gray-50 dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/10">
+                    <BookOpen className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-gray-800 dark:text-white tracking-tight">Carga Asignable</h3>
+                    <p className="text-[9px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-0.5">Arrastre a la grilla</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-6">
+                  {/* Lista de Cursos (Drag Sources) */}
+                  <div className="bg-gray-50/50 dark:bg-[#020C1B] rounded-2xl border border-gray-100 dark:border-[#112240] p-1.5 max-h-[300px] overflow-y-auto custom-scrollbar">
                     <PanelSeleccionCurso
                       componentes={progreso || []}
                       componenteSeleccionado={componenteSeleccionado}
                       alCambiarComponente={(id) => setComponenteSeleccionado(id || null)}
                     />
                   </div>
-                </div>
-                
-                {/* Entorno Físico y Grupo */}
-                <div className="bg-[#003366]/5 dark:bg-[#020C1B]/50 rounded-2xl p-6 border border-[#003366]/10 dark:border-white/5 relative">
-                  <div className="absolute top-0 left-0 w-1 h-full bg-[#003366] dark:bg-[#D4AF37] rounded-l-2xl" />
-                  <p className="text-[10px] font-black text-[#003366]/70 dark:text-white/50 uppercase tracking-widest mb-5 ml-1">2. Configure el entorno físico</p>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div className="space-y-3">
-                      <p className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">Grupo Académico</p>
-                      <SelectorInstitucional
-                        opciones={[
-                          { value: '', label: 'Elegir grupo...' },
-                          ...((gruposDisponibles || []).map((g: any) => ({
-                            value: String(g.id),
-                            label: `G${g.codigo} (Cap: ${g.capacidad_maxima})`,
-                          })) || []),
-                        ]}
-                        value={grupoSeleccionado?.toString() || ''}
-                        onChange={(val) => setGrupoSeleccionado(val ? parseInt(val as string, 10) : null)}
-                        disabled={!componenteSeleccionado || gruposLoading}
-                        className="w-full bg-white dark:bg-[#0A192F]"
-                      />
-                    </div>
-                    <div className="space-y-3">
-                      <p className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">Infraestructura Fija</p>
-                      <SelectorInstitucional
-                        opciones={[
-                          { value: '', label: 'Elegir ambiente...' },
-                          ...ambientesFiltrados.map((a: any) => ({
-                            value: String(a.id),
-                            label: `${a.codigo} (${a.tipo === 'AULA' ? 'Aula' : 'Lab'}, Cap: ${a.capacidad})`,
-                          })),
-                        ]}
-                        value={ambienteId?.toString() || ''}
-                        onChange={(val) => setAmbienteId(val ? parseInt(val as string, 10) : null)}
-                        className="w-full bg-white dark:bg-[#0A192F]"
-                      />
+                  {/* Entorno Físico y Grupo */}
+                  <div className="bg-[#003366]/5 dark:bg-[#020C1B]/50 rounded-2xl p-5 border border-[#003366]/10 dark:border-white/5 relative">
+                    <div className="absolute top-0 left-0 w-1 h-full bg-[#003366] dark:bg-[#D4AF37] rounded-l-2xl" />
+                    
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <p className="text-[9px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">Grupo Académico</p>
+                        <SelectorInstitucional
+                          opciones={[
+                            { value: '', label: 'Elegir grupo...' },
+                            ...((gruposDisponibles || []).map((g: any) => ({
+                              value: String(g.id),
+                              label: `G${g.codigo} (Cap: ${g.capacidad_maxima})`,
+                            })) || []),
+                          ]}
+                          value={grupoSeleccionado?.toString() || ''}
+                          onChange={(val) => setGrupoSeleccionado(val ? parseInt(val as string, 10) : null)}
+                          disabled={!componenteSeleccionado || gruposLoading}
+                          className="w-full bg-white dark:bg-[#0A192F]"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-[9px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-widest">Infraestructura Fija</p>
+                        <SelectorInstitucional
+                          opciones={[
+                            { value: '', label: 'Elegir ambiente...' },
+                            ...ambientesFiltrados.map((a: any) => ({
+                              value: String(a.id),
+                              label: `${a.codigo} (${a.tipo === 'AULA' ? 'Aula' : 'Lab'}, Cap: ${a.capacidad})`,
+                            })),
+                          ]}
+                          value={ambienteId?.toString() || ''}
+                          onChange={(val) => setAmbienteId(val ? parseInt(val as string, 10) : null)}
+                          className="w-full bg-white dark:bg-[#0A192F]"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            
-            {/* PANEL DERECHO: AUDITORÍA (5/12) */}
-            <div className="lg:col-span-5 bg-[#0A192F] rounded-[2.5rem] shadow-2xl p-8 text-white relative overflow-hidden border border-[#112240] flex flex-col">
-              <div className="absolute -right-20 -top-20 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-              
-              <div className="flex items-center gap-4 border-b border-white/10 pb-5 mb-6 relative z-10">
-                <div className="p-2.5 bg-[#D4AF37]/20 rounded-xl border border-[#D4AF37]/30 shadow-inner">
-                  <ShieldCheck className="w-5 h-5 text-[#D4AF37]" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-black text-white tracking-tight">Auditoría en Tiempo Real</h3>
-                  <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest mt-0.5">Control institucional estricto</p>
-                </div>
-              </div>
-              
-              <div className="space-y-6 flex-1 relative z-10 flex flex-col">
-                {/* Reglas Vigentes (Panel Validaciones) */}
-                <div className="flex-1 bg-[#020C1B]/60 rounded-2xl border border-white/10 p-5 flex flex-col">
-                  <p className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-4 flex items-center justify-between">
-                    <span>Reglas y Conflictos</span>
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" title="Monitoreo Activo" />
-                  </p>
-                  <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 min-h-[120px]">
-                    <PanelValidaciones validacion={validacion || null} />
+
+              {/* PANEL DE AUDITORÍA Y PROGRESO */}
+              <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl dark:shadow-2xl p-6 text-gray-900 dark:text-white border border-gray-100 dark:border-[#112240] flex flex-col">
+                <div className="flex items-center gap-4 border-b border-gray-100 dark:border-white/10 pb-4 mb-5">
+                  <div className="p-2.5 bg-yellow-50 dark:bg-[#D4AF37]/20 rounded-xl border border-yellow-200 dark:border-[#D4AF37]/30 shadow-sm dark:shadow-inner">
+                    <ShieldCheck className="w-5 h-5 text-yellow-600 dark:text-[#D4AF37]" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-gray-900 dark:text-white tracking-tight">Auditoría</h3>
                   </div>
                 </div>
                 
-                {/* Progreso de Horas */}
-                <div className="bg-white/5 rounded-2xl border border-white/10 p-5">
-                  <p className="text-[10px] font-black text-[#D4AF37] uppercase tracking-widest mb-4">Progreso Consolidado</p>
-                  <div className="max-h-[160px] overflow-y-auto custom-scrollbar pr-2">
-                    <IndicadorProgresoHoras progreso={progreso || []} />
+                <div className="space-y-5">
+                  <div className="bg-gray-50 dark:bg-[#020C1B]/60 rounded-2xl border border-gray-100 dark:border-white/10 p-4">
+                    <p className="text-[9px] font-black text-gray-500 dark:text-white/40 uppercase tracking-widest mb-3 flex items-center justify-between">
+                      <span>Reglas Activas</span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                    </p>
+                    <div className="max-h-[120px] overflow-y-auto custom-scrollbar pr-2">
+                      <PanelValidaciones validacion={validacion || null} />
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/10 p-4">
+                    <p className="text-[9px] font-black text-gray-600 dark:text-[#D4AF37] uppercase tracking-widest mb-3">Progreso</p>
+                    <div className="max-h-[140px] overflow-y-auto custom-scrollbar pr-2">
+                      <IndicadorProgresoHoras progreso={progreso || []} />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            
+
+            {/* COLUMNA DERECHA: MATRIZ DE DISPONIBILIDAD Y VISTA PREVIA (Flex-1) */}
+            <div className="flex-1 min-w-0 space-y-8">
+              
+              {/* Matriz de Disponibilidad */}
+              <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl border border-gray-100 dark:border-[#112240] p-6 lg:p-8 relative z-10">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-gray-100 dark:border-[#112240] pb-6 mb-6">
+                  <div className="flex items-center gap-5">
+                    <div className="p-3 bg-[#003366]/5 dark:bg-[#003366]/30 rounded-2xl text-[#003366] dark:text-[#D4AF37] border border-[#003366]/10 dark:border-[#003366]/50 shadow-sm">
+                      <LayoutDashboard className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-black text-gray-800 dark:text-white tracking-tight">Ocupación de Infraestructura</h2>
+                      <p className="text-xs text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest mt-1">
+                        {ambienteId ? (
+                          <span className="flex items-center gap-2">
+                            Espacio: <span className="text-[#003366] dark:text-[#D4AF37] font-black">{matriz?.ambienteCodigo || 'Cargando...'}</span>
+                          </span>
+                        ) : 'Seleccione una configuración física'}
+                      </p>
+                    </div>
+                  </div>
+                  {ambienteId && (
+                    <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 dark:bg-emerald-900/10 text-emerald-700 dark:text-emerald-400 rounded-xl border border-emerald-100 dark:border-emerald-800/30 text-[10px] font-black uppercase tracking-widest shadow-sm">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      Sincronización Activa
+                    </div>
+                  )}
+                </div>
+
+                <div className="min-h-[500px] overflow-x-auto custom-scrollbar">
+                  <MatrizDisponibilidad
+                    matriz={matriz || null}
+                    alHacerClickCelda={manejarClickCelda}
+                    bloqueoAlmuerzo={
+                      restricciones?.bloqueoAlmuerzoInicio && restricciones?.bloqueoAlmuerzoFin
+                        ? { inicio: restricciones.bloqueoAlmuerzoInicio, fin: restricciones.bloqueoAlmuerzoFin }
+                        : null
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* Fila de Vista Previa y Confirmación */}
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <div className="xl:col-span-2 bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl border border-gray-100 dark:border-[#112240] p-6 lg:p-8">
+                  <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-6 mb-6">
+                    <div className="p-3 bg-[#003366]/5 dark:bg-[#003366]/30 rounded-2xl text-[#003366] dark:text-[#D4AF37] border border-[#003366]/10 dark:border-[#003366]/50 shadow-sm">
+                      <Calendar className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-black text-gray-800 dark:text-white tracking-tight">Carga Horaria Final</h2>
+                    </div>
+                  </div>
+                  <div className="overflow-x-auto custom-scrollbar">
+                    <VistaHorarioDocente selecciones={selecciones} alQuitarCelda={quitarCeldaVistaPrevia} />
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl p-6 lg:p-8 text-gray-900 dark:text-white flex flex-col justify-between border border-gray-100 dark:border-[#112240]">
+                  <div className="space-y-4">
+                    <div className="p-3 bg-yellow-50 dark:bg-[#D4AF37]/20 border border-yellow-100 dark:border-[#D4AF37]/30 rounded-xl w-fit">
+                      <ShieldCheck className="w-6 h-6 text-yellow-600 dark:text-[#D4AF37]" />
+                    </div>
+                    <h3 className="text-2xl font-black tracking-tight leading-tight">Confirmar Padrón</h3>
+                    <p className="text-gray-500 dark:text-white/60 text-xs leading-relaxed font-medium">
+                      Certifique que el registro cumpla con el Reglamento Académico. La confirmación establecerá estos bloques.
+                    </p>
+                  </div>
+                  <div className="pt-6">
+                    <ConfirmacionHorario
+                      docenteId={docenteId || 0}
+                      idPeriodo={idPeriodo}
+                      deshabilitado={!docenteId || (validacion ? !validacion.valido : false)}
+                      alConfirmar={() => {
+                        queryClient.invalidateQueries({ queryKey: ['selecciones-temporales', docenteId] });
+                        queryClient.invalidateQueries({ queryKey: ['horarios-general', idPeriodo] });
+                        queryClient.invalidateQueries({ queryKey: ['progreso-secretaria', docenteId] });
+                        actualizarMatriz();
+                        setMensaje({ texto: '¡Horario registrado con éxito!', tipo: 'success' });
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
-
-        {/* FILA INFERIOR: MATRIZ Y VISTA PREVIA */}
-        <div className="space-y-8">
-          
-          {/* Matriz de Disponibilidad (Ahora a todo lo ancho) */}
-          <div className="bg-white dark:bg-[#0A192F] rounded-[3rem] shadow-xl border border-gray-100 dark:border-[#112240] p-10 space-y-8">
-            <div className="flex items-center justify-between border-b border-gray-100 dark:border-[#112240] pb-8">
-              <div className="flex items-center gap-6">
-                <div className="p-4 bg-[#003366]/5 dark:bg-[#003366]/30 rounded-3xl text-[#003366] dark:text-[#D4AF37] border border-[#003366]/10 dark:border-[#003366]/50 shadow-sm">
-                  <LayoutDashboard className="w-8 h-8" />
-                </div>
-                <div>
-                  <h2 className="text-3xl font-black text-gray-800 dark:text-white tracking-tight">Ocupación de Infraestructura</h2>
-                  <p className="text-sm text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest mt-1">
-                    {ambienteId ? (
-                      <span className="flex items-center gap-2">
-                        Analizando el espacio: <span className="text-[#003366] dark:text-[#D4AF37] font-black">{matriz?.ambienteCodigo || 'Cargando...'}</span>
-                      </span>
-                    ) : 'Seleccione una configuración física para proceder'}
-                  </p>
-                </div>
-              </div>
-              {ambienteId && (
-                <div className="flex items-center gap-3 px-6 py-3 bg-emerald-50 dark:bg-emerald-900/10 text-emerald-700 dark:text-emerald-400 rounded-[1.5rem] border border-emerald-100 dark:border-emerald-800/30 text-xs font-black uppercase tracking-widest shadow-sm">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Sincronización Activa
-                </div>
-              )}
-            </div>
-
-            <div className="min-h-[600px] overflow-x-auto custom-scrollbar pt-4">
-              <MatrizDisponibilidad
-                matriz={matriz || null}
-                alHacerClickCelda={manejarClickCelda}
-                bloqueoAlmuerzo={
-                  restricciones?.bloqueoAlmuerzoInicio && restricciones?.bloqueoAlmuerzoFin
-                    ? { inicio: restricciones.bloqueoAlmuerzoInicio, fin: restricciones.bloqueoAlmuerzoFin }
-                    : null
-                }
-              />
-            </div>
-          </div>
-
-          {/* Horario del Docente y Confirmación Final */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            <div className="xl:col-span-2 bg-white dark:bg-[#0A192F] rounded-[3rem] shadow-xl border border-gray-100 dark:border-[#112240] p-10 space-y-8">
-              <div className="flex items-center gap-6 border-b border-gray-100 dark:border-[#112240] pb-8">
-                <div className="p-4 bg-[#003366]/5 dark:bg-[#003366]/30 rounded-3xl text-[#003366] dark:text-[#D4AF37] border border-[#003366]/10 dark:border-[#003366]/50 shadow-sm">
-                  <Calendar className="w-8 h-8" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-black text-gray-800 dark:text-white tracking-tight">Carga Horaria Actual</h2>
-                  <p className="text-sm text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest mt-1">Vista Previa Consolidada</p>
-                </div>
-              </div>
-              <div className="overflow-x-auto custom-scrollbar">
-                <VistaHorarioDocente selecciones={selecciones} alQuitarCelda={quitarCeldaVistaPrevia} />
-              </div>
-            </div>
-
-            <div className="bg-[#0A192F] rounded-[3rem] shadow-2xl p-10 text-white flex flex-col justify-between relative overflow-hidden group border border-[#112240]">
-              <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full group-hover:scale-150 transition-transform duration-700 pointer-events-none" />
-              
-              <div className="space-y-4 relative z-10">
-                <div className="p-4 bg-[#D4AF37]/20 border border-[#D4AF37]/30 rounded-2xl w-fit">
-                  <ShieldCheck className="w-8 h-8 text-[#D4AF37]" />
-                </div>
-                <h3 className="text-3xl font-black tracking-tight leading-tight">Confirmar Padrón</h3>
-                <p className="text-white/60 text-sm leading-relaxed font-medium">
-                  Certifique que el registro cumpla con el Reglamento Académico. La confirmación establecerá estos bloques como definitivos en el sistema.
-                </p>
-              </div>
-
-              <div className="pt-8 relative z-10">
-                <ConfirmacionHorario
-                  docenteId={docenteId || 0}
-                  idPeriodo={idPeriodo}
-                  deshabilitado={!docenteId || (validacion ? !validacion.valido : false)}
-                  alConfirmar={() => {
-                    queryClient.invalidateQueries({ queryKey: ['selecciones-temporales', docenteId] });
-                    queryClient.invalidateQueries({ queryKey: ['horarios-general', idPeriodo] });
-                    queryClient.invalidateQueries({ queryKey: ['progreso-secretaria', docenteId] });
-                    actualizarMatriz();
-                    setMensaje({ texto: '¡Horario registrado con éxito!', tipo: 'success' });
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <style jsx global>{`

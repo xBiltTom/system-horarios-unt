@@ -31,7 +31,7 @@ export function PanelPreferenciasNotificacion({ docenteId }: PanelPreferenciasNo
   };
 
   return (
-    <div className="bg-white dark:bg-[#0A192F] rounded-[2rem] border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm space-y-6">
+    <div className="bg-white dark:bg-[#0A192F] rounded-xl border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm space-y-6">
       <div className="flex items-center gap-3 pb-4 border-b border-gray-100 dark:border-white/5">
         <Settings2 className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" />
         <h3 className="text-lg font-bold text-gray-900 dark:text-white">Canales Activos</h3>

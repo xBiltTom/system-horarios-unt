@@ -664,7 +664,7 @@ export const NanoChatbot = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute bottom-20 right-0 w-[400px] max-w-[92vw] h-[650px] max-h-[80vh] bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-white/10 overflow-hidden flex flex-col animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-300">
+        <div className="absolute bottom-20 right-0 w-[400px] max-w-[92vw] h-[650px] max-h-[80vh] bg-white dark:bg-[#0A192F] rounded-2xl shadow-2xl border border-gray-100 dark:border-white/10 overflow-hidden flex flex-col animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-300">
           
           <div className="relative px-6 py-5 bg-[#020C1B] flex items-center gap-4 shrink-0 overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/20 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />

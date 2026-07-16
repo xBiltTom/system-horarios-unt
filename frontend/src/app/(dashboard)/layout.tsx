@@ -57,7 +57,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   // While auth state is loading or before mounting, show a spinner that matches on server and client
   if (!mounted || estaCargando) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#F0F4F8] dark:bg-[#020C1B]">
+      <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-[#020813]">
         <SpinnerCarga />
       </div>
     );
@@ -67,12 +67,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   if (!token) return null;
 
   return (
-    <div className="flex min-h-screen bg-[#F4F7F9] dark:bg-[#020C1B] transition-colors duration-300">
+    <div className="flex min-h-screen bg-gray-100 dark:bg-[#020813] transition-colors duration-300">
       <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0 md:ml-64 w-full transition-all duration-300">
-        <BarraSuperior />
-        <main className="flex-1 p-8">
-          <div className="max-w-7xl mx-auto">{children}</div>
+      <div className="flex-1 flex flex-col min-w-0 w-full md:pl-[280px] transition-all duration-300">
+        <div className="px-4 pt-4 md:px-6 md:pt-6">
+          <BarraSuperior />
+        </div>
+        <main className="flex-1 p-4 md:p-6">
+          <div className="max-w-[1600px] mx-auto w-full">{children}</div>
         </main>
       </div>
       <NanoChatbot />

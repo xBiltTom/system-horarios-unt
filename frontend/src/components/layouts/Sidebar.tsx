@@ -39,40 +39,40 @@ export function Sidebar() {
   };
 
   const enlacesAdmin = [
-    { href: '/admin', etiqueta: 'Centro de Control', Icono: LayoutDashboard },
+    { href: '/admin', etiqueta: 'Panel de Administración', Icono: LayoutDashboard },
     { href: '/periodos', etiqueta: 'Períodos Académicos', Icono: Calendar },
     { href: '/usuarios', etiqueta: 'Usuarios y Roles', Icono: Users },
-    { href: '/ambientes', etiqueta: 'Infraestructura', Icono: School },
-    { href: '/cursos', etiqueta: 'Catálogo de Asignaturas', Icono: BookOpen },
+    { href: '/ambientes', etiqueta: 'Infraestructura Física', Icono: School },
+    { href: '/cursos', etiqueta: 'Unidades Didácticas', Icono: BookOpen },
     { href: '/curricula', etiqueta: 'Planes de Estudio', Icono: FileText },
     { href: '/configuracion/restricciones', etiqueta: 'Configuración Global', Icono: Settings },
   ];
 
   const enlacesDirector = [
-    { href: '/admin', etiqueta: 'Panel de Dirección', Icono: LayoutDashboard },
+    { href: '/admin', etiqueta: 'Dirección Estratégica', Icono: LayoutDashboard },
     { href: '/director/docentes', etiqueta: 'Escalafón Docente', Icono: Users },
     { href: '/director/oferta-academica', etiqueta: 'Oferta Académica', Icono: GraduationCap },
     { href: '/director/oferta-ciclos', etiqueta: 'Malla por Ciclos', Icono: LayoutGrid },
-    { href: '/director/carga-horaria', etiqueta: 'Carga Académica', Icono: Clock },
+    { href: '/director/carga-horaria', etiqueta: 'Supervisión de Carga Académica', Icono: Clock },
   ];
 
   const enlacesSecretaria = [
     { href: '/secretaria', etiqueta: 'Panel Principal', Icono: LayoutDashboard },
-    { href: '/secretaria/ambientes', etiqueta: 'Aulas y Laboratorios', Icono: School },
+    { href: '/secretaria/ambientes', etiqueta: 'Infraestructura Física', Icono: School },
     { href: '/secretaria/docentes', etiqueta: 'Plana Docente', Icono: Users },
-    { href: '/secretaria/cursos-asignados', etiqueta: 'Asignaturas', Icono: BookOpen },
+    { href: '/secretaria/cursos-asignados', etiqueta: 'Unidades Didácticas', Icono: BookOpen },
     { href: '/secretaria/grupos', etiqueta: 'Grupos Académicos', Icono: Eye },
-    { href: '/secretaria/ventanas', etiqueta: 'Disponibilidad Docente', Icono: Clock },
-    { href: '/secretaria/registro-horarios', etiqueta: 'Programación Manual', Icono: CheckSquare },
-    { href: '/secretaria/reportes', etiqueta: 'Emisión de Reportes', Icono: FileDown },
+    { href: '/secretaria/ventanas', etiqueta: 'Ventanas de Atención', Icono: Clock },
+    { href: '/secretaria/registro-horarios', etiqueta: 'Centro de Planificación', Icono: CheckSquare },
+    { href: '/secretaria/reportes', etiqueta: 'Analíticas y Métricas', Icono: FileDown },
     { href: '/horarios/vista-aula', etiqueta: 'Horarios por Aula', Icono: MapPin },
     { href: '/horarios/vista-ciclo', etiqueta: 'Horarios por Ciclo', Icono: Calendar },
   ];
 
   const enlacesDocente = [
-    { href: '/docente', etiqueta: 'Mi Expediente', Icono: LayoutDashboard },
+    { href: '/docente', etiqueta: 'Portal Docente', Icono: LayoutDashboard },
     { href: '/docente/carga-no-lectiva', etiqueta: 'Actividades No Lectivas', Icono: FileText },
-    { href: '/horarios/seleccion', etiqueta: 'Elección de Horarios', Icono: CheckSquare },
+    { href: '/horarios/seleccion', etiqueta: 'Selección de Ventanas', Icono: CheckSquare },
     { href: '/horarios/vista-docente', etiqueta: 'Mi Horario Oficial', Icono: Eye },
   ];
 
@@ -92,19 +92,19 @@ export function Sidebar() {
       )}
 
       <aside className={cn(
-        "fixed left-0 top-0 z-50 flex h-screen w-64 flex-col bg-[#F0F4F8] dark:bg-[#0A192F] text-[#003366] dark:text-white shadow-2xl transition-transform duration-300 border-r border-gray-200 dark:border-[#112240]",
+        "fixed left-0 top-0 md:left-6 md:top-6 z-50 flex h-full md:h-[calc(100vh-48px)] w-[260px] flex-col bg-white dark:bg-[#0A192F] text-gray-900 dark:text-white shadow-xl transition-transform duration-300 md:rounded-2xl border border-gray-200/50 dark:border-white/10 overflow-hidden",
         isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
       )}>
         {/* Brand Header */}
-      <div className="flex flex-col items-center justify-center py-10 border-b border-gray-200 dark:border-[#112240]">
+      <div className="flex flex-col items-center justify-center py-8 border-b border-gray-100 dark:border-[#112240] bg-gray-50/50 dark:bg-transparent">
         <img 
           src="/logo-unt1.png" 
           alt="Sello UNT" 
-          className="h-16 w-auto opacity-100 mb-6 bg-white p-1.5 rounded-lg shadow-sm" 
+          className="h-14 w-auto opacity-100 mb-5 bg-white p-2 rounded-xl shadow-sm border border-gray-100 dark:border-transparent" 
         />
         <div className="text-center">
-          <h2 className="text-lg font-serif tracking-widest text-[#003366] dark:text-white uppercase">UNT | Sistemas</h2>
-          <div className="w-10 h-px bg-[#D4AF37] mx-auto mt-3"></div>
+          <h2 className="text-base font-bold tracking-widest text-gray-800 dark:text-white uppercase font-sans">Sistemas UNT</h2>
+          <div className="w-8 h-[2px] bg-blue-600 dark:bg-[#D4AF37] mx-auto mt-3 rounded-full"></div>
         </div>
       </div>
 
@@ -121,16 +121,16 @@ export function Sidebar() {
                 <Link
                   href={enlace.href}
                   className={cn(
-                    'group flex items-center gap-4 px-6 py-3.5 text-xs font-semibold uppercase tracking-widest transition-all duration-300 border-l-2',
+                    'group flex items-center gap-4 px-6 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 mx-3 rounded-xl',
                     activo
-                      ? 'border-[#D4AF37] bg-gradient-to-r from-[#D4AF37]/15 to-transparent text-[#003366] dark:border-[#D4AF37] dark:from-[#D4AF37]/10 dark:text-white'
-                      : 'border-transparent text-gray-500 hover:text-[#003366] hover:bg-white dark:text-gray-500 dark:hover:text-gray-300 dark:hover:bg-transparent dark:hover:border-gray-700'
+                      ? 'bg-blue-50 text-blue-700 dark:bg-white/10 dark:text-white shadow-sm'
+                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/5'
                   )}
                 >
                   <Icon
                     className={cn(
                       'h-4 w-4 transition-colors duration-300',
-                      activo ? 'text-[#003366] dark:text-[#D4AF37]' : 'text-gray-400 group-hover:text-[#003366] dark:text-gray-600 dark:group-hover:text-gray-400'
+                      activo ? 'text-blue-600 dark:text-[#D4AF37]' : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300'
                     )}
                     strokeWidth={activo ? 2.5 : 2}
                   />
@@ -143,10 +143,10 @@ export function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-gray-200 dark:border-[#112240] p-6 flex flex-col items-center justify-center">
+      <div className="border-t border-gray-100 dark:border-[#112240] p-6 flex flex-col items-center justify-center bg-gray-50/30 dark:bg-transparent">
         <div className="text-center">
-          <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-gray-400 dark:text-gray-600">Oficina de Registro</p>
-          <p className="text-[9px] uppercase tracking-widest text-gray-500 dark:text-gray-700 mt-1">Plataforma Académica</p>
+          <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-500">Gestión Académica</p>
+          <p className="text-[9px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-600 mt-1">Plataforma Institucional</p>
         </div>
       </div>
       </aside>

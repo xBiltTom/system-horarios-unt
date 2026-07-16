@@ -70,7 +70,7 @@ export function Modal({
       {/* Modal Content */}
       <div 
         className={cn(
-          "relative bg-white dark:bg-[#0A192F] border border-transparent dark:border-[#112240] rounded-[2.5rem] shadow-2xl w-full max-w-lg transition-all duration-300",
+          "relative bg-white dark:bg-[#0A192F] border border-transparent dark:border-[#112240] rounded-2xl shadow-2xl w-full max-w-lg transition-all duration-300",
           className
         )}
       >

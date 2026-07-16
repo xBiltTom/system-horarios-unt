@@ -62,7 +62,7 @@ export function ModalConfirmacion({
   return (
     <Modal isOpen={isOpen} onClose={onClose} className="max-w-md">
       <div className="flex flex-col items-center text-center space-y-6 py-4">
-        <div className={cn("p-6 rounded-[2rem] shadow-inner", current.bg)}>
+        <div className={cn("p-6 rounded-xl shadow-inner", current.bg)}>
           {current.icon}
         </div>
         

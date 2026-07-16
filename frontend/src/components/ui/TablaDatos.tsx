@@ -63,7 +63,7 @@ export function TablaDatos({
   }
 
   return (
-    <div className="w-full overflow-hidden rounded-[2rem] border border-gray-200/60 dark:border-white/5 bg-white dark:bg-[#0A192F] shadow-sm dark:shadow-none">
+    <div className="w-full overflow-hidden rounded-xl border border-gray-200/60 dark:border-white/5 bg-white dark:bg-[#0A192F] shadow-sm dark:shadow-none">
       <div className="overflow-x-auto custom-scrollbar">
         <table className="w-full text-left border-collapse">
           <thead>

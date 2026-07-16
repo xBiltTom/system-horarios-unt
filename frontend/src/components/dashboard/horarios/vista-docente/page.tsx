@@ -155,7 +155,7 @@ export default function VistaHorarioDocentePage() {
       {toast && <NotificacionToast mensaje={toast.mensaje} tipo={toast.tipo} onClose={() => setToast(null)} />}
 
       {!usuario?.idDocente ? (
-        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#020C1B] rounded-[2.5rem] shadow-sm border border-gray-100 dark:border-white/10">
+        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#020C1B] rounded-2xl shadow-sm border border-gray-100 dark:border-white/10">
           <div className="w-20 h-20 rounded-full bg-slate-50 dark:bg-white/5 flex items-center justify-center mb-6">
             <FileText className="h-8 w-8 text-slate-300 dark:text-gray-600" />
           </div>
@@ -163,7 +163,7 @@ export default function VistaHorarioDocentePage() {
           <p className="text-sm text-slate-500 dark:text-gray-400 mt-2">Este módulo solo está disponible para docentes autenticados.</p>
         </div>
       ) : docenteSeleccionado && idPeriodo ? (
-        <div className="bg-white dark:bg-[#020C1B] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-white/10 p-4 sm:p-8 relative">
+        <div className="bg-white dark:bg-[#020C1B] rounded-2xl shadow-xl border border-gray-100 dark:border-white/10 p-4 sm:p-8 relative">
           <div className="hidden sm:flex absolute top-8 right-8 items-center gap-2 opacity-50 z-10">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
             <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500">En Vivo</span>
@@ -171,7 +171,7 @@ export default function VistaHorarioDocentePage() {
           <CalendarioGeneralConNoLectivos idPeriodo={idPeriodo} idDocente={docenteSeleccionado} exportOption={exportOption} />
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#020C1B] rounded-[2.5rem] shadow-sm border border-gray-100 dark:border-white/10">
+        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#020C1B] rounded-2xl shadow-sm border border-gray-100 dark:border-white/10">
           <div className="w-20 h-20 rounded-full bg-slate-50 dark:bg-white/5 flex items-center justify-center mb-6">
             <Clock className="h-8 w-8 text-slate-300 dark:text-gray-600" />
           </div>

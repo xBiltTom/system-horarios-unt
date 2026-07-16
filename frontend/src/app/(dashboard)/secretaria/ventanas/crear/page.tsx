@@ -125,7 +125,7 @@ export default function CrearVentanaSecretariaPage() {
       <div className="grid grid-cols-1 gap-8 animate-in slide-in-from-bottom-4 duration-700">
         
         {/* Card Principal de Configuración */}
-        <div className="bg-white dark:bg-[#0A192F] rounded-[3rem] shadow-xl border border-gray-100 dark:border-[#112240] p-10 space-y-12 relative overflow-hidden group">
+        <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl border border-gray-100 dark:border-[#112240] p-10 space-y-12 relative overflow-hidden group">
           <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-gray-50/50 dark:bg-white/5 rounded-full transition-transform group-hover:scale-150 duration-700 pointer-events-none" />
           
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -215,7 +215,7 @@ export default function CrearVentanaSecretariaPage() {
           </div>
 
           {ventanaActiva && (
-            <div className="relative z-10 flex items-start gap-5 p-8 bg-amber-50 dark:bg-amber-900/10 border border-amber-200/60 dark:border-amber-800/30 rounded-[2rem] animate-in zoom-in-95">
+            <div className="relative z-10 flex items-start gap-5 p-8 bg-amber-50 dark:bg-amber-900/10 border border-amber-200/60 dark:border-amber-800/30 rounded-xl animate-in zoom-in-95">
               <div className="p-4 bg-white dark:bg-[#0A192F] rounded-2xl text-amber-600 dark:text-amber-400 shadow-sm shrink-0 border border-amber-100 dark:border-amber-800/50">
                 <AlertCircle className="w-7 h-7" />
               </div>
@@ -257,7 +257,7 @@ export default function CrearVentanaSecretariaPage() {
                   !!ventanaActiva
                 }
                 className={cn(
-                  "flex-1 sm:flex-none px-12 py-5 rounded-[2rem] font-black text-sm uppercase tracking-widest transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3",
+                  "flex-1 sm:flex-none px-12 py-5 rounded-xl font-black text-sm uppercase tracking-widest transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3",
                   ventanaActiva || !idPeriodo 
                     ? "bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-gray-600 cursor-not-allowed shadow-none"
                     : "bg-[#0A192F] text-white hover:bg-[#003366] dark:bg-[#D4AF37] dark:text-[#0A192F] dark:hover:bg-[#b08d28] shadow-[#0A192F]/20 dark:shadow-[#D4AF37]/20"

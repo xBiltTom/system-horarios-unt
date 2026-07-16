@@ -272,7 +272,7 @@ export default function DashboardDocentePage() {
 
           if (activa) {
             return (
-              <div className="relative overflow-hidden rounded-[2.5rem] bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 p-8 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 group">
+              <div className="relative overflow-hidden rounded-2xl bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 p-8 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 group">
                 <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 <div className="flex items-center gap-6 relative z-10">
                   <div className="p-5 bg-emerald-100 dark:bg-emerald-500/20 rounded-2xl border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.1)] dark:shadow-[0_0_30px_rgba(16,185,129,0.2)] animate-pulse">
@@ -296,7 +296,7 @@ export default function DashboardDocentePage() {
           } else if (futura) {
             const formattedDate = pFecha.toLocaleDateString('es-PE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             return (
-              <div className="rounded-[2.5rem] bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-900/50 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+              <div className="rounded-2xl bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-900/50 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
                 <div className="flex items-center gap-6">
                   <div className="p-4 bg-indigo-100 dark:bg-indigo-500/20 rounded-2xl border border-indigo-200 dark:border-indigo-500/30 text-indigo-600 dark:text-indigo-400">
                     <Calendar className="w-8 h-8" />
@@ -315,7 +315,7 @@ export default function DashboardDocentePage() {
             );
           } else {
             return (
-              <div className="rounded-[2.5rem] bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
+              <div className="rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
                 <div className="flex items-center gap-6">
                   <div className="p-4 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400">
                     <AlertCircle className="w-8 h-8" />
@@ -335,7 +335,7 @@ export default function DashboardDocentePage() {
           }
         })()
       ) : (
-        <div className="rounded-[2.5rem] bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/30 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
+        <div className="rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/30 p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
           <div className="flex items-center gap-6">
             <div className="p-4 bg-amber-100 dark:bg-amber-500/20 rounded-2xl border border-amber-200 dark:border-amber-500/30 text-amber-600 dark:text-amber-500">
               <AlertCircle className="w-8 h-8" />
@@ -355,7 +355,7 @@ export default function DashboardDocentePage() {
 
       {/* MÉTRICAS (KPIs) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 border border-gray-100 dark:border-[#112240] shadow-xl flex flex-col gap-6 relative overflow-hidden group hover:shadow-2xl transition-all">
+        <div className="bg-white dark:bg-[#0A192F] rounded-2xl p-8 border border-gray-100 dark:border-[#112240] shadow-xl flex flex-col gap-6 relative overflow-hidden group hover:shadow-2xl transition-all">
           <div className="flex items-center justify-between relative z-10">
             <div className="p-4 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-2xl border border-indigo-100 dark:border-indigo-500/20">
               <Clock className="w-6 h-6" />
@@ -373,7 +373,7 @@ export default function DashboardDocentePage() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 border border-gray-100 dark:border-[#112240] shadow-xl flex flex-col gap-6 relative overflow-hidden group hover:shadow-2xl transition-all">
+        <div className="bg-white dark:bg-[#0A192F] rounded-2xl p-8 border border-gray-100 dark:border-[#112240] shadow-xl flex flex-col gap-6 relative overflow-hidden group hover:shadow-2xl transition-all">
           <div className="flex items-center justify-between relative z-10">
             <div className="p-4 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-2xl border border-emerald-100 dark:border-emerald-500/20">
               <BookOpen className="w-6 h-6" />
@@ -388,7 +388,7 @@ export default function DashboardDocentePage() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 border border-gray-100 dark:border-[#112240] shadow-xl flex flex-col gap-6 relative overflow-hidden group hover:shadow-2xl transition-all">
+        <div className="bg-white dark:bg-[#0A192F] rounded-2xl p-8 border border-gray-100 dark:border-[#112240] shadow-xl flex flex-col gap-6 relative overflow-hidden group hover:shadow-2xl transition-all">
           <div className="flex items-center justify-between relative z-10">
             <div className="p-4 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-2xl border border-rose-100 dark:border-rose-500/20">
               <Calendar className="w-6 h-6" />
@@ -416,7 +416,7 @@ export default function DashboardDocentePage() {
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
         {/* LISTA DE CURSOS Y PROGRESO (7/12) */}
-        <div className="lg:col-span-7 bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 border border-gray-100 dark:border-[#112240] shadow-xl">
+        <div className="lg:col-span-7 bg-white dark:bg-[#0A192F] rounded-2xl p-8 border border-gray-100 dark:border-[#112240] shadow-xl">
           <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-6 mb-6">
             <div className="p-3 bg-[#D4AF37]/10 rounded-xl border border-[#D4AF37]/20 text-[#D4AF37]">
               <BookOpen className="w-5 h-5" />
@@ -470,36 +470,36 @@ export default function DashboardDocentePage() {
 
         {/* ACCIONES Y EXPORTACIÓN (5/12) */}
         <div className="lg:col-span-5 space-y-8">
-          <div className="bg-[#020C1B] rounded-[2.5rem] p-8 border border-[#112240] shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-2xl rounded-full pointer-events-none" />
-            <div className="flex items-center gap-4 border-b border-white/10 pb-5 mb-6 relative z-10">
-              <div className="p-3 bg-white/10 rounded-xl border border-white/10 text-white shadow-inner">
+          <div className="bg-white dark:bg-[#020C1B] rounded-2xl p-8 border border-gray-100 dark:border-[#112240] shadow-xl dark:shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gray-50 dark:bg-white/5 blur-2xl rounded-full pointer-events-none" />
+            <div className="flex items-center gap-4 border-b border-gray-100 dark:border-white/10 pb-5 mb-6 relative z-10">
+              <div className="p-3 bg-gray-50 dark:bg-white/10 rounded-xl border border-gray-200 dark:border-white/10 text-gray-700 dark:text-white shadow-inner">
                 <Compass className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-xl font-black text-white tracking-tight">Accesos Rápidos</h3>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Panel de Control</p>
+                <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">Accesos Rápidos</h3>
+                <p className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mt-1">Panel de Control</p>
               </div>
             </div>
 
             <div className="flex flex-col gap-3 relative z-10">
               <button
                 onClick={() => router.push('/docente/carga-no-lectiva')}
-                className="w-full flex items-center gap-4 p-4 rounded-2xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-500 transition-all font-bold group"
+                className="w-full flex items-center gap-4 p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 hover:bg-amber-100 dark:hover:bg-amber-500/20 border border-amber-200 dark:border-amber-500/20 text-amber-600 dark:text-amber-500 transition-all font-bold group"
               >
                 <FileText className="h-5 w-5 group-hover:scale-110 transition-transform" />
                 Registrar Carga No Lectiva
               </button>
               <button
                 onClick={() => router.push('/horarios/seleccion')}
-                className="w-full flex items-center gap-4 p-4 rounded-2xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 text-indigo-400 transition-all font-bold group"
+                className="w-full flex items-center gap-4 p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 border border-indigo-200 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 transition-all font-bold group"
               >
                 <BookOpen className="h-5 w-5 group-hover:scale-110 transition-transform" />
                 Elegir mi Horario (Matriz)
               </button>
               <button
                 onClick={() => router.push('/horarios/vista-docente')}
-                className="w-full flex items-center gap-4 p-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-all font-bold group"
+                className="w-full flex items-center gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-white transition-all font-bold group"
               >
                 <Calendar className="h-5 w-5 group-hover:scale-110 transition-transform" />
                 Ver mi Horario Completo
@@ -507,7 +507,7 @@ export default function DashboardDocentePage() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] p-8 border border-gray-100 dark:border-[#112240] shadow-xl relative overflow-hidden">
+          <div className="bg-white dark:bg-[#0A192F] rounded-2xl p-8 border border-gray-100 dark:border-[#112240] shadow-xl relative overflow-hidden">
             <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-5 mb-6">
               <div className="p-3 bg-emerald-50 dark:bg-emerald-500/10 rounded-xl border border-emerald-100 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400">
                 <Download className="w-5 h-5" />

@@ -38,12 +38,19 @@ export function PanelSeleccionCurso({
         return (
           <button
             key={comp.idComponente}
+            draggable={!estaCompleto}
+            onDragStart={(e) => {
+              alCambiarComponente(comp.idComponente);
+              e.dataTransfer.setData('text/plain', comp.idComponente.toString());
+              e.dataTransfer.effectAllowed = 'copy';
+            }}
             onClick={() => alCambiarComponente(comp.idComponente)}
             className={cn(
               'group relative flex items-center justify-between p-3 rounded-xl border transition-all duration-200 text-left',
               esSeleccionado
                 ? 'bg-[#003366]/5 dark:bg-[#D4AF37]/10 border-[#003366]/20 dark:border-[#D4AF37]/30 ring-2 ring-[#003366]/10 dark:ring-[#D4AF37]/20 shadow-sm'
-                : 'bg-white dark:bg-[#0A192F] border-gray-100 dark:border-[#112240] hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-white/5'
+                : 'bg-white dark:bg-[#0A192F] border-gray-100 dark:border-[#112240] hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-white/5',
+              !estaCompleto && 'cursor-grab active:cursor-grabbing'
             )}
           >
             <div className="flex items-center gap-3 overflow-hidden">

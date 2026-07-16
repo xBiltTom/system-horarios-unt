@@ -198,7 +198,7 @@ export default function DocentesPage() {
         </div>
       </div>
 
-      <Card className="border-none shadow-xl shadow-slate-200/50 rounded-[2.5rem] overflow-hidden">
+      <Card className="border-none shadow-xl shadow-slate-200/50 rounded-2xl overflow-hidden">
         <CardContent className="p-0">
           <TablaDatos
             columnas={columnas}

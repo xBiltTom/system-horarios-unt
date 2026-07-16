@@ -189,7 +189,7 @@ export default function CargaHorariaPage() {
         <h1 className="font-serif text-[2rem] text-[#0A192F] dark:text-white tracking-tight leading-tight">Carga Horaria Docente</h1>
       </div>
 
-      <Card className="bg-white dark:bg-[#0A192F] border-none shadow-xl rounded-[2.5rem] overflow-visible relative z-20">
+      <Card className="bg-white dark:bg-[#0A192F] border-none shadow-xl rounded-2xl overflow-visible relative z-20">
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row gap-4 w-full">
             <div className="w-full sm:w-64">
@@ -233,7 +233,7 @@ export default function CargaHorariaPage() {
       </Card>
 
       {!idPeriodo ? (
-        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#0A192F] rounded-[2.5rem] border border-dashed border-gray-200 dark:border-white/10 shadow-sm text-center">
+        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#0A192F] rounded-2xl border border-dashed border-gray-200 dark:border-white/10 shadow-sm text-center">
           <div className="p-4 bg-gray-50 dark:bg-white/5 rounded-full mb-4">
             <Clock className="w-12 h-12 text-gray-400 dark:text-gray-500" />
           </div>
@@ -272,7 +272,7 @@ export default function CargaHorariaPage() {
 
             {loadingOferta ? (
               <div className="space-y-4">
-                {[1, 2, 3].map(i => <div key={i} className="h-24 bg-gray-100 dark:bg-white/5 animate-pulse rounded-[2rem]" />)}
+                {[1, 2, 3].map(i => <div key={i} className="h-24 bg-gray-100 dark:bg-white/5 animate-pulse rounded-xl" />)}
               </div>
             ) : (
               <div className="space-y-4 max-h-[800px] overflow-y-auto custom-scrollbar pr-2">

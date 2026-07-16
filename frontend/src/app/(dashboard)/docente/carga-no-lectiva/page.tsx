@@ -373,6 +373,62 @@ export default function CargaNoLectivaPage() {
     });
   };
 
+  const handleCeldaDrop = (diaSemana: string, horaInicio: string, seccionClave: string) => {
+    if (seccionClave !== seccionActiva) {
+      setSeccionActiva(seccionClave as SeccionNoLectivaKey);
+    }
+    
+    const hh = parseInt(horaInicio.split(':')[0]);
+    
+    const isLectivo = horarioData?.lectivos?.find((l: any) => l.dia_semana === diaSemana && parseInt(l.hora_inicio) <= hh && parseInt(l.hora_fin) > hh);
+    if (isLectivo) {
+      setToast({ mensaje: 'Esta hora ya está ocupada por una clase lectiva.', tipo: 'error' });
+      return;
+    }
+
+    const bloqueExistenteIndex = bloquesAsignados.findIndex((b) => b.dia_semana === diaSemana && b.hora_inicio === horaInicio);
+    const esMismaSeccion = bloqueExistenteIndex >= 0 && bloquesAsignados[bloqueExistenteIndex].seccion === seccionClave;
+
+    // Si no estamos removiendo, verificamos que tengamos cupo disponible
+    if (!esMismaSeccion) {
+      const declaradas = Number(secciones[seccionClave as SeccionNoLectivaKey]?.horas) || 0;
+      const asignadas = bloquesAsignados.filter((b) => b.seccion === seccionClave).length;
+      if (asignadas >= declaradas) {
+        setToast({ mensaje: `No puedes exceder el máximo de horas (${declaradas}h) declaradas para esta sección.`, tipo: 'error' });
+        return;
+      }
+
+      const resActivas = restricciones?.franjaInicio ? restricciones : restricciones?.data;
+      const maxHorasDiarias = resActivas?.horasMaximasDiarias ? Number(resActivas.horasMaximasDiarias) : 9;
+
+      const horasLectivasEnDia = horarioData?.lectivos?.filter((l: {dia_semana: string}) => l.dia_semana === diaSemana).reduce((acc: number, l: {hora_fin: string, hora_inicio: string}) => acc + (parseInt(l.hora_fin) - parseInt(l.hora_inicio)), 0) || 0;
+      const horasNoLectivasEnDia = bloquesAsignados.filter((b) => b.dia_semana === diaSemana).length;
+      
+      if (horasLectivasEnDia + horasNoLectivasEnDia >= maxHorasDiarias) {
+        setToast({ mensaje: `Límite diario alcanzado. No puedes asignar más de ${maxHorasDiarias}h en un mismo día (Lectiva + No Lectiva).`, tipo: 'error' });
+        return;
+      }
+    }
+
+    const horaFin = `${(hh + 1).toString().padStart(2, '0')}:00`;
+
+    setBloquesAsignados((prev) => {
+      const index = prev.findIndex((b) => b.dia_semana === diaSemana && b.hora_inicio === horaInicio);
+      
+      if (index >= 0) {
+        const prevBloques = [...prev];
+        if (prevBloques[index].seccion === seccionClave) {
+          prevBloques.splice(index, 1);
+        } else {
+          prevBloques[index] = { dia_semana: diaSemana, hora_inicio: horaInicio, hora_fin: horaFin, seccion: seccionClave };
+        }
+        return prevBloques;
+      }
+      
+      return [...prev, { dia_semana: diaSemana, hora_inicio: horaInicio, hora_fin: horaFin, seccion: seccionClave }];
+    });
+  };
+
   const construirMatriz = () => {
     const filas = [];
     
@@ -535,13 +591,13 @@ export default function CargaNoLectivaPage() {
 
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {!usuario?.idDocente ? (
-          <Card className="border-none shadow-lg rounded-[2rem]">
+          <Card className="border-none shadow-lg rounded-xl">
             <CardContent className="py-16 text-center text-slate-500">
               Este módulo solo está disponible para docentes autenticados.
             </CardContent>
           </Card>
         ) : !idPeriodo ? (
-          <Card className="border-none shadow-lg rounded-[2rem]">
+          <Card className="border-none shadow-lg rounded-xl">
             <CardContent className="py-16 text-center text-slate-500 flex flex-col items-center gap-3">
               <CalendarDays className="h-10 w-10 text-slate-300" />
               Selecciona un período académico para comenzar.
@@ -552,7 +608,7 @@ export default function CargaNoLectivaPage() {
             {/* Columna izquierda: Dossier */}
             <div className="lg:col-span-8 space-y-8">
               {/* Datos del docente */}
-              <div className="bg-white dark:bg-[#020C1B] rounded-[2.5rem] border border-gray-100 dark:border-white/10 shadow-xl relative">
+              <div className="bg-white dark:bg-[#020C1B] rounded-2xl border border-gray-100 dark:border-white/10 shadow-xl relative">
                 <div className="px-8 py-6 border-b border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 flex items-center gap-4 rounded-t-[2.5rem]">
                   <div className="p-3 bg-indigo-50 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 rounded-2xl border border-indigo-100 dark:border-indigo-500/30">
                     <UserRound className="h-5 w-5" />
@@ -603,7 +659,7 @@ export default function CargaNoLectivaPage() {
               </div>
 
               {/* Secciones no lectivas */}
-              <div className="bg-white dark:bg-[#020C1B] rounded-[2.5rem] border border-gray-100 dark:border-white/10 shadow-xl relative">
+              <div className="bg-white dark:bg-[#020C1B] rounded-2xl border border-gray-100 dark:border-white/10 shadow-xl relative">
                 <div className="px-8 py-6 border-b border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 flex items-center gap-4 rounded-t-[2.5rem]">
                   <div className="p-3 bg-amber-50 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded-2xl border border-amber-100 dark:border-amber-500/30">
                     <FileText className="h-5 w-5" />
@@ -679,7 +735,7 @@ export default function CargaNoLectivaPage() {
               </div>
 
               {/* Detalle de carga lectiva */}
-              <div className="bg-white dark:bg-[#020C1B] rounded-[2.5rem] border border-gray-100 dark:border-white/10 shadow-xl relative">
+              <div className="bg-white dark:bg-[#020C1B] rounded-2xl border border-gray-100 dark:border-white/10 shadow-xl relative">
                 <div className="px-8 py-6 border-b border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/5 flex items-center gap-4 rounded-t-[2.5rem]">
                   <div className="p-3 bg-emerald-50 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-2xl border border-emerald-100 dark:border-emerald-500/30">
                     <BookOpen className="h-5 w-5" />
@@ -731,16 +787,16 @@ export default function CargaNoLectivaPage() {
 
             {/* Columna derecha: Validator/Ledger */}
             <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-8 lg:self-start">
-              <div className="bg-[#020C1B] rounded-[2.5rem] border border-[#112240] shadow-2xl overflow-hidden flex flex-col relative group">
-                <div className="absolute top-0 right-0 h-32 w-32 bg-indigo-500/10 blur-3xl pointer-events-none rounded-full" />
-                <div className="absolute bottom-0 left-0 h-32 w-32 bg-emerald-500/10 blur-3xl pointer-events-none rounded-full" />
+              <div className="bg-white dark:bg-[#020C1B] rounded-2xl border border-gray-200 dark:border-[#112240] shadow-xl dark:shadow-2xl overflow-hidden flex flex-col relative group">
+                <div className="absolute top-0 right-0 h-32 w-32 bg-indigo-50 dark:bg-indigo-500/10 blur-3xl pointer-events-none rounded-full" />
+                <div className="absolute bottom-0 left-0 h-32 w-32 bg-emerald-50 dark:bg-emerald-500/10 blur-3xl pointer-events-none rounded-full" />
                 
-                <div className="px-8 py-6 border-b border-[#112240] flex items-center justify-between relative z-10">
+                <div className="px-8 py-6 border-b border-gray-100 dark:border-[#112240] flex items-center justify-between relative z-10">
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 bg-white/5 rounded-xl border border-white/10 text-gray-300">
+                    <div className="p-2.5 bg-gray-50 dark:bg-white/5 rounded-xl border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300">
                       <Save className="h-4 w-4" />
                     </div>
-                    <h2 className="text-lg font-black text-white tracking-wide">Validador de Jornada</h2>
+                    <h2 className="text-lg font-black text-gray-900 dark:text-white tracking-wide">Validador de Jornada</h2>
                   </div>
                   <span className="relative flex h-3 w-3">
                     <span className={cn("animate-ping absolute inline-flex h-full w-full rounded-full opacity-75", Math.abs(horasTotales - horasObjetivo) < 0.01 && Object.keys(erroresSecciones).length === 0 ? "bg-emerald-400" : "bg-amber-400")}></span>
@@ -751,17 +807,17 @@ export default function CargaNoLectivaPage() {
                 <div className="p-8 space-y-8 relative z-10 font-mono">
                   {/* Ledger lines */}
                   <div className="space-y-4">
-                    <div className="flex justify-between items-end border-b border-white/10 pb-3">
-                      <span className="text-xs font-bold text-gray-400 tracking-wider">01. LECTIVA</span>
-                      <span className="text-xl font-black text-white">{formatearHoras(horasLectivas)}<span className="text-sm text-gray-500 ml-1">h</span></span>
+                    <div className="flex justify-between items-end border-b border-gray-100 dark:border-white/10 pb-3">
+                      <span className="text-xs font-bold text-gray-500 dark:text-gray-400 tracking-wider">01. LECTIVA</span>
+                      <span className="text-xl font-black text-gray-900 dark:text-white">{formatearHoras(horasLectivas)}<span className="text-sm text-gray-400 dark:text-gray-500 ml-1">h</span></span>
                     </div>
-                    <div className="flex justify-between items-end border-b border-white/10 pb-3">
-                      <span className="text-xs font-bold text-gray-400 tracking-wider">02. NO LECTIVA</span>
-                      <span className="text-xl font-black text-white">{formatearHoras(totalHoras)}<span className="text-sm text-gray-500 ml-1">h</span></span>
+                    <div className="flex justify-between items-end border-b border-gray-100 dark:border-white/10 pb-3">
+                      <span className="text-xs font-bold text-gray-500 dark:text-gray-400 tracking-wider">02. NO LECTIVA</span>
+                      <span className="text-xl font-black text-gray-900 dark:text-white">{formatearHoras(totalHoras)}<span className="text-sm text-gray-400 dark:text-gray-500 ml-1">h</span></span>
                     </div>
-                    <div className="flex justify-between items-end border-b-2 border-white/20 pb-3 pt-2">
-                      <span className="text-sm font-black text-white tracking-wider">TOTAL CALCULADO</span>
-                      <span className="text-3xl font-black text-indigo-400">{formatearHoras(horasTotales)}<span className="text-sm text-indigo-500/50 ml-1">h</span></span>
+                    <div className="flex justify-between items-end border-b-2 border-gray-200 dark:border-white/20 pb-3 pt-2">
+                      <span className="text-sm font-black text-gray-900 dark:text-white tracking-wider">TOTAL CALCULADO</span>
+                      <span className="text-3xl font-black text-indigo-600 dark:text-indigo-400">{formatearHoras(horasTotales)}<span className="text-sm text-indigo-400 dark:text-indigo-500/50 ml-1">h</span></span>
                     </div>
                     <div className="flex justify-between items-end pt-2">
                       <span className="text-xs font-bold text-gray-500 tracking-wider">META DEDICACIÓN</span>
@@ -812,7 +868,7 @@ export default function CargaNoLectivaPage() {
           </div>
         ) : pestanaActiva === 'calendario' ? (
           <div className="grid grid-cols-1 gap-8">
-            <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden bg-white/60 backdrop-blur-md" id="paso2">
+            <Card className="border-none shadow-xl rounded-xl overflow-hidden bg-white/60 backdrop-blur-md" id="paso2">
               <CardHeader className="bg-gradient-to-r from-unt-primary to-[#0f4c81] text-white flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between py-6 px-6">
                 <CardTitle className="flex items-center gap-3 text-white text-xl">
                   <CalendarDays className="h-6 w-6" />
@@ -825,8 +881,8 @@ export default function CargaNoLectivaPage() {
                   <div className="text-sm text-blue-900 space-y-1">
                     <p><strong>Instrucciones:</strong> Asigna tus bloques horarios en el calendario guiándote de los "Pinceles" inferiores.</p>
                     <ul className="list-disc pl-5 opacity-90 text-xs">
-                      <li>Selecciona una sección no lectiva en la paleta lateral.</li>
-                      <li>Haz clic en los espacios libres del calendario (gris son tus clases lectivas inmodificables).</li>
+                      <li>Arrastra una sección desde la paleta lateral hasta el calendario para asignarla.</li>
+                      <li>Haz clic en los espacios libres del calendario (gris son tus clases lectivas inmodificables) habiendo seleccionado un pincel previamente para pintar más rápido.</li>
                       <li>Asegúrate de pintar exactamente las mismas horas que declaraste.</li>
                     </ul>
                   </div>
@@ -846,28 +902,33 @@ export default function CargaNoLectivaPage() {
                         .map(([clave, v]) => {
                           const progreso = calcularProgresoAsignacion(clave);
                           return (
-                            <button
-                              key={clave}
-                              onClick={() => setSeccionActiva(clave as SeccionNoLectivaKey)}
-                              className={cn(
-                                'flex items-center justify-between p-4 rounded-xl border text-left transition-all duration-200 w-full',
-                                seccionActiva === clave 
-                                  ? 'bg-indigo-50 border-indigo-500 shadow-md ring-2 ring-indigo-500/20' 
-                                  : 'bg-white border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/30'
-                              )}
-                            >
-                              <div className="flex flex-col gap-1 w-full">
-                                <span className={cn('text-xs font-bold truncate', seccionActiva === clave ? 'text-indigo-900' : 'text-slate-700')}>
-                                  {SECCIONES.find(s => s.clave === clave)?.titulo || clave.replace(/_/g, ' ')}
-                                </span>
-                                <div className="flex items-center justify-between mt-1">
-                                  <span className={cn('text-[10px] font-semibold px-2 py-0.5 rounded-full', progreso.completado ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600')}>
-                                    {progreso.asignadas} / {progreso.declaradas}h
+                              <button
+                                key={clave}
+                                draggable={true}
+                                onDragStart={(e) => {
+                                  e.dataTransfer.setData('text/plain', clave);
+                                  setSeccionActiva(clave as SeccionNoLectivaKey);
+                                }}
+                                onClick={() => setSeccionActiva(clave as SeccionNoLectivaKey)}
+                                className={cn(
+                                  'flex items-center justify-between p-4 rounded-xl border text-left transition-all duration-200 w-full cursor-grab active:cursor-grabbing',
+                                  seccionActiva === clave 
+                                    ? 'bg-indigo-50 border-indigo-500 shadow-md ring-2 ring-indigo-500/20' 
+                                    : 'bg-white border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/30'
+                                )}
+                              >
+                                <div className="flex flex-col gap-1 w-full">
+                                  <span className={cn('text-xs font-bold truncate', seccionActiva === clave ? 'text-indigo-900' : 'text-slate-700')}>
+                                    {SECCIONES.find(s => s.clave === clave)?.titulo || clave.replace(/_/g, ' ')}
                                   </span>
-                                  {progreso.completado && <span className="text-emerald-500 text-[10px] font-bold">✓ Listo</span>}
+                                  <div className="flex items-center justify-between mt-1">
+                                    <span className={cn('text-[10px] font-semibold px-2 py-0.5 rounded-full', progreso.completado ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600')}>
+                                      {progreso.asignadas} / {progreso.declaradas}h
+                                    </span>
+                                    {progreso.completado && <span className="text-emerald-500 text-[10px] font-bold">✓ Listo</span>}
+                                  </div>
                                 </div>
-                              </div>
-                            </button>
+                              </button>
                           );
                         })}
                     </div>
@@ -878,6 +939,7 @@ export default function CargaNoLectivaPage() {
                     <MatrizCargaNoLectiva 
                       matriz={construirMatriz()} 
                       alHacerClickCelda={handleCeldaClick} 
+                      alHacerDropCelda={handleCeldaDrop}
                       bloqueado={mutationGuardarHorario.isPending}
                     />
                   </div>
@@ -904,7 +966,7 @@ export default function CargaNoLectivaPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-8">
-            <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden bg-white/60 backdrop-blur-md" id="paso3">
+            <Card className="border-none shadow-xl rounded-xl overflow-hidden bg-white/60 backdrop-blur-md" id="paso3">
               <CardHeader className="bg-gradient-to-r from-unt-primary to-[#0f4c81] text-white flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between py-6 px-6">
                 <CardTitle className="flex items-center gap-3 text-white text-xl">
                   <FileText className="h-6 w-6" />

@@ -93,7 +93,7 @@ export default function RestriccionesPage() {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Card 1: Horarios de Operación */}
-          <div className="bg-white dark:bg-[#0A192F] rounded-[2rem] border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm">
+          <div className="bg-white dark:bg-[#0A192F] rounded-xl border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm">
             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-white/5">
               <Clock className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" />
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Horario del Campus</h2>
@@ -105,7 +105,7 @@ export default function RestriccionesPage() {
           </div>
 
           {/* Card 2: Descanso y Almuerzo */}
-          <div className="bg-white dark:bg-[#0A192F] rounded-[2rem] border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm">
+          <div className="bg-white dark:bg-[#0A192F] rounded-xl border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm">
             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-white/5">
               <Coffee className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" />
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Bloque de Almuerzo</h2>
@@ -117,7 +117,7 @@ export default function RestriccionesPage() {
           </div>
 
           {/* Card 3: Límites Docentes */}
-          <div className="lg:col-span-2 bg-white dark:bg-[#0A192F] rounded-[2rem] border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm">
+          <div className="lg:col-span-2 bg-white dark:bg-[#0A192F] rounded-xl border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm">
             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100 dark:border-white/5">
               <ShieldAlert className="w-5 h-5 text-[#003366] dark:text-[#D4AF37]" />
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Parámetros de Carga Docente</h2>

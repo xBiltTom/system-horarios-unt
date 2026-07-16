@@ -89,7 +89,7 @@ export default function GruposSecretariaPage() {
       </div>
 
       {/* Barra de Filtros */}
-      <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col gap-6">
+      <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col gap-6">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
           <div className="relative flex-1 w-full group h-[52px]">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-[#003366] dark:group-focus-within:text-[#D4AF37] transition-colors" />
@@ -151,7 +151,7 @@ export default function GruposSecretariaPage() {
       {gruposLoading ? (
         <SpinnerCarga />
       ) : (
-        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-200/60 dark:border-[#112240] overflow-hidden animate-in fade-in duration-500">
+        <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl border border-gray-200/60 dark:border-[#112240] overflow-hidden animate-in fade-in duration-500">
           <table className="w-full text-left">
             <thead>
               <tr className="bg-gray-50/80 dark:bg-[#020C1B] border-b border-gray-200 dark:border-[#112240]">

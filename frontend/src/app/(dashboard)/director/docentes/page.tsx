@@ -239,7 +239,7 @@ export default function GestionDocentesPage() {
         </Boton>
       </div>
 
-      <Card className="border-none shadow-xl shadow-gray-200/50 dark:shadow-none bg-white dark:bg-[#0A192F] rounded-[2.5rem] overflow-hidden border dark:border-white/5">
+      <Card className="border-none shadow-xl shadow-gray-200/50 dark:shadow-none bg-white dark:bg-[#0A192F] rounded-2xl overflow-hidden border dark:border-white/5">
         <CardContent className="p-0">
           <TablaDatos
             columnas={columnas}

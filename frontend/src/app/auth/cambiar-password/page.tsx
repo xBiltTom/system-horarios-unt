@@ -66,7 +66,7 @@ export default function CambiarPasswordPage() {
           Actualiza tus credenciales para mantener tu cuenta segura.
         </p>
 
-        <form onSubmit={manejarCambio} className="mt-8 bg-white dark:bg-[#050f20] py-8 px-6 sm:px-10 shadow-2xl border border-gray-100 dark:border-white/5 sm:rounded-[2.5rem] space-y-6">
+        <form onSubmit={manejarCambio} className="mt-8 bg-white dark:bg-[#050f20] py-8 px-6 sm:px-10 shadow-2xl border border-gray-100 dark:border-white/5 sm:rounded-2xl space-y-6">
           <CampoTexto 
             label="Contraseña actual" 
             type="password" 

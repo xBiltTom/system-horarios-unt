@@ -314,7 +314,7 @@ export default function VentanasSecretariaPage() {
 
       {/* Ventana actual config */}
       {totalVentanas > 0 && rangoVentana && (
-        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] border border-gray-100 dark:border-[#112240] shadow-xl overflow-hidden">
+        <div className="bg-white dark:bg-[#0A192F] rounded-2xl border border-gray-100 dark:border-[#112240] shadow-xl overflow-hidden">
           <div className="px-8 py-6 border-b border-gray-100 dark:border-[#112240] flex flex-col md:flex-row md:items-center justify-between gap-4">
             <h2 className="font-black text-gray-800 dark:text-white flex items-center gap-3">
               <span className="w-1.5 h-6 rounded-full bg-[#003366] dark:bg-[#D4AF37] inline-block shadow-sm" />
@@ -414,7 +414,7 @@ export default function VentanasSecretariaPage() {
       )}
 
       {/* Tabla de turnos */}
-      <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] border border-gray-100 dark:border-[#112240] shadow-xl overflow-hidden">
+      <div className="bg-white dark:bg-[#0A192F] rounded-2xl border border-gray-100 dark:border-[#112240] shadow-xl overflow-hidden">
         <div className="px-8 py-6 border-b border-gray-100 dark:border-[#112240]">
           <h2 className="font-black text-gray-800 dark:text-white flex items-center gap-3">
             <span className="w-1.5 h-6 rounded-full bg-[#D4AF37] inline-block shadow-sm" />

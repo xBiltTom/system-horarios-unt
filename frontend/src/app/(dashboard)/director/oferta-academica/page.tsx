@@ -194,7 +194,7 @@ export default function OfertaAcademicaPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-1 overflow-visible border-none shadow-xl bg-white dark:bg-[#0A192F] rounded-[2rem]">
+        <Card className="lg:col-span-1 overflow-visible border-none shadow-xl bg-white dark:bg-[#0A192F] rounded-xl">
           <CardHeader className="border-b border-gray-100 dark:border-white/5 pb-4">
             <CardTitle className="text-xl font-serif text-[#003366] dark:text-white">Datos de la Oferta</CardTitle>
           </CardHeader>
@@ -255,7 +255,7 @@ export default function OfertaAcademicaPage() {
           </CardContent>
         </Card>
 
-        <Card className="lg:col-span-2 border-none shadow-xl bg-white dark:bg-[#0A192F] rounded-[2rem]">
+        <Card className="lg:col-span-2 border-none shadow-xl bg-white dark:bg-[#0A192F] rounded-xl">
           <CardHeader className="flex flex-row items-center justify-between border-b border-gray-100 dark:border-white/5 pb-4">
             <CardTitle className="text-xl font-serif text-[#003366] dark:text-white">Componentes y Grupos</CardTitle>
             <Boton

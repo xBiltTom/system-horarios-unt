@@ -412,17 +412,17 @@ export default function SeleccionHorarioPage() {
       {/* Main Grid Layout - Split Pane */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        {/* Left column: Console (Command Center) - Always Dark */}
+        {/* Left column: Console (Command Center) */}
         <div className="lg:col-span-4 lg:col-start-1">
-          <div className="dark bg-[#020C1B] rounded-[2.5rem] border border-white/10 shadow-2xl p-8 relative flex flex-col gap-8 h-full">
+          <div className="bg-white dark:bg-[#020C1B] rounded-2xl border border-gray-200 dark:border-white/10 shadow-xl dark:shadow-2xl p-8 relative flex flex-col gap-8 h-full transition-colors">
             {/* Ambient Background Glow */}
-            <div className="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+            <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/10 dark:bg-[#D4AF37]/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
             </div>
             
             {/* Panel Header */}
             <div>
-              <h2 className="text-xl font-black text-white flex items-center gap-3 tracking-tight">
+              <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3 tracking-tight">
                 <span className="w-1.5 h-6 rounded-full bg-[#D4AF37]"></span>
                 Panel de Control
               </h2>
@@ -433,7 +433,7 @@ export default function SeleccionHorarioPage() {
 
             {/* Panel de Cursos */}
             <div className="relative z-10 space-y-4">
-              <h3 className="text-sm font-bold text-gray-400">1. Seleccionar Carga Pendiente</h3>
+              <h3 className="text-sm font-bold text-gray-600 dark:text-gray-400">1. Seleccionar Carga Pendiente</h3>
               <PanelSeleccionCurso
                 componentes={progreso || []}
                 componenteSeleccionado={componenteSeleccionado}
@@ -442,8 +442,8 @@ export default function SeleccionHorarioPage() {
             </div>
 
             {/* Selectores */}
-            <div className="relative z-50 space-y-6 pt-6 border-t border-white/10">
-              <h3 className="text-sm font-bold text-gray-400">2. Ubicación y Grupo</h3>
+            <div className="relative z-50 space-y-6 pt-6 border-t border-gray-100 dark:border-white/10">
+              <h3 className="text-sm font-bold text-gray-600 dark:text-gray-400">2. Ubicación y Grupo</h3>
               <SelectorInstitucional
                 label="Ambiente (Aula/Lab)"
                 opciones={[
@@ -476,8 +476,8 @@ export default function SeleccionHorarioPage() {
             </div>
 
             {/* Avance de horas */}
-            <div className="relative z-10 pt-6 border-t border-white/10">
-              <h3 className="text-sm font-bold text-gray-400 mb-4">Progreso de Asignación</h3>
+            <div className="relative z-10 pt-6 border-t border-gray-100 dark:border-white/10">
+              <h3 className="text-sm font-bold text-gray-600 dark:text-gray-400 mb-4">Progreso de Asignación</h3>
               <IndicadorProgresoHoras progreso={progreso || []} />
             </div>
 
@@ -494,7 +494,7 @@ export default function SeleccionHorarioPage() {
           {/* Card: Course selection & groups */}
 
           {/* Matrix Card */}
-          <div className="bg-white dark:bg-[#020C1B] rounded-[2.5rem] border border-gray-100 dark:border-white/10 shadow-xl p-8">
+          <div className="bg-white dark:bg-[#020C1B] rounded-2xl border border-gray-100 dark:border-white/10 shadow-xl p-8">
             <div className="flex items-center justify-between border-b border-gray-100 dark:border-white/10 pb-6 mb-6">
               <div>
                 <h2 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3 tracking-tight">
@@ -526,7 +526,7 @@ export default function SeleccionHorarioPage() {
 
           {/* Confirmation Box */}
           {!!docenteId && !!idPeriodo && (
-            <div className="bg-white dark:bg-[#020C1B] rounded-[2.5rem] border border-gray-100 dark:border-white/10 p-8 flex flex-col items-center justify-between gap-6 md:flex-row shadow-xl">
+            <div className="bg-white dark:bg-[#020C1B] rounded-2xl border border-gray-100 dark:border-white/10 p-8 flex flex-col items-center justify-between gap-6 md:flex-row shadow-xl">
               <div className="text-center md:text-left">
                 <h3 className="font-black text-gray-900 dark:text-white text-lg tracking-tight">¿Listo con tus selecciones?</h3>
                 <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mt-2 max-w-md leading-relaxed">

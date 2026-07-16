@@ -202,31 +202,31 @@ export default function SecretariaDashboard() {
         </div>
 
         {/* KPI: Ventana / Tiempo */}
-        <div className="bg-[#0A192F] dark:bg-[#020C1B] rounded-2xl p-8 shadow-2xl text-white group hover:scale-[1.02] transition-all duration-300 border border-[#112240]">
+        <div className="bg-white dark:bg-[#020C1B] rounded-2xl p-8 shadow-xl dark:shadow-2xl text-gray-900 dark:text-white group hover:scale-[1.02] transition-all duration-300 border border-gray-100 dark:border-[#112240]">
           <div className="flex items-center justify-between mb-6">
-            <div className="p-4 bg-white/10 rounded-2xl text-white group-hover:bg-[#D4AF37] group-hover:text-white transition-all duration-300">
+            <div className="p-4 bg-blue-50 dark:bg-white/10 rounded-2xl text-blue-600 dark:text-white group-hover:bg-[#003366] dark:group-hover:bg-[#D4AF37] group-hover:text-white transition-all duration-300">
               <Clock className="w-6 h-6" />
             </div>
             {kpisData?.ventana && (
               <div className={cn(
                 "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter shadow-sm",
-                kpisData.ventana.semaforo === 'ROJO' ? 'bg-rose-500' : 
-                kpisData.ventana.semaforo === 'AMARILLO' ? 'bg-amber-500' : 'bg-emerald-500'
+                kpisData.ventana.semaforo === 'ROJO' ? 'bg-rose-500 text-white' : 
+                kpisData.ventana.semaforo === 'AMARILLO' ? 'bg-amber-500 text-white' : 'bg-emerald-500 text-white'
               )}>
                 En Curso
               </div>
             )}
           </div>
-          <h3 className="text-[#D4AF37] font-bold text-sm uppercase tracking-tight mb-1">Tiempo de Ventana</h3>
+          <h3 className="text-gray-500 dark:text-[#D4AF37] font-bold text-sm uppercase tracking-tight mb-1">Tiempo de Ventana</h3>
           {kpisData?.ventana ? (
             <>
-              <p className="text-2xl font-black mb-4">
+              <p className="text-2xl font-black text-gray-900 dark:text-white mb-4">
                 {kpisData.ventana.tiempoRestante.dias}d {kpisData.ventana.tiempoRestante.horas}h {kpisData.ventana.tiempoRestante.minutos}m
               </p>
-              <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">Restantes para el cierre</p>
+              <p className="text-gray-400 dark:text-white/40 text-[10px] font-bold uppercase tracking-widest">Restantes para el cierre</p>
             </>
           ) : (
-            <p className="text-xl font-bold text-white/40">Sin ventana activa</p>
+            <p className="text-xl font-bold text-gray-400 dark:text-white/40">Sin ventana activa</p>
           )}
         </div>
       </div>
@@ -279,7 +279,7 @@ export default function SecretariaDashboard() {
           <div className="md:col-span-2 bg-white dark:bg-[#0A192F] rounded-2xl p-6 sm:p-8 shadow-xl border border-gray-100 dark:border-[#112240] overflow-hidden relative">
             <div className="flex flex-col xl:flex-row items-center justify-between gap-6 xl:gap-8">
               <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
-                <div className="p-4 sm:p-5 bg-blue-50 dark:bg-[#D4AF37]/10 rounded-[2rem] text-blue-600 dark:text-[#D4AF37] flex-shrink-0">
+                <div className="p-4 sm:p-5 bg-blue-50 dark:bg-[#D4AF37]/10 rounded-xl text-blue-600 dark:text-[#D4AF37] flex-shrink-0">
                   <FileDown className="w-8 h-8 sm:w-10 sm:h-10" />
                 </div>
                 <div className="min-w-0">
@@ -311,26 +311,26 @@ export default function SecretariaDashboard() {
 
         {/* Lado Derecho: Publicación y Notificación (4/12) */}
         <div className="lg:col-span-4 animate-in slide-in-from-right-4 duration-700 delay-300">
-          <div className="bg-[#0A192F] h-full rounded-2xl p-10 shadow-2xl text-white flex flex-col justify-between relative overflow-hidden group border border-[#112240]">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#D4AF37]/10 rounded-full -ml-10 -mb-10 blur-2xl" />
+          <div className="bg-white dark:bg-[#0A192F] h-full rounded-2xl p-10 shadow-xl dark:shadow-2xl text-gray-900 dark:text-white flex flex-col justify-between relative overflow-hidden group border border-gray-100 dark:border-[#112240]">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#003366]/5 dark:bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-emerald-500/5 dark:bg-[#D4AF37]/10 rounded-full -ml-10 -mb-10 blur-2xl" />
             
             <div className="relative z-10 space-y-8">
-              <div className="p-5 bg-[#D4AF37]/20 rounded-[2rem] text-[#D4AF37] w-fit">
+              <div className="p-5 bg-emerald-50 dark:bg-[#D4AF37]/20 rounded-xl text-emerald-600 dark:text-[#D4AF37] w-fit">
                 <CheckSquare className="w-10 h-10" />
               </div>
               <div>
-                <h3 className="text-3xl font-black tracking-tight mb-4">Emisión Oficial de Horarios</h3>
-                <p className="text-white/60 leading-relaxed mb-6">
+                <h3 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight mb-4">Emisión Oficial de Horarios</h3>
+                <p className="text-gray-500 dark:text-white/60 leading-relaxed mb-6">
                   Aprueba y emite de forma definitiva la programación académica. Esta acción hará visibles los horarios para toda la comunidad estudiantil.
                 </p>
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3 text-sm font-bold text-white/80">
-                    <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                  <div className="flex items-center gap-3 text-sm font-bold text-gray-700 dark:text-white/80">
+                    <ShieldCheck className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
                     Transición a estado 'Publicado Oficialmente'
                   </div>
-                  <div className="flex items-center gap-3 text-sm font-bold text-white/80">
-                    <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                  <div className="flex items-center gap-3 text-sm font-bold text-gray-700 dark:text-white/80">
+                    <ShieldCheck className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
                     Cierre de modificaciones regulares del periodo
                   </div>
                 </div>
@@ -338,7 +338,7 @@ export default function SecretariaDashboard() {
             </div>
 
             <Boton
-              className="relative z-10 w-full py-8 rounded-[2rem] bg-white text-[#0A192F] hover:bg-[#D4AF37] transition-all duration-500 font-black text-xl flex items-center justify-center gap-3 mt-12 shadow-2xl shadow-black/20"
+              className="relative z-10 w-full py-8 rounded-xl bg-[#003366] dark:bg-white text-white dark:text-[#0A192F] hover:bg-[#002244] dark:hover:bg-[#D4AF37] transition-all duration-500 font-black text-xl flex items-center justify-center gap-3 mt-12 shadow-xl dark:shadow-2xl shadow-blue-900/20 dark:shadow-black/20"
               onClick={() => setModalPublicarOpen(true)}
               disabled={publicarPeriodoMutation.isPending}
             >

@@ -88,7 +88,7 @@ export default function VistaHorarioCicloPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         {/* PANEL IZQUIERDO: SELECCIÓN DE CICLO (5/12) */}
-        <div className="lg:col-span-5 bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col gap-6">
+        <div className="lg:col-span-5 bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl border border-gray-100 dark:border-[#112240] p-8 flex flex-col gap-6">
           <div className="flex items-center gap-4 border-b border-gray-100 dark:border-[#112240] pb-5">
             <div className="p-3 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400">
               <BookOpen className="w-5 h-5" />
@@ -120,16 +120,16 @@ export default function VistaHorarioCicloPage() {
         </div>
 
         {/* PANEL DERECHO: EXPORTACIÓN (7/12) */}
-        <div className="lg:col-span-7 bg-[#020C1B] rounded-[2.5rem] shadow-2xl p-8 border border-[#112240] flex flex-col gap-6 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+        <div className="lg:col-span-7 bg-white dark:bg-[#020C1B] rounded-2xl shadow-xl dark:shadow-2xl p-8 border border-gray-100 dark:border-[#112240] flex flex-col gap-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-40 h-40 bg-blue-50 dark:bg-white/5 rounded-full blur-2xl pointer-events-none" />
           
-          <div className="flex items-center gap-4 border-b border-white/10 pb-5 relative z-10">
-            <div className="p-3 bg-white/10 rounded-xl border border-white/10 text-white shadow-inner">
+          <div className="flex items-center gap-4 border-b border-gray-100 dark:border-white/10 pb-5 relative z-10">
+            <div className="p-3 bg-gray-100 dark:bg-white/10 rounded-xl border border-gray-200 dark:border-white/10 text-gray-700 dark:text-white shadow-sm dark:shadow-inner">
               <Download className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-lg font-black tracking-tight text-white">Central de Exportación</h3>
-              <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-0.5">Generación de Reportes</p>
+              <h3 className="text-lg font-black tracking-tight text-gray-900 dark:text-white">Central de Exportación</h3>
+              <p className="text-[10px] text-gray-500 dark:text-gray-400 font-black uppercase tracking-widest mt-0.5">Generación de Reportes</p>
             </div>
           </div>
 
@@ -149,18 +149,18 @@ export default function VistaHorarioCicloPage() {
                 <button 
                   disabled={!cicloSeleccionado || !!descargando}
                   onClick={() => exportarArchivo('excel')}
-                  className="flex-1 p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all disabled:opacity-50 flex flex-col items-center gap-2 group"
+                  className="flex-1 p-3 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 rounded-xl transition-all disabled:opacity-50 flex flex-col items-center gap-2 group"
                 >
-                  {descargando === 'excel' ? <SpinnerCarga /> : <FileSpreadsheet className="w-5 h-5 text-emerald-400 group-hover:-translate-y-0.5 transition-transform" />}
-                  <span className="text-xs font-bold text-white mt-1">Excel</span>
+                  {descargando === 'excel' ? <SpinnerCarga /> : <FileSpreadsheet className="w-5 h-5 text-emerald-600 dark:text-emerald-400 group-hover:-translate-y-0.5 transition-transform" />}
+                  <span className="text-xs font-bold text-gray-800 dark:text-white mt-1">Excel</span>
                 </button>
                 <button 
                   disabled={!cicloSeleccionado || !!descargando}
                   onClick={() => exportarArchivo('pdf')}
-                  className="flex-1 p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all disabled:opacity-50 flex flex-col items-center gap-2 group"
+                  className="flex-1 p-3 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 rounded-xl transition-all disabled:opacity-50 flex flex-col items-center gap-2 group"
                 >
-                  {descargando === 'pdf' ? <SpinnerCarga /> : <FileText className="w-5 h-5 text-rose-400 group-hover:-translate-y-0.5 transition-transform" />}
-                  <span className="text-xs font-bold text-white mt-1">PDF</span>
+                  {descargando === 'pdf' ? <SpinnerCarga /> : <FileText className="w-5 h-5 text-rose-600 dark:text-rose-400 group-hover:-translate-y-0.5 transition-transform" />}
+                  <span className="text-xs font-bold text-gray-800 dark:text-white mt-1">PDF</span>
                 </button>
               </div>
             </div>
@@ -173,18 +173,18 @@ export default function VistaHorarioCicloPage() {
                 <button 
                   disabled={!!descargando}
                   onClick={() => exportarArchivo('excel', true)}
-                  className="flex-1 p-3 bg-emerald-900/20 hover:bg-emerald-900/40 border border-emerald-500/30 rounded-xl transition-all disabled:opacity-50 flex flex-col items-center gap-2 group"
+                  className="flex-1 p-3 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 border border-emerald-200 dark:border-emerald-500/30 rounded-xl transition-all disabled:opacity-50 flex flex-col items-center gap-2 group"
                 >
-                  {descargando === 'excel-todo' ? <SpinnerCarga /> : <Share2 className="w-5 h-5 text-emerald-500 group-hover:-translate-y-0.5 transition-transform" />}
-                  <span className="text-xs font-bold text-emerald-400 mt-1">Todos (XLS)</span>
+                  {descargando === 'excel-todo' ? <SpinnerCarga /> : <Share2 className="w-5 h-5 text-emerald-600 dark:text-emerald-500 group-hover:-translate-y-0.5 transition-transform" />}
+                  <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mt-1">Todos (XLS)</span>
                 </button>
                 <button 
                   disabled={!!descargando}
                   onClick={() => exportarArchivo('pdf', true)}
-                  className="flex-1 p-3 bg-rose-900/20 hover:bg-rose-900/40 border border-rose-500/30 rounded-xl transition-all disabled:opacity-50 flex flex-col items-center gap-2 group"
+                  className="flex-1 p-3 bg-rose-50 dark:bg-rose-900/20 hover:bg-rose-100 dark:hover:bg-rose-900/40 border border-rose-200 dark:border-rose-500/30 rounded-xl transition-all disabled:opacity-50 flex flex-col items-center gap-2 group"
                 >
-                  {descargando === 'pdf-todo' ? <SpinnerCarga /> : <FileDown className="w-5 h-5 text-rose-500 group-hover:-translate-y-0.5 transition-transform" />}
-                  <span className="text-xs font-bold text-rose-400 mt-1">Todos (PDF)</span>
+                  {descargando === 'pdf-todo' ? <SpinnerCarga /> : <FileDown className="w-5 h-5 text-rose-600 dark:text-rose-500 group-hover:-translate-y-0.5 transition-transform" />}
+                  <span className="text-xs font-bold text-rose-700 dark:text-rose-400 mt-1">Todos (PDF)</span>
                 </button>
               </div>
             </div>
@@ -194,7 +194,7 @@ export default function VistaHorarioCicloPage() {
 
       {/* CUADRÍCULA OPERATIVA (CALENDARIO) */}
       {!cicloSeleccionado ? (
-        <div className="flex flex-col items-center justify-center py-24 bg-gray-50/50 dark:bg-[#0A192F]/50 backdrop-blur-sm rounded-[2.5rem] border-2 border-dashed border-gray-200 dark:border-[#112240] animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
+        <div className="flex flex-col items-center justify-center py-24 bg-gray-50/50 dark:bg-[#0A192F]/50 backdrop-blur-sm rounded-2xl border-2 border-dashed border-gray-200 dark:border-[#112240] animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
           <div className="p-6 bg-gray-100/80 dark:bg-[#020C1B] rounded-full mb-6 border border-gray-200 dark:border-[#112240] shadow-sm">
             <Layers className="w-10 h-10 text-gray-400 dark:text-gray-500" />
           </div>
@@ -204,7 +204,7 @@ export default function VistaHorarioCicloPage() {
           </p>
         </div>
       ) : (
-        <div className="bg-white dark:bg-[#0A192F] rounded-[2.5rem] shadow-xl border border-gray-100 dark:border-[#112240] overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both">
+        <div className="bg-white dark:bg-[#0A192F] rounded-2xl shadow-xl border border-gray-100 dark:border-[#112240] overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 ease-out fill-mode-both">
           {periodoActivo ? (
             <div className="p-6 md:p-8">
               <CalendarioGeneral 

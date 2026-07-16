@@ -110,7 +110,7 @@ export default function OfertaPorCiclosPage() {
         <h1 className="font-serif text-[2rem] text-[#0A192F] dark:text-white tracking-tight leading-tight">Malla y Oferta</h1>
       </div>
 
-      <Card className="bg-white dark:bg-[#0A192F] border-none shadow-xl rounded-[2.5rem] overflow-visible z-20 relative">
+      <Card className="bg-white dark:bg-[#0A192F] border-none shadow-xl rounded-2xl overflow-visible z-20 relative">
         <CardContent className="p-6">
           <div className="flex flex-wrap items-center gap-6">
             <div className="flex items-center gap-3 bg-gray-50 dark:bg-[#020C1B] px-4 py-3 rounded-2xl border border-gray-100 dark:border-white/10">
@@ -149,7 +149,7 @@ export default function OfertaPorCiclosPage() {
       </Card>
 
       {!cicloSeleccionado ? (
-        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#0A192F] rounded-[2.5rem] border border-dashed border-gray-200 dark:border-white/10 shadow-sm">
+        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#0A192F] rounded-2xl border border-dashed border-gray-200 dark:border-white/10 shadow-sm">
           <div className="p-4 bg-gray-50 dark:bg-white/5 rounded-full mb-4">
             <List className="w-12 h-12 text-gray-400 dark:text-gray-500" />
           </div>
@@ -160,7 +160,7 @@ export default function OfertaPorCiclosPage() {
           <SpinnerCarga />
         </div>
       ) : cursos && cursos.length > 0 ? (
-        <Card className="border-none shadow-xl bg-white dark:bg-[#0A192F] rounded-[2.5rem] overflow-hidden z-10 relative">
+        <Card className="border-none shadow-xl bg-white dark:bg-[#0A192F] rounded-2xl overflow-hidden z-10 relative">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
@@ -235,7 +235,7 @@ export default function OfertaPorCiclosPage() {
           </div>
         </Card>
       ) : (
-        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#0A192F] rounded-[2.5rem] border border-dashed border-gray-200 dark:border-white/10 shadow-sm">
+        <div className="flex flex-col items-center justify-center py-24 bg-white dark:bg-[#0A192F] rounded-2xl border border-dashed border-gray-200 dark:border-white/10 shadow-sm">
           <div className="p-4 bg-gray-50 dark:bg-white/5 rounded-full mb-4">
             <BookOpen className="w-12 h-12 text-gray-400 dark:text-gray-500" />
           </div>

@@ -18,7 +18,7 @@ export function VerificacionTelegram({ docenteId }: VerificacionTelegramProps) {
   });
 
   return (
-    <div className="bg-white dark:bg-[#0A192F] rounded-[2rem] border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+    <div className="bg-white dark:bg-[#0A192F] rounded-xl border border-gray-200/60 dark:border-white/5 p-6 sm:p-8 shadow-sm flex flex-col justify-between">
       <div>
         <div className="flex items-center gap-3 pb-4 border-b border-gray-100 dark:border-white/5 mb-6">
           <Send className="w-5 h-5 text-blue-500" />
