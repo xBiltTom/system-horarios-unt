@@ -121,15 +121,20 @@ export function Sidebar() {
                 <Link
                   href={enlace.href}
                   className={cn(
-                    'group flex items-center gap-4 px-6 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-300 mx-3 rounded-xl',
+                    'group flex items-center gap-4 px-6 py-3.5 text-xs font-bold uppercase tracking-wider transition-all duration-300 mx-3 rounded-2xl relative overflow-hidden',
                     activo
-                      ? 'bg-blue-50 text-blue-700 dark:bg-white/10 dark:text-white shadow-sm'
-                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/5'
+                      ? 'text-blue-700 dark:text-white bg-blue-50/50 dark:bg-white/5 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]'
+                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50/80 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/5 hover:translate-x-1'
                   )}
                 >
+                  {/* Indicador de activo */}
+                  {activo && (
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-blue-600 dark:bg-[#D4AF37] rounded-r-full shadow-[0_0_10px_rgba(59,130,246,0.5)] dark:shadow-[0_0_10px_rgba(212,175,55,0.3)]" />
+                  )}
+
                   <Icon
                     className={cn(
-                      'h-4 w-4 transition-colors duration-300',
+                      'h-4 w-4 transition-transform duration-300 group-hover:scale-110',
                       activo ? 'text-blue-600 dark:text-[#D4AF37]' : 'text-gray-400 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300'
                     )}
                     strokeWidth={activo ? 2.5 : 2}

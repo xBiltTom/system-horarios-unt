@@ -8,10 +8,18 @@ import { periodosService } from '@/services/periodos.service';
 import { SpinnerCarga } from '@/components/ui/SpinnerCarga';
 import { Calendar, Download, FileSpreadsheet, FileText, FileDown, Share2, Layers, BookOpen } from 'lucide-react';
 import { reportesService, descargarBlob } from '@/services/reportes.service';
+import { ModalPrevisualizacionPDF } from '@/components/ui/ModalPrevisualizacionPDF';
 
 export default function VistaHorarioCicloPage() {
   const [cicloSeleccionado, setCicloSeleccionado] = useState<number | null>(null);
   const [descargando, setDescargando] = useState<'excel' | 'pdf' | 'excel-todo' | 'pdf-todo' | null>(null);
+  
+  // Estado para la vista previa del PDF
+  const [modalPdf, setModalPdf] = useState<{ abierto: boolean; blob: Blob | null; nombre: string }>({
+    abierto: false,
+    blob: null,
+    nombre: ''
+  });
 
   // Obtener período activo
   const { data: periodoActivo, isLoading: periodoLoading } = useQuery({
@@ -49,11 +57,27 @@ export default function VistaHorarioCicloPage() {
         nombre = `horario-ciclo-${ciclo?.numero || cicloSeleccionado}-${periodoActivo.nombre}.${tipo === 'excel' ? 'xlsx' : 'pdf'}`;
       }
 
-      descargarBlob(res.data, nombre);
+      if (tipo === 'pdf') {
+        // En lugar de descargar, abrimos el modal de vista previa
+        setModalPdf({
+          abierto: true,
+          blob: res.data,
+          nombre
+        });
+      } else {
+        descargarBlob(res.data, nombre);
+      }
     } catch (error) {
       console.error(`Error exportando ${tipo}:`, error);
     } finally {
       setDescargando(null);
+    }
+  };
+
+  const confirmarDescargaPdf = () => {
+    if (modalPdf.blob) {
+      descargarBlob(modalPdf.blob, modalPdf.nombre);
+      setModalPdf({ ...modalPdf, abierto: false });
     }
   };
 
@@ -224,6 +248,15 @@ export default function VistaHorarioCicloPage() {
           )}
         </div>
       )}
+
+      <ModalPrevisualizacionPDF 
+        abierto={modalPdf.abierto}
+        cerrar={() => setModalPdf({ ...modalPdf, abierto: false })}
+        pdfBlob={modalPdf.blob}
+        nombreArchivo={modalPdf.nombre}
+        onConfirmar={confirmarDescargaPdf}
+      />
     </div>
   );
 }
+

@@ -11,7 +11,7 @@ export function BarraSuperior() {
   const { open } = useSidebarStore();
 
   return (
-    <header className="sticky top-0 z-40 bg-white/80 dark:bg-[#0A192F]/80 backdrop-blur-xl border border-gray-200/60 dark:border-white/10 rounded-2xl h-16 flex items-center justify-between px-4 md:px-6 shadow-sm transition-all duration-300">
+    <header className="sticky top-0 z-40 bg-white/70 dark:bg-[#0A192F]/60 backdrop-blur-2xl border border-white/40 dark:border-white/10 rounded-full h-16 flex items-center justify-between px-6 shadow-sm hover:shadow-md transition-all duration-300">
       <div className="flex items-center gap-3 md:gap-4">
         <button 
           onClick={open}
